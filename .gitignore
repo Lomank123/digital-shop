@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Media files
+/data
+
+# node_modules folder
+node_modules
+
+# Webpack bundle files
+digital-shop-app/static/js/**
+
+npm-debug.log
+
+# Some dev fixtures
+fixtures-dev.json

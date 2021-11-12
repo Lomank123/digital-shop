@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+{% load thumbnail %}
+
+{% block title %}Home page{% endblock title %}
+
+{% block content %}
+
+  <h1>Hello world!!!</h1>
+
+  {% for entity in entities %}
+    <p>Entity</p>
+    <img src="{{ entity.photo|thumbnail_url:'small' }}" />
+  {% endfor %}
+
+{% endblock content %}

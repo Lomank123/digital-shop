@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<!-- Add icon library -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Styles -->
+		<link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'styles/normalize.css' %}">
+		<!-- Title -->
+    <title>Digital Shop | {% block title %}{% endblock title %}</title>
+  </head>
+
+  <body>
+  	<header>
+			<a class="logo" href="{% url 'home' %}">Digital Shop</a>
+			<div class="auth-text">
+			</div>
+		</header>
+
+    <div class="container">
+    	{% block content %}
+    	{% endblock content %}
+    </div>
+
+		<footer>
+			<span class="span-made-by">
+				Made by 
+				<a
+					href="https://github.com/Lomank123" 
+					target="_blank" 
+					rel="noopener noreferrer">
+					Robert "Lomank" Khakimov
+				</a>
+			</span>
+		</footer>
+
+    <!-- Optional JavaScript -->
+		{% block scripts %}
+		{% endblock scripts %}
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -13,9 +13,7 @@ WORKDIR /digital-shop-app
 # libffi-dev, openssl-dev, cargo - for cryptography - for social-auth-app-django, social-auth-core
 # jpeg-dev, libjpeg-dev zlib-dev - for easy-thumbnails
 
-RUN apk add --update --no-cache nodejs npm && \
-    npm ci && \
-    python -m venv /py && \
+RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-deps \
@@ -31,7 +29,6 @@ RUN apk add --update --no-cache nodejs npm && \
     chown -R digitalshop:digitalshop /vol && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
-    chown -R digitalshop:digitalshop package.json && \
     chmod -R +x /scripts
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"

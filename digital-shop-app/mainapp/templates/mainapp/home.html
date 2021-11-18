@@ -1,15 +1,15 @@
 {% extends 'layout/base.html' %}
 {% load thumbnail %}
+{% load static %}
 
 {% block title %}Home page{% endblock title %}
 
 {% block content %}
 
-  <h1>Hello world!!!</h1>
-
-  {% for entity in entities %}
-    <p>Entity</p>
-    <img src="{{ entity.photo|thumbnail_url:'small' }}" />
-  {% endfor %}
+  <div id="root"></div>
 
 {% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'js/index-bundle.js' %}"></script>
+{% endblock scripts %}

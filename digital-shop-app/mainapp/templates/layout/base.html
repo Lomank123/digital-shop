@@ -18,28 +18,11 @@
   </head>
 
   <body>
-  	<header>
-			<a class="logo" href="{% url 'home' %}">Digital Shop</a>
-			<div class="auth-text">
-			</div>
-		</header>
 
     <div class="container">
     	{% block content %}
     	{% endblock content %}
     </div>
-
-		<footer>
-			<span class="span-made-by">
-				Made by 
-				<a
-					href="https://github.com/Lomank123" 
-					target="_blank" 
-					rel="noopener noreferrer">
-					Robert "Lomank" Khakimov
-				</a>
-			</span>
-		</footer>
 
     <!-- Optional JavaScript -->
 		{% block scripts %}

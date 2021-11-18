@@ -1,14 +1,17 @@
 const path = require('path');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // path to our input files (can be multiple)
   entry: {
     //'new1-bundle': './assets/js/new1.js',
     //'new2-bundle': './assets/js/new2.js',
+    'index-bundle': './assets/js/index.js',
   },
   output: {
     filename: '[name].js',  // output bundle file name (name will be the key from entry section)
-    path: path.resolve(__dirname, '../static/js'),  // path to our Django static directory
+    path: path.resolve(__dirname, '../assets/bundles'),  // path to our Django static directory
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -34,5 +37,14 @@ module.exports = {
         ],
       },
     ]
-  }
+  },
+  devServer: {
+    port: 9000,
+    historyApiFallback: true,
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './assets/js/index.html',
+    }),
+  ],
 };

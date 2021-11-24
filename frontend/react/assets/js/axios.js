@@ -1,15 +1,15 @@
 import axios from 'axios';
+import { tokenRefreshURL, apiURL, loginURL } from './urls';
+import { accessToken, refreshToken } from './localStorageKeys';
 
-
-const baseURL = 'http://127.0.0.1:8000/api/v1/';
 
 // Authorization request with token
-const axiosInstance = axios.create({
-  baseURL: baseURL,
+export const axiosInstance = axios.create({
+  baseURL: apiURL,
   timeout: 5000,
   headers: {
-    Authorization: localStorage.getItem('access_token')
-    ? 'Bearer ' + localStorage.getItem('access_token')
+    Authorization: localStorage.getItem(accessToken)
+    ? 'Bearer ' + localStorage.getItem(accessToken)
     : null,
     'Content-Type': 'application/json',
     accept: 'application/json',
@@ -28,38 +28,40 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		console.log("code: " + error.response.data.code);
+		console.log(error.response.data);
 
 		if (typeof error.response === 'undefined') {
 			alert(
 				'A server/network error occurred. ' +
-					'Looks like CORS might be the problem. ' +
-					'Sorry about this - we will get it fixed shortly.'
+				'Looks like CORS might be the problem. ' +
+				'Sorry about this - we will get it fixed shortly.'
 			);
 			return Promise.reject(error);
 		}
-    
+
     // Case: When user will open your website in order to (e.g.) check his profile
     // And his refreshToken will be expired at that moment, he will be redirected to login page
     // by this part of code
     // This is because only authorized users (with active refresh token) can request to refresh token 
 		if (
 			error.response.status === 401 &&
-			originalRequest.url === baseURL + 'token/refresh/'
+			originalRequest.url === tokenRefreshURL
 		) {
-			window.location.href = '/login/';
+			window.location.href = loginURL;
 			return Promise.reject(error);
 		}
 
+		// If user either doesn't have accessToken or it has expired
 		if (
-			error.response.data.code === 'token_not_valid' &&
-			error.response.status === 401 &&
-			error.response.statusText === 'Unauthorized'
+			(localStorage.getItem(accessToken) === null ||
+			error.response.data.code === 'token_not_valid') &&
+			(error.response.status === 401 &&
+			error.response.statusText === 'Unauthorized')
 		) {
-			const refreshToken = localStorage.getItem('refresh_token');
+			const refreshTokenValue = localStorage.getItem(refreshToken);
 
-			if (refreshToken) {
-				const tokenParts = JSON.parse(atob(refreshToken.split('.')[1])); // atob() is deprecated
+			if (refreshTokenValue) {
+				const tokenParts = JSON.parse(atob(refreshTokenValue.split('.')[1])); // atob() is deprecated
 
 				// exp date in token is expressed in seconds, while now() returns milliseconds:
 				const now = Math.ceil(Date.now() / 1000);
@@ -70,11 +72,8 @@ axiosInstance.interceptors.response.use(
 				if (tokenParts.exp > now) {
 					try {
 						const response = await axiosInstance
-							.post('http://127.0.0.1:8000/api/token/refresh/', { refresh: refreshToken });
-						localStorage.setItem('access_token', response.data.access);
-						// Do not uncomment this because then 'refresh_token' value will be undefined
-						// This happens because /token/refresh/ will return ONLY access_token
-						//localStorage.setItem('refresh_token', response.data.refresh);
+							.post(tokenRefreshURL, { refresh: refreshTokenValue });
+						localStorage.setItem(accessToken, response.data.access);
 
 						axiosInstance.defaults.headers['Authorization'] =
 							'Bearer ' + response.data.access;
@@ -87,18 +86,15 @@ axiosInstance.interceptors.response.use(
         // When user's refresh token has expired
 				} else {
 					console.log('Refresh token is expired', tokenParts.exp, now);
-					window.location.href = '/login/';
+					window.location.href = loginURL;
 				}
       // When user doesn't have refresh token
 			} else {
 				console.log('Refresh token not available.');
-				window.location.href = '/login/';
+				window.location.href = loginURL;
 			}
 		}
-
 		// specific error handling done elsewhere
 		return Promise.reject(error);
 	}
 );
-
-export default axiosInstance;

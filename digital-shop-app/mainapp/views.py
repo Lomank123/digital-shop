@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from mainapp.serializers import EntitySerializer, UserSerializer
 
 
+# For testing (actually don't want to use templates in this project)
 class CustomTemplateView(TemplateView):
     template_name = 'mainapp/home.html'
 	#authentication_classes = [TokenAuthentication]
@@ -26,21 +27,6 @@ class CustomTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["entities"] = CustomEntity.objects.all()
         return context
-
-
-class UserDetail(generics.RetrieveAPIView):
-    """
-    A view that returns a templated HTML representation of a given user.
-    """
-    queryset = User.objects.all()
-    renderer_classes = [TemplateHTMLRenderer]
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return Response({'user123': self.object}, template_name="mainapp/home.html")
 
 
 class EntityViewSet(ModelViewSet):

@@ -7,7 +7,8 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
-import { accessToken, refreshToken } from '../../localStorageKeys';
+import history from '../../history';
+import { checkRefreshToken } from '../../utils';
 
 
 export default class Login extends Component {
@@ -24,6 +25,11 @@ export default class Login extends Component {
     }
   }
 
+	componentDidMount() {
+		// Checking whether user logged in or not
+		checkRefreshToken();
+	}
+
   // Handles changes in text fields
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value.trim()});
@@ -36,17 +42,24 @@ export default class Login extends Component {
       tokenGetURL, {
         username: this.state.username,
         password: this.state.password,
-      }).then((res) => {
-        localStorage.setItem(accessToken, res.data.access);
-        localStorage.setItem(refreshToken, res.data.refresh);
-        axiosInstance.defaults.headers["Authorization"] = 'Bearer ' + localStorage.getItem(accessToken);
-        window.location.href = '/';
+      }, { withCredentials: true }).then((res) => {
+				const urlParams = new URLSearchParams(window.location.search);
+				const next = urlParams.get('next');
+				if (next !== null) {
+					history.push(urlParams.get('next'));
+				} else {
+					history.push('/');
+				}
+				console.log(res);
+
       }).catch((err) => {
+				// NEED TO USE non_field_errors AS WELL IN CASE OF WRONG PASSWORD OR EMAIL
 				this.setState({ errors: {
 					username: err.response.data.username,
 					password: err.response.data.password,
 					incorrect: err.response.data.detail,
 				}})
+				//console.log(err);
 			})
   }
 

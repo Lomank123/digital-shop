@@ -1,8 +1,8 @@
 import React, { Component, useEffect } from 'react';
 import ReactDOM from "react-dom";
-import { axiosInstance } from '../axios';
+import { axiosInstance, blankAxiosInstance } from '../axios';
 import Container from '@material-ui/core/Container';
-import { getEntities } from '../urls';
+import { getEntities, userGetURL, tokenVerifyURL } from '../urls';
 
 
 export default class HomePage extends Component {
@@ -15,19 +15,20 @@ export default class HomePage extends Component {
   }
 
   componentDidMount() {
-    axiosInstance.get(getEntities).then((res) => {
+    axiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
       const entitiesData = res.data;
       this.setState({entities: res.data});
       console.log(entitiesData);
       console.log("Done!");
     });
-    // NEED TO CHANGE
-    axiosInstance.get('http://127.0.0.1:8000/api/rest-auth/user/').then((res) => {
-      const userData = res.data
-      this.setState({user: res.data});
-      console.log(userData);
-      console.log("User data Done!");
-    })
+    
+    //axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+    //  const userData = res.data
+    //  this.setState({user: res.data});
+    //  console.log(userData);
+    //  console.log("User data Done!");
+    //});
+
   }
 
   render() {

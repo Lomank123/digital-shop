@@ -1,3 +1,4 @@
+import { Box, Link } from "@material-ui/core";
 import React, { Component } from "react";
 
 
@@ -16,7 +17,10 @@ export default class ChangePasswordConfirm extends Component {
   render() {
     return(
       <div>
-        <p>Email message has been sent</p>
+        <p>Your password has been reset. Now you need to log in again.</p>
+        <Box>
+          <Link href="/login">Log in</Link>
+        </Box>
       </div>
     );
   }

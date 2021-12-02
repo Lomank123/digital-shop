@@ -16,7 +16,7 @@ export default class ChangePasswordConfirm extends Component {
   render() {
     return(
       <div>
-        <p>Email message has been sent</p>
+        <p>Password has been changed.</p>
       </div>
     );
   }

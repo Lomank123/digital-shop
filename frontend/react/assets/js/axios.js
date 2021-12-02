@@ -1,19 +1,32 @@
 import axios from 'axios';
-import { tokenRefreshURL, apiURL, loginURL } from './urls';
-import { accessToken, refreshToken } from './localStorageKeys';
+import { tokenRefreshURL, apiURL, tokenVerifyURL, loginURL } from './urls';
+import history from './history';
+import { addNextParam } from './utils';
 
+
+// Blank instance without any interceptors
+// needed in certain cases
+export const blankAxiosInstance = axios.create({
+  baseURL: apiURL,
+  timeout: 5000,
+  headers: {
+    //Authorization: localStorage.getItem(accessToken)
+    //? 'Bearer ' + localStorage.getItem(accessToken)
+    //: null,
+    'Content-Type': 'application/json',
+    accept: 'application/json',
+  }
+})
 
 // Authorization request with token
 export const axiosInstance = axios.create({
   baseURL: apiURL,
   timeout: 5000,
   headers: {
-    Authorization: localStorage.getItem(accessToken)
-    ? 'Bearer ' + localStorage.getItem(accessToken)
-    : null,
     'Content-Type': 'application/json',
     accept: 'application/json',
-  }
+  },
+	withCredentials: true,
 })
 
 // This code is going to handle response data before 'then' or 'catch' methods
@@ -28,7 +41,7 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		console.log(error.response.data);
+		console.log(error.response);
 
 		if (typeof error.response === 'undefined') {
 			alert(
@@ -45,53 +58,40 @@ axiosInstance.interceptors.response.use(
     // This is because only authorized users (with active refresh token) can request to refresh token 
 		if (
 			error.response.status === 401 &&
-			originalRequest.url === tokenRefreshURL
+			originalRequest.url === tokenVerifyURL
 		) {
-			window.location.href = loginURL;
+			addNextParam(loginURL, window.location.pathname);
 			return Promise.reject(error);
 		}
 
 		// If user either doesn't have accessToken or it has expired
 		if (
-			(localStorage.getItem(accessToken) === null ||
+			(error.response.data.detail ||
 			error.response.data.code === 'token_not_valid') &&
-			(error.response.status === 401 &&
-			error.response.statusText === 'Unauthorized')
+			error.response.status === 401 &&
+			error.response.statusText === 'Unauthorized'
 		) {
-			const refreshTokenValue = localStorage.getItem(refreshToken);
+			let isRefreshToken = false;
 
-			if (refreshTokenValue) {
-				const tokenParts = JSON.parse(atob(refreshTokenValue.split('.')[1])); // atob() is deprecated
+			// Check whether refresh token is available and not expired
+			// Without "await" this request won't be made
+			await axiosInstance.get(tokenVerifyURL, { withCredentials: true })
+			.then((res) => {
+				isRefreshToken = true;
+				console.log("Refresh token is available and not expired.");
+			}).catch((err) => {
+				//console.log(err);
+				console.log("Refresh token is expired or not available.");
+			});
 
-				// exp date in token is expressed in seconds, while now() returns milliseconds:
-				const now = Math.ceil(Date.now() / 1000);
-				console.log("Token expiration time: " + tokenParts.exp);
-
-        // So if user has expired accessToken but refreshToken is active
-        // it'll just make a request to refresh accessToken 
-				if (tokenParts.exp > now) {
-					try {
-						const response = await axiosInstance
-							.post(tokenRefreshURL, { refresh: refreshTokenValue });
-						localStorage.setItem(accessToken, response.data.access);
-
-						axiosInstance.defaults.headers['Authorization'] =
-							'Bearer ' + response.data.access;
-						originalRequest.headers['Authorization'] =
-							'Bearer ' + response.data.access;
-						return await axiosInstance(originalRequest);
-					} catch (err) {
-						console.log(err);
-					}
-        // When user's refresh token has expired
-				} else {
-					console.log('Refresh token is expired', tokenParts.exp, now);
-					window.location.href = loginURL;
-				}
-      // When user doesn't have refresh token
-			} else {
-				console.log('Refresh token not available.');
-				window.location.href = loginURL;
+			// Then refreshing access token using refresh token
+			if (isRefreshToken) {
+				console.log("Access Token expired.");
+				return axiosInstance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
+					return axiosInstance(originalRequest, { withCredentials: true });
+				}).catch((err) => {
+					console.log(err);
+				})
 			}
 		}
 		// specific error handling done elsewhere

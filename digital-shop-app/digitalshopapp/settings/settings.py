@@ -40,19 +40,18 @@ INSTALLED_APPS = [
     # REST framework
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
-    'rest_auth.registration',
-    'rest_framework_simplejwt',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    # allauth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     # Custom apps
     'crispy_forms',
     'corsheaders',
     'easy_thumbnails',
     'django_cleanup',
     'storages',
-    # allauth apps
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +73,7 @@ ROOT_URLCONF = 'digitalshopapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR.parent, 'frontend/react/assets/bundles')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,6 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
 # django rest framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -136,9 +136,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ # new
-        'rest_framework_simplejwt.authentication.JWTAuthentication',   
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        #'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -146,15 +146,23 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+CORS_ALLOW_CREDENTIALS=True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:9000"
 ]
 
-#REST_USE_JWT = True
+CORS_ORIGIN_WHITELIST = (
+    'localhost:9000',
+)
 
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'mainapp.serializers.CustomPasswordResetSerializer',
+    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'mainapp.serializers.CustomPasswordResetConfirmSerializer',
 }
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'digital-shop-auth'
+JWT_AUTH_REFRESH_COOKIE = 'digital-shop-refresh-token'
 
 # Email
 EMAIL_HOST = 'smtp.gmail.com'

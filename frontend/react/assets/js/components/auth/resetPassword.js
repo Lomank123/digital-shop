@@ -48,6 +48,7 @@ export default class ResetPassword extends Component {
           uid: err.response.data.uid,
           token: err.response.data.token,
         }})
+        console.log(err.response);
       })
   }
 

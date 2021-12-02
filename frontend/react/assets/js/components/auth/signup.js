@@ -3,6 +3,9 @@ import { axiosInstance } from '../../axios';
 import { signupURL } from '../../urls';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import history from '../../history';
+import { checkRefreshToken } from '../../utils';
 
 
 export default class Signup extends Component {
@@ -20,8 +23,14 @@ export default class Signup extends Component {
         password1: '',
         password2: '',
       },
+			emailSent: false,
     }
   }
+
+	componentDidMount() {
+		// Checking whether user logged in or not
+		checkRefreshToken();
+	}
 
   // Handles changes in text fields
   handleChange = (e) => {
@@ -42,7 +51,9 @@ export default class Signup extends Component {
         // If all user data was correct maybe we should automatically login user
         // Or if a verification message was sent then redirect to related page
         //window.location.href = loginURL;
-        console.log(res);
+				// history.push(verificationSentURL);
+				this.setState({ emailSent: true });
+				console.log(res.data);
       }).catch((err) => {
         this.setState({ errors: {
           email: err.response.data.email,
@@ -50,79 +61,99 @@ export default class Signup extends Component {
           mismatch_pw: err.response.data.non_field_errors,
           password1: err.response.data.password1,
           password2: err.response.data.password2,
-        }})
+        }});
+				console.log(err.response);
       });
   }
 
   render() {
     return(
-      <div>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					id="username"
-					label="Username"
-					name="username"
-					autoComplete="username"
-					autoFocus
-					onChange={this.handleChange}
-          error={Boolean(this.state.errors.username)}
-          helperText={this.state.errors.username}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					id="email"
-					label="Email Address"
-					name="email"
-					autoComplete="example@gmail.com"
-					autoFocus
-          error={Boolean(this.state.errors.email)}
-          helperText={this.state.errors.email}
-					onChange={this.handleChange}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					name="password1"
-					label="Password"
-					type="password"
-					id="password1"
-					autoComplete="current-password"
-          error={Boolean(this.state.errors.password1) || Boolean(this.state.errors.mismatch_pw)}
-          helperText={this.state.errors.password1 || this.state.errors.mismatch_pw}
-					onChange={this.handleChange}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					name="password2"
-					label="Confirm password"
-					type="password"
-					id="password2"
-					autoComplete="confirm-password"
-					onChange={this.handleChange}
-          error={Boolean(this.state.errors.password2) || Boolean(this.state.errors.mismatch_pw)}
-          helperText={this.state.errors.password2 || this.state.errors.mismatch_pw}
-				/>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					onClick={this.handleSubmit}
-				>
-					Sign Up
-				</Button>
-      </div>
+			<div>
+				{
+					this.state.emailSent ?
+					<div>
+						<p>Email message has been sent. If you don't see any, try to resend it.</p>
+        		<Box>
+    					<Button
+								type="button"
+								fullWidth
+								variant="contained"
+								color="primary"
+								onClick={this.handleSubmit}
+							>
+								Resend confirmation message
+							</Button>
+        		</Box>
+					</div> : 
+					<div>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="username"
+							label="Username"
+							name="username"
+							autoComplete="username"
+							autoFocus
+							onChange={this.handleChange}
+        		  error={Boolean(this.state.errors.username)}
+        		  helperText={this.state.errors.username}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="email"
+							label="Email Address"
+							name="email"
+							autoComplete="example@gmail.com"
+							autoFocus
+        		  error={Boolean(this.state.errors.email)}
+        		  helperText={this.state.errors.email}
+							onChange={this.handleChange}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							name="password1"
+							label="Password"
+							type="password"
+							id="password1"
+							autoComplete="current-password"
+        		  error={Boolean(this.state.errors.password1) || Boolean(this.state.errors.mismatch_pw)}
+        		  helperText={this.state.errors.password1 || this.state.errors.mismatch_pw}
+							onChange={this.handleChange}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							name="password2"
+							label="Confirm password"
+							type="password"
+							id="password2"
+							autoComplete="confirm-password"
+							onChange={this.handleChange}
+        		  error={Boolean(this.state.errors.password2) || Boolean(this.state.errors.mismatch_pw)}
+        		  helperText={this.state.errors.password2 || this.state.errors.mismatch_pw}
+						/>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							onClick={this.handleSubmit}
+						>
+							Sign Up
+						</Button>
+      		</div>
+				}
+			</div>
     );
   }
 }

@@ -1,7 +1,8 @@
 Django>=3.2.3,<3.3
 djangorestframework==3.12.4
-django-rest-auth
+dj-rest-auth
 djangorestframework-simplejwt
+requests
 easy-thumbnails==2.7.1
 django-allauth
 psycopg2>=2.8.6,<2.9

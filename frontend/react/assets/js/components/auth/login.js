@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { axiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,113 +8,149 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
 import history from '../../history';
-import { checkRefreshToken } from '../../utils';
+import { getUserData } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../utils';
 
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-			errors: {
-				username: '',
-				password: '',
-				incorrect: '',
-			}
-    }
-  }
+export default function Login() {
+	// Login form
+	const initialFormData = Object.freeze({
+		username: '',
+		password: '',
+	});
+	const [formData, setFormData] = useState(initialFormData);
+	// Field error messages
+	const errorsInitialState = {
+		username: '',
+		password: '',
+		incorrect: '',
+	};
+	const [errors, setErrors] = useState(errorsInitialState);
 
-	componentDidMount() {
-		// Checking whether user logged in or not
-		checkRefreshToken();
-	}
+	const dispatch = useDispatch();
+	const userData = useSelector(state => state.user);
 
-  // Handles changes in text fields
-  handleChange = (e) => {
-    this.setState({[e.target.name]: e.target.value.trim()});
-  }
+	useEffect(() => {
+		//console.log(userData);
+		if (userData !== null) {
+			history.push('/loggedin');
+		}
+	}, [userData])
+	
+	// Handles changes in fields
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value.trim()
+		});
+	};
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+	// Handles submitting form
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
     axiosInstance.post(
       tokenGetURL, {
-        username: this.state.username,
-        password: this.state.password,
+        username: formData.username,
+        password: formData.password,
       }, { withCredentials: true }).then((res) => {
+				//console.log(res);
+				dispatch(getUser());
 				const urlParams = new URLSearchParams(window.location.search);
-				const next = urlParams.get('next');
-				if (next !== null) {
-					history.push(urlParams.get('next'));
-				} else {
-					history.push('/');
+				let next = urlParams.get('next');
+				if (next === null) {
+					next = '/';
 				}
-				console.log(res);
-
+				history.push(next);
       }).catch((err) => {
-				// NEED TO USE non_field_errors AS WELL IN CASE OF WRONG PASSWORD OR EMAIL
-				this.setState({ errors: {
+				//console.log(err);
+				setErrors({
 					username: err.response.data.username,
 					password: err.response.data.password,
-					incorrect: err.response.data.detail,
-				}})
-				//console.log(err);
-			})
-  }
+					incorrect: err.response.data.non_field_errors,
+				});
+			});
+	}
 
-  render() {
-    return(
-      <div>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					id="username"
-					label="Username"
-					name="username"
-					autoComplete="username"
-					autoFocus
-					onChange={this.handleChange}
-					error={Boolean(this.state.errors.username) || Boolean(this.state.errors.incorrect)}
-          helperText={this.state.errors.username || this.state.errors.incorrect}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					name="password"
-					label="Password"
-					type="password"
-					id="password"
-					autoComplete="current-password"
-					onChange={this.handleChange}
-					error={Boolean(this.state.errors.password) || Boolean(this.state.errors.incorrect)}
-          helperText={this.state.errors.password || this.state.errors.incorrect}
-				/>
-				<FormControlLabel
-					control={<Checkbox value="remember" color="primary" />}
-					label="Remember me"
-				/>
+	return(
+		<div>
+			<h3>Login</h3>
+			<TextField
+				variant="outlined"
+				margin="normal"
+				required
+				fullWidth
+				id="username"
+				label="Username"
+				name="username"
+				autoComplete="username"
+				autoFocus
+				onChange={handleChange}
+				error={Boolean(errors.username) || Boolean(errors.incorrect)}
+				helperText={errors.username || errors.incorrect}
+			/>
+			<TextField
+				variant="outlined"
+				margin="normal"
+				required
+				fullWidth
+				name="password"
+				label="Password"
+				type="password"
+				id="password"
+				autoComplete="current-password"
+				onChange={handleChange}
+				error={Boolean(errors.password) || Boolean(errors.incorrect)}
+				helperText={errors.password || errors.incorrect}
+			/>
+			<FormControlLabel
+				control={<Checkbox value="remember" color="primary" />}
+				label="Remember me"
+			/>
 
+			<Box>
 				<Button
 					type="submit"
 					fullWidth
 					variant="contained"
 					color="primary"
-					onClick={this.handleSubmit}
+					onClick={handleSubmit}
 				>
 					Sign In
 				</Button>
+			</Box>
 
-				<Box mt={2} textAlign={"right"}>
-					<Link href="/forgot" variant="body2">
-						Forgot password?
-					</Link>
-				</Box>
-      </div>
-    )
-  }
+			<Box mt={2}>
+				<Button
+					variant="outlined"
+					href="/signup"
+					fullWidth
+					color="primary"
+				>
+					Sign Up
+				</Button>
+			</Box>
+
+			<Box mt={2} textAlign={"right"}>
+				<Link href="/forgot" variant="body2">
+					Forgot password?
+				</Link>
+			</Box>
+		</div>
+	)
 }
+
+//const mapStateToProps = (state, ownProps) => {
+//	return { 
+//		user: state.user,
+//	};
+//} 
+//
+//const mapDispatchToProps = (dispatch) => {
+//	return {
+//		getUser: () => { dispatch({type: 'get_user'}) },
+//	};
+//}
+//
+//connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -12,32 +12,83 @@ import Forgot from './components/auth/forgot';
 import ResetPassword from './components/auth/resetPassword';
 import TestPage from './components/test';
 import AlreadyLoggedIn from './components/auth/confirmation/alreadyLoggedIn';
+import ResetPasswordEmailSent from './components/auth/confirmation/resetPasswordEmailSent';
+import VerifyEmailSent from './components/auth/confirmation/verifyEmailSent';
+import ResetPasswordConfirm from './components/auth/confirmation/resetPasswordConfirm';
+import VerifyEmailConfirm from './components/auth/confirmation/verifyEmailConfirm';
+import * as routes from './routeNames';
+import { createStore } from "redux";
+import { Provider } from 'react-redux';
+import { userGetURL } from './urls';
+import { blankAxiosInstance } from './axios';
+import thunk from 'redux-thunk';
+import { applyMiddleware } from 'redux';
 
+
+
+const defaultState = {
+  user: null,
+};
+
+// E.g.:
+// action = {type: "type1", payload: "123"}
+const reducer = (state = defaultState, action) => {
+  switch (action.type) {
+    case 'get_user':
+      return {...state, user: action.payload};
+    default:
+      return state;
+  }
+
+}
+
+const middleware = [thunk];
+
+const store = createStore(reducer, applyMiddleware(...middleware));
 
 // It's something like a main page where there are header and footer along with all components
 const routing = (
-  <Router history={history}>
-    <React.StrictMode>
-
-      <Header />
-
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/login" component={Login} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/forgot" component={Forgot} />
-        <Route path="/reset/:uid([0-9A-Za-z_\-]+)/:token([0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})" component={ResetPassword} />
-        
-        <Route path="/loggedin" component={AlreadyLoggedIn} />
-
-        <Route path="/test" component={TestPage} />
-      </Switch>
-
-      <Footer />
-
-    </React.StrictMode>
-  </Router>
+  <Provider store={store}>
+    <Router history={history}>
+      <React.StrictMode>
+  
+        <Header />
+  
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path={`/${routes.loginRoute}`} component={Login} />
+          <Route path={`/${routes.logoutRoute}`} component={Logout} />
+          <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
+          <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
+              <div>
+                <Route exact path={`${path}/`} component={Signup} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={VerifyEmailSent} />
+                <Route path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} component={VerifyEmailConfirm} />
+              </div>
+            )} 
+          />
+          <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
+              <div>
+                <Route exact path={`${path}/`} component={Forgot} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={ResetPasswordEmailSent} /> 
+              </div>
+            )} 
+          />
+          <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
+              <div>
+                <Route exact path={`${path}/${routes.resetValues}`} component={ResetPassword} />
+                <Route path={`${path}/${routes.confirmRoute}`} component={ResetPasswordConfirm} /> 
+              </div>
+            )}
+          />
+          <Route path={`/${routes.testRoute}`} component={TestPage} />
+        </Switch>
+          
+        <Footer />
+          
+      </React.StrictMode>
+    </Router>
+  </Provider>
 )
 
 ReactDOM.render(routing, document.getElementById('root'));

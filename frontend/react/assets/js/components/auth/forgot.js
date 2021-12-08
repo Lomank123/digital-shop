@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { axiosInstance } from '../../axios';
+import { blankAxiosInstance } from '../../axios';
 import { passwordResetURL } from '../../urls';
+import history from '../../history';
+import { emailSentRoute } from '../../routeNames';
 
 
 export default class Forgot extends Component {
@@ -24,23 +26,29 @@ export default class Forgot extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    axiosInstance.post(
+    blankAxiosInstance.post(
       passwordResetURL, {
         email: this.state.email,
       }).then((res) => {
-        // Perhaps you should redirect to email sent confirmed page
-        //window.location.href = '/';
-        console.log(res.data);
+        history.push({
+          pathname: history.location.pathname + emailSentRoute,
+          state: {
+            email: this.state.email,
+          },
+        });
+        //console.log(res.data);
       }).catch((err) => {
         this.setState({ errors: {
           email: err.response.data.email,
         }})
+        console.log(err.response);
       })
   }
 
   render() {
     return(
       <div>
+        <h3>Forgot password</h3>
 				<TextField
 					variant="outlined"
 					margin="normal"

@@ -4,21 +4,22 @@ import history from './history';
 import { addNextParam } from './utils';
 
 
+// Added these because of some cases that throw 403 (Forbidden)
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
 // Blank instance without any interceptors
-// needed in certain cases
+// needed in certain cases (e.g. when we don't need to check whether user logged in or not OR we don't need tokens at all)
 export const blankAxiosInstance = axios.create({
   baseURL: apiURL,
   timeout: 5000,
   headers: {
-    //Authorization: localStorage.getItem(accessToken)
-    //? 'Bearer ' + localStorage.getItem(accessToken)
-    //: null,
     'Content-Type': 'application/json',
     accept: 'application/json',
   }
 })
 
-// Authorization request with token
+// Axios instance with token verification interceptor
 export const axiosInstance = axios.create({
   baseURL: apiURL,
   timeout: 5000,
@@ -30,8 +31,8 @@ export const axiosInstance = axios.create({
 })
 
 // This code is going to handle response data before 'then' or 'catch' methods
-// So if accessToken expires it'll then check refreshToken
-// And if refreshToken will be expired it'll then make a request to create a new refreshToken
+// So if access token expires it'll then check refresh token
+// And if refresh token will be expired it'll then make a request to create a new one
 
 // In django settings we have lifetime setting for both accessToken and refreshToken
 // By default they are 5 min for accessToken and 1 day for refreshToken
@@ -41,7 +42,7 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		console.log(error.response);
+		//console.log(error.response);
 
 		if (typeof error.response === 'undefined') {
 			alert(
@@ -60,7 +61,7 @@ axiosInstance.interceptors.response.use(
 			error.response.status === 401 &&
 			originalRequest.url === tokenVerifyURL
 		) {
-			addNextParam(loginURL, window.location.pathname);
+			addNextParam(loginURL, history.location.pathname);
 			return Promise.reject(error);
 		}
 
@@ -80,7 +81,7 @@ axiosInstance.interceptors.response.use(
 				isRefreshToken = true;
 				console.log("Refresh token is available and not expired.");
 			}).catch((err) => {
-				//console.log(err);
+				//console.log(err.response);
 				console.log("Refresh token is expired or not available.");
 			});
 
@@ -88,9 +89,9 @@ axiosInstance.interceptors.response.use(
 			if (isRefreshToken) {
 				console.log("Access Token expired.");
 				return axiosInstance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
-					return axiosInstance(originalRequest, { withCredentials: true });
+					console.log("Access token has been refreshed.")
 				}).catch((err) => {
-					console.log(err);
+					console.log(err.response);
 				})
 			}
 		}

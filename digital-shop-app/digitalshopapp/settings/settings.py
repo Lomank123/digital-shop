@@ -147,13 +147,12 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_CREDENTIALS=True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:9000"
-]
-
-CORS_ORIGIN_WHITELIST = (
-    'localhost:9000',
-)
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:9000"
+#]
+#CORS_ORIGIN_WHITELIST = (
+#    'localhost:9000',
+#)
 
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'mainapp.serializers.CustomPasswordResetSerializer',

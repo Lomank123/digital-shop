@@ -18,6 +18,7 @@ export default class AlreadyLoggedIn extends Component {
   render() {
     return(
       <Box>
+        <h3>Already logged in</h3>
         <p>You have already logged in. Maybe you want to logout or go to home page?</p>
         <Box>
           <Link href="/" variant="body2">Home</Link>

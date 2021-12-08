@@ -1,8 +1,7 @@
 import { blankAxiosInstance } from "./axios";
-import { loggedinURL, tokenVerifyURL } from "./urls";
+import { loggedinURL, tokenVerifyURL, userGetURL } from "./urls";
 import history from "./history";
 
-// Here will be different utils
 
 // Adds 'next' param to url with a link to previous page which will be opened after e.g. logging in
 // Case: Unauthorized user opens page which is available only for authorized ones.
@@ -31,5 +30,36 @@ export async function checkRefreshToken() {
   }).catch((err) => {
     console.log("Refresh token is not available.");
     //console.log(err.response);
+  });
+}
+
+
+// Use this instead of the above one
+export async function getUserData() {
+  await blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+    //console.log(res.data);
+    console.log("User data done!");
+    //history.push('/' + loggedInRoute);
+    return res.data;
+  }).catch((err) => {
+    console.log("User not authenticated");
+    return null;
+  });
+}
+
+export const getUser = () => async dispatch => {
+  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+    console.log("User data done!");
+    //console.log(res.data);
+    dispatch({
+      type: 'get_user',
+      payload: res.data,
+    })
+  }).catch((err) => {
+    console.log("User not authenticated");
+    dispatch({
+      type: 'get_user',
+      payload: null,
+    });
   });
 }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { axiosInstance } from '../../axios';
+import { blankAxiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { passwordResetConfirmURL } from '../../urls';
+import history from '../../history';
+import { resetRoute, confirmRoute } from '../../routeNames';
 
 
 export default class ResetPassword extends Component {
@@ -28,18 +30,15 @@ export default class ResetPassword extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    axiosInstance.post(
+    blankAxiosInstance.post(
       passwordResetConfirmURL, {
         new_password1: this.state.password1,
         new_password2: this.state.password2,
         uid: this.props.match.params.uid,
         token: this.props.match.params.token,
       }).then((res) => {
-        // After successful password set user should be redirected to
-        // related page and there will be a link to login page
-
-        console.log(res.data);
-        //window.location.href = '/login';
+        history.push(`/${resetRoute}/${confirmRoute}`);
+        //console.log(res);
       }).catch((err) => {
         this.setState({ errors: {
           password1: err.response.data.new_password1,
@@ -55,6 +54,7 @@ export default class ResetPassword extends Component {
   render() {
     return(
       <div>
+        <h3>Reset password</h3>
 				<TextField
 					variant="outlined"
 					margin="normal"

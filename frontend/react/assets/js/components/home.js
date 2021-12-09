@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState, useLayoutEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { axiosInstance, blankAxiosInstance } from '../axios';
 import { getEntities, userGetURL } from '../urls';
+import { getUser } from '../utils';
 
 
-export default class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entities: [],
-      user: [],
-    }
-  }
+export default function HomePage() {
+  const [user, setUser] = useState([]);
+  const [entities, setEntities] = useState([]);
 
-  componentDidMount() {
+  useLayoutEffect(() => {
     // If user has no tokens, the 2nd axios request will break addNextParam and will cause it to redirect to login page again
     // As a solution, we can make only 1 axiosInstance request (e.g. to get user data) and all other requests will be made with blankAxiosInstance
 
@@ -24,40 +21,35 @@ export default class HomePage extends Component {
     //  console.log("User data done!");
     //});
 
-    // get the rest of the data
-    axiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
-      const entitiesData = res.data;
-      this.setState({entities: res.data});
-      console.log(entitiesData);
+    blankAxiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
+      setEntities(res.data);
       console.log("Entities data done!");
     });
-  }
+  }, [])
 
-  render() {
-    return (
-      <div>
-        <h3>Entities</h3>
-        {
-          Object.entries(this.state.entities).map(([key, entity]) => {
-            return(
-              <p key={key}>
-                entity number {key} _ 
-                {entity.description} 
-              </p>
-            )
-          })
-        }
-        <h3>User data</h3>
-        {
-          Object.entries(this.state.user).map(([key, data]) => {
-            return(
-              <p key={key}>
-                <span>{key} : {data}</span>
-              </p>
-            )
-          })
-        }
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h3>Entities</h3>
+      {
+        Object.entries(entities).map(([key, entity]) => {
+          return(
+            <p key={key}>
+              entity number {key} _ 
+              {entity.description} 
+            </p>
+          )
+        })
+      }
+      <h3>User data</h3>
+      {
+        Object.entries(user).map(([key, data]) => {
+          return(
+            <p key={key}>
+              <span>{key} : {data}</span>
+            </p>
+          )
+        })
+      }
+    </div>
+  );
 }

@@ -20,6 +20,9 @@ from mainapp.serializers import EntitySerializer, UserSerializer
 def app(request, *args, **kwargs):
     return render(request, 'mainapp/app.html')
 
+def auth(request, *args, **kwargs):
+    return render(request, 'mainapp/auth.html')
+
 
 class EntityViewSet(ModelViewSet):
     serializer_class = EntitySerializer

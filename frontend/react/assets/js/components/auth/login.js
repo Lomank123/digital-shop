@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import { axiosInstance } from '../../axios';
+import React, { Component, useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { axiosInstance, blankAxiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -31,9 +31,9 @@ export default function Login() {
 	const dispatch = useDispatch();
 	const userData = useSelector(state => state.user);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		//console.log(userData);
-		if (userData !== null) {
+		if (userData !== 1 && userData !== null) {
 			history.push('/loggedin');
 		}
 	}, [userData])
@@ -50,7 +50,7 @@ export default function Login() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-    axiosInstance.post(
+    blankAxiosInstance.post(
       tokenGetURL, {
         username: formData.username,
         password: formData.password,

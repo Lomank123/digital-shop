@@ -1,4 +1,4 @@
-import { blankAxiosInstance } from "./axios";
+import { blankAxiosInstance, axiosInstance } from "./axios";
 import { loggedinURL, tokenVerifyURL, userGetURL } from "./urls";
 import history from "./history";
 
@@ -35,20 +35,35 @@ export async function checkRefreshToken() {
 
 
 // Use this instead of the above one
-export async function getUserData() {
-  await blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+//export async function getUserData() {
+//  await blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+//    //console.log(res.data);
+//    console.log("User data done!");
+//    //history.push('/' + loggedInRoute);
+//    return res.data;
+//  }).catch((err) => {
+//    console.log("User not authenticated");
+//    return null;
+//  });
+//}
+
+
+// Use this instead of the above one
+export function getUserData() {
+  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
     //console.log(res.data);
     console.log("User data done!");
     //history.push('/' + loggedInRoute);
-    return res.data;
+    //console.log(res.data);
+    sessionStorage.setItem('user', res.data.username);
   }).catch((err) => {
     console.log("User not authenticated");
-    return null;
+    
   });
 }
 
 export const getUser = () => async dispatch => {
-  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+  axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
     console.log("User data done!");
     //console.log(res.data);
     dispatch({
@@ -59,7 +74,7 @@ export const getUser = () => async dispatch => {
     console.log("User not authenticated");
     dispatch({
       type: 'get_user',
-      payload: null,
+      payload: 1,
     });
   });
 }

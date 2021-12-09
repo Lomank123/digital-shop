@@ -56,31 +56,6 @@ const routing = (
   
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path={`/${routes.loginRoute}`} component={Login} />
-          <Route path={`/${routes.logoutRoute}`} component={Logout} />
-          <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
-          <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
-              <div>
-                <Route exact path={`${path}/`} component={Signup} />
-                <Route path={`${path}/${routes.emailSentRoute}`} component={VerifyEmailSent} />
-                <Route path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} component={VerifyEmailConfirm} />
-              </div>
-            )} 
-          />
-          <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
-              <div>
-                <Route exact path={`${path}/`} component={Forgot} />
-                <Route path={`${path}/${routes.emailSentRoute}`} component={ResetPasswordEmailSent} /> 
-              </div>
-            )} 
-          />
-          <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
-              <div>
-                <Route exact path={`${path}/${routes.resetValues}`} component={ResetPassword} />
-                <Route path={`${path}/${routes.confirmRoute}`} component={ResetPasswordConfirm} /> 
-              </div>
-            )}
-          />
           <Route path={`/${routes.testRoute}`} component={TestPage} />
         </Switch>
           

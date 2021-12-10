@@ -28,5 +28,5 @@ export const passwordResetURL = apiRestAuthURL + 'password/' + 'reset/';
 export const passwordResetConfirmURL = passwordResetURL + 'confirm/';
 
 // Auth urls
-export const loginURL = '/login/';
-export const loggedinURL = '/loggedin/';
+export const loginURL = '/auth/login/';
+export const loggedinURL = '/auth/loggedin/';

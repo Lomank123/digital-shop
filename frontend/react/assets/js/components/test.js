@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { axiosInstance } from '../axios';
+import { blankAxiosInstance } from '../axios';
 import { getEntities } from '../urls';
 
 
@@ -13,7 +13,7 @@ export default class TestPage extends Component {
   }
 
   componentDidMount() {
-    axiosInstance.get(getEntities).then((res) => {
+    blankAxiosInstance.get(getEntities).then((res) => {
       const entitiesData = res.data;
       this.setState({entities: res.data});
       console.log(entitiesData);

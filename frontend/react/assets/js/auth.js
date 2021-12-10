@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import history from './history';
-import Header from './components/header';
-import Footer from './components/footer';
 import Login from './components/auth/login';
 import Logout from './components/auth/logout';
 import Signup from './components/auth/signup';
@@ -15,16 +13,19 @@ import VerifyEmailSent from './components/auth/confirmation/verifyEmailSent';
 import ResetPasswordConfirm from './components/auth/confirmation/resetPasswordConfirm';
 import VerifyEmailConfirm from './components/auth/confirmation/verifyEmailConfirm';
 import * as routes from './routeNames';
-import { Provider } from 'react-redux';
+import CheckLogin from './components/auth/checkLogin';
 
 
+export default function AuthMain() {
 
-// It's something like a main page where there are header and footer along with all components
-const routing = (
-  <Router history={history}>
+  return(
     <React.StrictMode>
+      <CheckLogin />
 
       <Switch>
+        <Route exact path='/auth'>
+          <Redirect to={`/${routes.loginRoute}`} />
+        </Route>
         <Route path={`/${routes.loginRoute}`} component={Login} />
         <Route path={`/${routes.logoutRoute}`} component={Logout} />
         <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
@@ -34,7 +35,7 @@ const routing = (
               <Route path={`${path}/${routes.emailSentRoute}`} component={VerifyEmailSent} />
               <Route path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} component={VerifyEmailConfirm} />
             </>
-          )} 
+          )}
         />
         <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
             <>
@@ -51,9 +52,6 @@ const routing = (
           )}
         />
       </Switch>
-        
     </React.StrictMode>
-  </Router>
-)
-
-ReactDOM.render(routing, document.getElementById('root-auth'));
+  );
+}

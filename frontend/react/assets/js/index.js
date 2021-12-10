@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import history from './history';
 import HomePage from './components/home';
 import Header from './components/header';
@@ -23,6 +23,8 @@ import { userGetURL } from './urls';
 import { blankAxiosInstance } from './axios';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
+import AuthMain from './auth';
+import Main from './main';
 
 
 
@@ -52,15 +54,15 @@ const routing = (
     <Router history={history}>
       <React.StrictMode>
   
-        <Header />
-  
+        
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path={`/${routes.testRoute}`} component={TestPage} />
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route path='/home' component={Main} />
+          <Route path={`/${routes.authRoute}`} component={AuthMain} />
         </Switch>
-          
-        <Footer />
-          
+        
       </React.StrictMode>
     </Router>
   </Provider>

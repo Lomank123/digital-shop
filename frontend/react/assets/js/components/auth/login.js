@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { axiosInstance, blankAxiosInstance } from '../../axios';
+import React, { useState } from 'react';
+import { blankAxiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -8,9 +8,6 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
 import history from '../../history';
-import { getUserData } from '../../utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../utils';
 
 
 export default function Login() {
@@ -27,16 +24,6 @@ export default function Login() {
 		incorrect: '',
 	};
 	const [errors, setErrors] = useState(errorsInitialState);
-
-	const dispatch = useDispatch();
-	const userData = useSelector(state => state.user);
-
-	useLayoutEffect(() => {
-		//console.log(userData);
-		if (userData !== 1 && userData !== null) {
-			history.push('/loggedin');
-		}
-	}, [userData])
 	
 	// Handles changes in fields
 	const handleChange = (e) => {
@@ -56,7 +43,6 @@ export default function Login() {
         password: formData.password,
       }, { withCredentials: true }).then((res) => {
 				//console.log(res);
-				dispatch(getUser());
 				const urlParams = new URLSearchParams(window.location.search);
 				let next = urlParams.get('next');
 				if (next === null) {
@@ -74,7 +60,7 @@ export default function Login() {
 	}
 
 	return(
-		<div>
+		<>
 			<h3>Login</h3>
 			<TextField
 				variant="outlined"
@@ -137,20 +123,6 @@ export default function Login() {
 					Forgot password?
 				</Link>
 			</Box>
-		</div>
+		</>
 	)
 }
-
-//const mapStateToProps = (state, ownProps) => {
-//	return { 
-//		user: state.user,
-//	};
-//} 
-//
-//const mapDispatchToProps = (dispatch) => {
-//	return {
-//		getUser: () => { dispatch({type: 'get_user'}) },
-//	};
-//}
-//
-//connect(mapStateToProps, mapDispatchToProps)(Login)

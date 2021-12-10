@@ -1,12 +1,10 @@
-import React, { Component, useState, useLayoutEffect } from 'react';
+import React, { useState } from 'react';
 import { blankAxiosInstance } from '../../axios';
 import { signupURL } from '../../urls';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import history from '../../history';
-import { checkRefreshToken } from '../../utils';
-import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Signup() {
@@ -29,16 +27,6 @@ export default function Signup() {
 	};
 	const [errors, setErrors] = useState(errorsInitialState);
 
-	const dispatch = useDispatch();
-	const userData = useSelector(state => state.user);
-	
-	console.log(userData);
-	useLayoutEffect(() => {
-		if (userData !== 1 && userData !== null) {
-			history.push('/loggedin');
-		}
-	}, [userData])
-
 		// Handles changes in fields
 	const handleChange = (e) => {
 		setFormData({
@@ -50,7 +38,6 @@ export default function Signup() {
 	const handleSubmit = (e) => {
     e.preventDefault();
 
-		// Here we use blank instance because there's no need to check tokens
     blankAxiosInstance.post(
       signupURL, {
         email: formData.email,

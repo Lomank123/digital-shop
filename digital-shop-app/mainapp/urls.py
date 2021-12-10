@@ -1,6 +1,6 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from mainapp.views import EntityViewSet, UserViewSet, app, VerifyTokens, auth
+from mainapp.views import EntityViewSet, UserViewSet, app, VerifyTokens
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from dj_rest_auth.registration.views import VerifyEmailView
 
@@ -11,25 +11,24 @@ router.register('entities', EntityViewSet, basename='users')
 urlpatterns = [
     # Start page
     path('', app),
-    # Test
-    path('test/', app),
-
-    # AUTH Urls
-    # TODO: Maybe convert auth logic in a separate django app
+    path('home/', app),
+    path('auth/', app),
     # Login, Logout, etc.
-    path('login/', auth),
-    path('logout/', auth),
-    path('loggedin/', auth),
+    path('auth/login/', app),
+    path('auth/logout/', app),
+    path('auth/loggedin/', app),
     # Signup
-    path('signup/', auth),
-    path('signup/email-sent', auth),
-    re_path(r'signup/confirm/(?P<key>[-:\w]+)/$', auth),
+    path('auth/signup/', app),
+    path('auth/signup/email-sent', app),
+    re_path(r'auth/signup/confirm/(?P<key>[-:\w]+)/$', app),
     # Forgot password
-    path('forgot/', auth),
-    path('forgot/email-sent', auth),
+    path('auth/forgot/', app),
+    path('auth/forgot/email-sent', app),
     # Reset password
-    re_path(r'reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$', auth),
-    path('reset/confirm/', auth),
+    re_path(r'auth/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$', app),
+    path('auth/reset/confirm/', app),
+    # Test
+    path('home/test', app),
 
     # API urls
     path('api/', include(router.urls)),

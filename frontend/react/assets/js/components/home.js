@@ -1,38 +1,33 @@
-import React, { Component, useEffect, useState, useLayoutEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { axiosInstance, blankAxiosInstance } from '../axios';
 import { getEntities, userGetURL } from '../urls';
-import { getUser } from '../utils';
-import DefaultPage from './defaultPage';
 
 
 export default function HomePage(props) {
-  const [user, setUser] = useState(null);
+  const userData = useSelector(state => state.user);
+  const [user, setUser] = useState([]);
   const [entities, setEntities] = useState([]);
 
   async function getData() {
     // Getting user data
-    
-    // Perhaps if we want to get user data we should use useSelector() instead of an additional api call
-    await axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
-      setUser(res.data);
-      console.log("User data done! Home page!");
-    });
+    if (userData !== null) {
+      // Perhaps if we want to get user data we should use useSelector() instead of an additional api call
+      await blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+        setUser(res.data);
+        console.log("User data done! Home page!");
+      });
 
-    await axiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
-      setEntities(res.data);
-      console.log("Entities data done! Home page!");
-    });
+      await blankAxiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
+        setEntities(res.data);
+        console.log("Entities data done! Home page!");
+      });
+    }
   }
 
   useLayoutEffect(() => {
     getData();
-  }, [])
-
-  if (user === null) {
-    console.log("User null");
-    return null;
-  }
+  }, [userData])
 
   return (
     <>

@@ -8,9 +8,13 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
 import history from '../../history';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../../utils';
 
 
 export default function Login(props) {
+	const dispatch = useDispatch();
+
 	// Login form
 	const initialFormData = Object.freeze({
 		username: '',
@@ -45,7 +49,9 @@ export default function Login(props) {
 				//console.log(res);
 
 				// Dispatching with user logged in
-				//dispatch(getUser());
+				// We need it just to pass to "next" page the right state from redux store
+				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user
+				dispatch(getUser());
 
 				const urlParams = new URLSearchParams(window.location.search);
 				let next = urlParams.get('next');

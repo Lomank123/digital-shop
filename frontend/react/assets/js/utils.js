@@ -37,6 +37,23 @@ export const getUser = () => async dispatch => {
   });
 }
 
+export const getUserStrict = () => async dispatch => {
+  axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+    console.log("User data done!");
+    //console.log(res.data);
+    dispatch({
+      type: 'get_user',
+      payload: res.data,
+    })
+  }).catch((err) => {
+    console.log("User not authenticated");
+    dispatch({
+      type: 'get_user',
+      payload: 1,
+    });
+  });
+}
+
 // Check whether user logged in or not by checking refresh token
 // Suitable for auth pages because we want to check refresh token only
 export const checkRefreshToken = () => async dispatch => {

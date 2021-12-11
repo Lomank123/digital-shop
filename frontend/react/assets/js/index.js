@@ -21,9 +21,9 @@ import { createStore } from "redux";
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
-import DefaultPage from './components/defaultPage';
+import LoginRequiredPage from './components/loginRequiredPage';
 import AuthPage from './components/authPage';
-
+import PublicPage from './components/publicPage';
 
 
 const defaultState = {
@@ -55,7 +55,7 @@ const routing = (
         <Header />
   
         <Switch>
-          <Route exact path="/" component={() => <DefaultPage component={HomePage} />} />
+          <Route exact path="/" component={() => <LoginRequiredPage component={HomePage} />} />
           <Route path={`/${routes.loginRoute}`} component={() => <AuthPage component={Login} />} />
           <Route path={`/${routes.logoutRoute}`} component={Logout} />
           <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
@@ -84,7 +84,7 @@ const routing = (
               </>
             )}
           />
-          <Route path={`/${routes.testRoute}`} component={() => <DefaultPage component={TestPage} />} />
+          <Route path={`/${routes.testRoute}`} component={() => <PublicPage component={TestPage} />} />
         </Switch>
           
         <Footer />

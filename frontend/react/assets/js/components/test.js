@@ -4,7 +4,6 @@ import { getEntities } from '../urls';
 
 
 export default function TestPage() {
-  //const [user, setUser] = useState([]);
   const [entities, setEntities] = useState([]);
 
   useLayoutEffect(() => {

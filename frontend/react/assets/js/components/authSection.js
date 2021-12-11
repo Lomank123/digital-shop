@@ -1,20 +1,13 @@
-import React, { Component, useLayoutEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../utils";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Box, Button } from "@material-ui/core";
 import { logoutRoute, loginRoute, signupRoute } from "../routeNames";
 
 
 // Rename to LoginBox
-export default function Auth(props) {
+export default function AuthSection() {
 
-  const dispatch = useDispatch();
   const userData = useSelector(state => state.user);
-
-  // Perhaps if we want to get user data we should use useSelector() instead of an additional api call
-  useLayoutEffect(() => {
-    dispatch(getUser());
-  }, [dispatch])
 
   const logoutbutton = (
     <Box sx={{ display: 'inline', }}>
@@ -49,6 +42,11 @@ export default function Auth(props) {
     </Box>
   )
 
+  let renderButton = logoutbutton;
+  if (userData === 1) {
+    renderButton = loginbutton;
+  }
+
   return (
     <>
       <Box
@@ -62,10 +60,7 @@ export default function Auth(props) {
           float: 'right',
         }}
       >
-        { (userData !== null) ? 
-          ((userData !== 1) ? logoutbutton : loginbutton) :
-          (<></>)
-        }
+        {renderButton}
       </Box>
       <p>This is Auth component!</p>
     </>

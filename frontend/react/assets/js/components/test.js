@@ -1,41 +1,32 @@
-import React, { Component } from 'react';
-import { blankAxiosInstance } from '../axios';
+import React, { Component, useLayoutEffect, useState } from 'react';
+import { blankAxiosInstance, axiosInstance } from '../axios';
 import { getEntities } from '../urls';
 
 
-export default class TestPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entities: [],
-      user: [],
-    }
-  }
+export default function TestPage() {
+  //const [user, setUser] = useState([]);
+  const [entities, setEntities] = useState([]);
 
-  componentDidMount() {
-    blankAxiosInstance.get(getEntities).then((res) => {
-      const entitiesData = res.data;
-      this.setState({entities: res.data});
-      console.log(entitiesData);
+  useLayoutEffect(() => {
+    blankAxiosInstance.get('/testdata').then((res) => {
+      setEntities(res.data);
       console.log("Done! Test page!");
     });
-  }
+  }, [])
 
-  render() {
-    return (
-      <div>
-        <h3>Entities</h3>
-        {
-          Object.entries(this.state.entities).map(([key, entity]) => {
-            return(
-              <p key={key}>
-                entity number {key} _ 
-                {entity.description} 
-              </p>
-            )
-          })
-        }
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h3>Entities</h3>
+      {
+        Object.entries(entities).map(([key, entity]) => {
+          return(
+            <p key={key}>
+              entity number {key} _ 
+              {entity.description} 
+            </p>
+          )
+        })
+      }
+    </div>
+  );
 }

@@ -6,7 +6,7 @@ module.exports = {
     //'new1-bundle': './assets/js/new1.js',
     //'new2-bundle': './assets/js/new2.js',
     'index-bundle': './assets/js/index.js',
-    'auth-bundle': './assets/js/auth.js',
+    //'auth-bundle': './assets/js/auth.js',
   },
   output: {
     filename: '[name].js',  // output bundle file name (name will be the key from entry section)

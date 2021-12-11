@@ -1,22 +1,19 @@
 import { Button } from "@material-ui/core";
-import React, { Component } from "react";
+import React from "react";
+import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../../axios";
 import { signupVerifyEmailURL } from "../../../urls";
 
 
-export default class VerifyEmailConfirm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      key: this.props.match.params.key,
-    }
-  }
+export default function VerifyEmailConfirm() {
+  const params = useParams();
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    blankAxiosInstance.post(signupVerifyEmailURL,
-      { key: this.state.key, },
+    blankAxiosInstance.post(
+      signupVerifyEmailURL,
+      { key: params.key },
       { withCredentials: true, }
     ).then((res) => {
       console.log(res.data);
@@ -25,22 +22,19 @@ export default class VerifyEmailConfirm extends Component {
     });
   }
 
-  render() {
-    return(
-      <div>
-        <h3>Email confirmation</h3>
-        <p>To confirm your email click the button below.</p>
-        <Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					onClick={this.handleSubmit}
-				>
-					Confirm
-				</Button>
-      </div>
-    );
-  }
-
+  return(
+    <>
+      <h3>Email confirmation</h3>
+      <p>To confirm your email click the button below.</p>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+      >
+        Confirm
+      </Button>
+    </>
+  );
 }

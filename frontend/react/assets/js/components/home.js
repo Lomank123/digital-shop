@@ -3,32 +3,70 @@ import { useDispatch } from 'react-redux';
 import { axiosInstance, blankAxiosInstance } from '../axios';
 import { getEntities, userGetURL } from '../urls';
 import { getUser } from '../utils';
+import DefaultPage from './defaultPage';
 
 
-export default function HomePage() {
-  const [user, setUser] = useState([]);
+export default function HomePage(props) {
+  const [user, setUser] = useState(null);
   const [entities, setEntities] = useState([]);
 
-  useLayoutEffect(() => {
-    // If user has no tokens, the 2nd axios request will break addNextParam and will cause it to redirect to login page again
-    // As a solution, we can make only 1 axiosInstance request (e.g. to get user data) and all other requests will be made with blankAxiosInstance
-
+  async function getData() {
     // Getting user data
-    //axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
-    //  const userData = res.data
-    //  this.setState({user: res.data});
-    //  console.log(userData);
-    //  console.log("User data done!");
-    //});
-
-    blankAxiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
-      setEntities(res.data);
-      console.log("Entities data done!");
+    
+    // Perhaps if we want to get user data we should use useSelector() instead of an additional api call
+    await axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+      setUser(res.data);
+      console.log("User data done! Home page!");
     });
+
+    await axiosInstance.get(getEntities, { withCredentials: true }).then((res) => {
+      setEntities(res.data);
+      console.log("Entities data done! Home page!");
+    });
+  }
+
+  useLayoutEffect(() => {
+    getData();
   }, [])
 
+  if (user === null) {
+    console.log("User null");
+    return null;
+  }
+
   return (
-    <div>
+    <>
+      <UserInfo data={user} />
+      <EntitiesInfo data={entities} />
+    </>
+  );
+}
+
+
+export function UserInfo(props) {
+  const user = props.data;
+
+  return (
+    <>
+      <h3>User data</h3>
+      {
+        Object.entries(user).map(([key, data]) => {
+          return(
+            <p key={key}>
+              <span>{key} : {data}</span>
+            </p>
+          )
+        })
+      }
+    </>
+  );
+}
+
+export function EntitiesInfo(props) {
+  const entities = props.data;
+
+  return (
+    <>
       <h3>Entities</h3>
       {
         Object.entries(entities).map(([key, entity]) => {
@@ -40,16 +78,7 @@ export default function HomePage() {
           )
         })
       }
-      <h3>User data</h3>
-      {
-        Object.entries(user).map(([key, data]) => {
-          return(
-            <p key={key}>
-              <span>{key} : {data}</span>
-            </p>
-          )
-        })
-      }
-    </div>
-  );
+    
+    </>
+  )
 }

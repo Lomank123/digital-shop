@@ -19,12 +19,10 @@ import VerifyEmailConfirm from './components/auth/confirmation/verifyEmailConfir
 import * as routes from './routeNames';
 import { createStore } from "redux";
 import { Provider } from 'react-redux';
-import { userGetURL } from './urls';
-import { blankAxiosInstance } from './axios';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
-import AuthMain from './auth';
-import Main from './main';
+import DefaultPage from './components/defaultPage';
+import AuthPage from './components/authPage';
 
 
 
@@ -53,16 +51,44 @@ const routing = (
   <Provider store={store}>
     <Router history={history}>
       <React.StrictMode>
+
+        <Header />
   
-        
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-          <Route path='/home' component={Main} />
-          <Route path={`/${routes.authRoute}`} component={AuthMain} />
+          <Route exact path="/" component={() => <DefaultPage component={HomePage} />} />
+          <Route path={`/${routes.loginRoute}`} component={() => <AuthPage component={Login} />} />
+          <Route path={`/${routes.logoutRoute}`} component={Logout} />
+          <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
+          <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
+              <>
+                <Route exact path={`${path}/`} component={() => <AuthPage component={Signup} />} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthPage component={VerifyEmailSent} />} />
+                <Route 
+                  path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} 
+                  component={() => <AuthPage component={VerifyEmailConfirm} />} 
+                />
+              </>
+            )} 
+          />
+          <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
+              <>
+                <Route exact path={`${path}/`} component={() => <AuthPage component={Forgot} />} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthPage component={ResetPasswordEmailSent} />} /> 
+              </>
+            )} 
+          />
+          <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
+              <>
+                <Route exact path={`${path}/${routes.resetValues}`} component={() => <AuthPage component={ResetPassword} />} />
+                <Route path={`${path}/${routes.confirmRoute}`} component={() => <AuthPage component={ResetPasswordConfirm} />} /> 
+              </>
+            )}
+          />
+          <Route path={`/${routes.testRoute}`} component={() => <DefaultPage component={TestPage} />} />
         </Switch>
-        
+          
+        <Footer />
+
       </React.StrictMode>
     </Router>
   </Provider>

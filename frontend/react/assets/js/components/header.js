@@ -1,57 +1,13 @@
-import React, { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import history from '../history';
 import { loginRoute, logoutRoute, signupRoute } from '../routeNames';
-import { blankAxiosInstance } from '../axios';
-import { userGetURL } from '../urls';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../utils';
-import { CircularProgress } from '@material-ui/core';
+
 
 
 export default function Header() {
-
-  const dispatch = useDispatch();
-  const userData = useSelector(state => state.user);
-
-  useLayoutEffect(() => {
-    dispatch(getUser());
-  }, [dispatch])
-
-  const logoutbutton = (
-    <Box sx={{ display: 'inline', }}>
-      <Button
-        variant="outlined"
-        href={'/' + logoutRoute}
-        color="primary"
-      >
-        Logout
-      </Button>
-    </Box>
-  )
-
-  const loginbutton = (
-    <Box sx={{
-      display: 'inline',
-    }}>
-      <Button
-        variant="outlined"
-        href={'/' + loginRoute}
-        color="primary"
-      >
-        Log in
-      </Button>
-      <Button
-        variant="outlined"
-        href={'/' + signupRoute}
-        color="primary"
-      >
-        Sign up
-      </Button>
-    </Box>
-  )
 
   const button1 = (
     <Box
@@ -73,13 +29,6 @@ export default function Header() {
         6
       </Button>
 
-      <Box id="buttons-box" sx={{ display: 'inline', }}>
-        { (userData !== null) ? 
-        ((userData !== 1) ? logoutbutton : loginbutton) :
-        (<></>)
-        }
-      </Box>
-      
       <Button
         variant="outlined"
         href={'/' + signupRoute}
@@ -101,8 +50,6 @@ export default function Header() {
       >
         4
       </Button>
-
-      <p>Loading...</p>
     </Box>
   )
 

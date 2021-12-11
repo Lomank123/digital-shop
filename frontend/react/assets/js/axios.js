@@ -92,6 +92,7 @@ axiosInstance.interceptors.response.use(
 				return axiosInstance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
 					console.log("Access token has been refreshed.")
 					return axiosInstance(originalRequest, { withCredentials: true });
+					//window.location.reload();
 				}).catch((err) => {
 					console.log(err.response);
 				})

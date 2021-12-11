@@ -1,12 +1,10 @@
 import React from 'react';
 
 
-function Footer() {
+export default function Footer() {
   return (
-    <React.Fragment>
+    <>
       <p>This is the footer!</p>
-    </React.Fragment>
-  )
+    </>
+  );
 }
-
-export default Footer;

@@ -1,34 +1,33 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from mainapp.views import EntityViewSet, UserViewSet, app, VerifyTokens
+from mainapp.views import EntityViewSet, UserViewSet, app, VerifyTokens, TestView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from dj_rest_auth.registration.views import VerifyEmailView
 
 
 router = DefaultRouter()
-router.register('entities', EntityViewSet, basename='users')
+router.register('entities', EntityViewSet, basename='entities')
+router.register('testdata', TestView, basename='testdata')
 
 urlpatterns = [
     # Start page
     path('', app),
-    path('home/', app),
-    path('auth/', app),
     # Login, Logout, etc.
-    path('auth/login/', app),
-    path('auth/logout/', app),
-    path('auth/loggedin/', app),
+    path('login/', app),
+    path('logout/', app),
+    path('loggedin/', app),
     # Signup
-    path('auth/signup/', app),
-    path('auth/signup/email-sent', app),
-    re_path(r'auth/signup/confirm/(?P<key>[-:\w]+)/$', app),
+    path('signup/', app),
+    path('signup/email-sent', app),
+    re_path(r'signup/confirm/(?P<key>[-:\w]+)/$', app),
     # Forgot password
-    path('auth/forgot/', app),
-    path('auth/forgot/email-sent', app),
+    path('forgot/', app),
+    path('forgot/email-sent', app),
     # Reset password
-    re_path(r'auth/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$', app),
-    path('auth/reset/confirm/', app),
+    re_path(r'reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$', app),
+    path('reset/confirm/', app),
     # Test
-    path('home/test', app),
+    path('test/', app),
 
     # API urls
     path('api/', include(router.urls)),

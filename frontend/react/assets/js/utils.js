@@ -20,50 +20,8 @@ export function addNextParam(redirectUrl, nextUrl) {
   //window.location.href = newUrl;
 //}
 
-// Check whether user logged in or not by checking refresh token
-export async function checkRefreshToken() {
-  // Here we're using blank instance to prevent eternal redirecting to login page
-  await blankAxiosInstance.get(tokenVerifyURL, { withCredentials: true }).then((res) => {
-    //console.log(res);
-    console.log("Refresh token is available.");
-    history.push(loggedinURL);
-  }).catch((err) => {
-    console.log("Refresh token is not available.");
-    //console.log(err.response);
-  });
-}
-
-
-// Use this instead of the above one
-//export async function getUserData() {
-//  await blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
-//    //console.log(res.data);
-//    console.log("User data done!");
-//    //history.push('/' + loggedInRoute);
-//    return res.data;
-//  }).catch((err) => {
-//    console.log("User not authenticated");
-//    return null;
-//  });
-//}
-
-
-// Use this instead of the above one
-export function getUserData() {
-  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
-    //console.log(res.data);
-    console.log("User data done!");
-    //history.push('/' + loggedInRoute);
-    //console.log(res.data);
-    sessionStorage.setItem('user', res.data.username);
-  }).catch((err) => {
-    console.log("User not authenticated");
-    
-  });
-}
-
 export const getUser = () => async dispatch => {
-  axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
     console.log("User data done!");
     //console.log(res.data);
     dispatch({
@@ -72,6 +30,24 @@ export const getUser = () => async dispatch => {
     })
   }).catch((err) => {
     console.log("User not authenticated");
+    dispatch({
+      type: 'get_user',
+      payload: 1,
+    });
+  });
+}
+
+// Check whether user logged in or not by checking refresh token
+// Suitable for auth pages because we want to check refresh token only
+export const checkRefreshToken = () => async dispatch => {
+  blankAxiosInstance.get(tokenVerifyURL, { withCredentials: true }).then((res) => {
+    console.log("Refresh token is available.");
+    dispatch({
+      type: 'get_user',
+      payload: 'ok',
+    })
+  }).catch((err) => {
+    console.log("Refresh token is not available.");
     dispatch({
       type: 'get_user',
       payload: 1,

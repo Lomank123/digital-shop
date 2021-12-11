@@ -10,7 +10,7 @@ import { tokenGetURL } from '../../urls';
 import history from '../../history';
 
 
-export default function Login() {
+export default function Login(props) {
 	// Login form
 	const initialFormData = Object.freeze({
 		username: '',
@@ -43,6 +43,10 @@ export default function Login() {
         password: formData.password,
       }, { withCredentials: true }).then((res) => {
 				//console.log(res);
+
+				// Dispatching with user logged in
+				//dispatch(getUser());
+
 				const urlParams = new URLSearchParams(window.location.search);
 				let next = urlParams.get('next');
 				if (next === null) {

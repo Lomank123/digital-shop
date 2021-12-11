@@ -2,6 +2,7 @@ import requests
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -20,9 +21,6 @@ from mainapp.serializers import EntitySerializer, UserSerializer
 def app(request, *args, **kwargs):
     return render(request, 'mainapp/app.html')
 
-def auth(request, *args, **kwargs):
-    return render(request, 'mainapp/auth.html')
-
 
 class EntityViewSet(ModelViewSet):
     serializer_class = EntitySerializer
@@ -38,6 +36,7 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
 
+# 200 - OK, 401 - No token or token not valid
 class VerifyTokens(APIView):
     # We want this to be available for anonymous users
     permission_classes = (AllowAny, )
@@ -62,3 +61,12 @@ class VerifyTokens(APIView):
             return Response(status=status.HTTP_200_OK)
         if verify_request.status_code == status.HTTP_401_UNAUTHORIZED:
             return Response(verify_request.json(), status=status.HTTP_401_UNAUTHORIZED)
+
+
+class TestView(ModelViewSet):
+    permission_classes = (AllowAny, )
+    serializer_class = EntitySerializer
+
+    def get_queryset(self):
+        queryset = CustomEntity.objects.all()
+        return queryset

@@ -62,7 +62,7 @@ const routing = (
           <Route path={`/${routes.testRoute}`} component={() => <PublicComponent component={TestPage} />} />
 
           <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-          <Route path={`/${routes.logoutRoute}`} component={Logout} />
+          <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
           <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
           <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
               <>

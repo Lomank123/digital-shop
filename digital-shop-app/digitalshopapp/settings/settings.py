@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # REST framework
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
     'dj_rest_auth',
     'dj_rest_auth.registration',
     # allauth apps
@@ -66,6 +67,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom middleware
+    'digitalshopapp.middleware.cookie_into_body.MoveJWTCookieIntoTheBody',
+    'digitalshopapp.middleware.cookie_into_body.MoveJWTRefreshCookieIntoTheBody',
 ]
 
 ROOT_URLCONF = 'digitalshopapp.urls'
@@ -160,7 +164,7 @@ REST_AUTH_SERIALIZERS = {
 }
 
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'digital-shop-auth'
+JWT_AUTH_COOKIE = 'digital-shop-access-token'
 JWT_AUTH_REFRESH_COOKIE = 'digital-shop-refresh-token'
 
 # Email

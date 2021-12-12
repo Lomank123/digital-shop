@@ -1,8 +1,8 @@
 import React from "react";
-import CheckLogin from "./checkLogin";
 import { Redirect } from "react-router";
 import { useSelector } from "react-redux";
 import { loggedinURL } from "../urls";
+import { CheckLogin } from "../components/checkLogin";
 
 
 export default function AuthPage(props) {

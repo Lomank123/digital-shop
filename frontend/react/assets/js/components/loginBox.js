@@ -4,8 +4,7 @@ import { Box, Button } from "@material-ui/core";
 import { logoutRoute, loginRoute, signupRoute } from "../routeNames";
 
 
-// Rename to LoginBox
-export default function AuthSection() {
+export default function LoginBox() {
 
   const userData = useSelector(state => state.user);
 

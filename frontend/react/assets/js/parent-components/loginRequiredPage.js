@@ -1,18 +1,8 @@
-import React, { useLayoutEffect, useState } from "react";
-import AuthSection from "./authSection";
-import { getUserStrict } from "../utils";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import LoginBox from "../components/loginBox";
+import { useSelector } from "react-redux";
+import { CheckLoginRedirect } from "../components/checkLogin";
 
-
-function CheckLoginRedirect() {
-  const dispatch = useDispatch();
-
-  useLayoutEffect(() => {
-    dispatch(getUserStrict());
-  }, [dispatch]);
-
-  return null;
-}
 
 export default function LoginRequiredPage(props) {
   const Component = props.component;
@@ -29,7 +19,7 @@ export default function LoginRequiredPage(props) {
 
   return (
     <>
-      <AuthSection />
+      <LoginBox />
       <Component />
     </>
   )

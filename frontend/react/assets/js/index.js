@@ -21,9 +21,9 @@ import { createStore } from "redux";
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
-import LoginRequiredPage from './components/loginRequiredPage';
-import AuthPage from './components/authPage';
-import PublicPage from './components/publicPage';
+import LoginRequiredPage from './parent-components/loginRequiredPage';
+import AuthPage from './parent-components/authPage';
+import PublicPage from './parent-components/publicPage';
 
 
 const defaultState = {

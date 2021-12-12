@@ -59,8 +59,7 @@ axiosInstance.interceptors.response.use(
     // This is because only authorized users (with active refresh token) can request to refresh token 
 		if (
 			error.response.status === 401 &&
-			originalRequest.url === tokenVerifyURL && 
-			history.location.pathname !== loginURL
+			originalRequest.url === tokenVerifyURL
 		) {
 			addNextParam(loginURL, history.location.pathname);
 			return Promise.reject(error);
@@ -70,8 +69,7 @@ axiosInstance.interceptors.response.use(
 			(error.response.data.detail ||
 			error.response.data.code === 'token_not_valid') &&
 			error.response.status === 401 &&
-			error.response.statusText === 'Unauthorized' &&
-			history.location.pathname !== loginURL
+			error.response.statusText === 'Unauthorized'
 		) {
 			let isRefreshToken = false;
 

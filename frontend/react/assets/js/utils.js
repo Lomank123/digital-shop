@@ -1,5 +1,5 @@
 import { blankAxiosInstance, axiosInstance } from "./axios";
-import { loggedinURL, tokenVerifyURL, userGetURL } from "./urls";
+import { tokenVerifyURL, userGetURL } from "./urls";
 import history from "./history";
 
 
@@ -20,25 +20,16 @@ export function addNextParam(redirectUrl, nextUrl) {
   //window.location.href = newUrl;
 //}
 
-export const getUser = () => async dispatch => {
-  blankAxiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
-    console.log("User data done!");
-    //console.log(res.data);
-    dispatch({
-      type: 'get_user',
-      payload: res.data,
-    })
-  }).catch((err) => {
-    console.log("User not authenticated");
-    dispatch({
-      type: 'get_user',
-      payload: 1,
-    });
-  });
-}
+// Checks whether user data is available and dispatches the result
+// if strict = true and user not logged in then user will be redirected to login page
+export const getUser = (strict = false) => async dispatch => {
 
-export const getUserStrict = () => async dispatch => {
-  axiosInstance.get(userGetURL, { withCredentials: true }).then((res) => {
+  let instance = blankAxiosInstance;
+  if (strict) {
+    instance = axiosInstance;
+  }
+
+  instance.get(userGetURL, { withCredentials: true }).then((res) => {
     console.log("User data done!");
     //console.log(res.data);
     dispatch({

@@ -10,10 +10,12 @@ import { tokenGetURL } from '../../urls';
 import history from '../../history';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../utils';
+import { useLocation } from 'react-router';
 
 
 export default function Login(props) {
 	const dispatch = useDispatch();
+	const search = useLocation().search;
 
 	// Login form
 	const initialFormData = Object.freeze({
@@ -46,19 +48,18 @@ export default function Login(props) {
         username: formData.username,
         password: formData.password,
       }, { withCredentials: true }).then((res) => {
-				//console.log(res);
-
 				// Dispatching with user logged in
 				// We need it just to pass to "next" page the right state from redux store
 				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user
 				dispatch(getUser());
-
-				const urlParams = new URLSearchParams(window.location.search);
+				// Redirecting to "next" route or to home page if "next" wasn't specified
+				const urlParams = new URLSearchParams(search);
 				let next = urlParams.get('next');
 				if (next === null) {
 					next = '/';
 				}
 				history.push(next);
+				//console.log(res);
       }).catch((err) => {
 				//console.log(err);
 				setErrors({

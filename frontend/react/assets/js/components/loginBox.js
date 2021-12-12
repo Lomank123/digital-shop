@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Box, Button } from "@material-ui/core";
-import { logoutRoute, loginRoute, signupRoute } from "../routeNames";
+import { logoutRoute, loginRoute, signupRoute, profileRoute } from "../routeNames";
 
 
 export default function LoginBox() {
@@ -16,6 +16,13 @@ export default function LoginBox() {
         color="primary"
       >
         Logout
+      </Button>
+      <Button
+        variant="outlined"
+        href={'/' + profileRoute}
+        color="primary"
+      >
+        Profile
       </Button>
     </Box>
   )
@@ -61,7 +68,6 @@ export default function LoginBox() {
       >
         {renderButton}
       </Box>
-      <p>This is Auth component!</p>
     </>
   );
 }

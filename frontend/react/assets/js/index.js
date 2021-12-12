@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import history from './history';
-import HomePage from './components/home';
+import LoginRequiredComponent from './parent-components/loginRequiredComponent';
+import AuthComponent from './parent-components/authComponent';
+import PublicComponent from './parent-components/publicComponent';
+import Home from './components/home';
 import Header from './components/header';
 import Footer from './components/footer';
 import Login from './components/auth/login';
@@ -21,9 +24,7 @@ import { createStore } from "redux";
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
-import LoginRequiredPage from './parent-components/loginRequiredPage';
-import AuthPage from './parent-components/authPage';
-import PublicPage from './parent-components/publicPage';
+import UserProfile from './components/userProfile';
 
 
 const defaultState = {
@@ -55,36 +56,39 @@ const routing = (
         <Header />
   
         <Switch>
-          <Route exact path="/" component={() => <LoginRequiredPage component={HomePage} />} />
-          <Route path={`/${routes.loginRoute}`} component={() => <AuthPage component={Login} />} />
+          <Route exact path="/" component={() => <PublicComponent component={Home} />} />
+          <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile} />} />
+          
+          <Route path={`/${routes.testRoute}`} component={() => <PublicComponent component={TestPage} />} />
+
+          <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
           <Route path={`/${routes.logoutRoute}`} component={Logout} />
           <Route path={`/${routes.loggedInRoute}`} component={AlreadyLoggedIn} />
           <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
               <>
-                <Route exact path={`${path}/`} component={() => <AuthPage component={Signup} />} />
-                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthPage component={VerifyEmailSent} />} />
+                <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
                 <Route 
                   path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} 
-                  component={() => <AuthPage component={VerifyEmailConfirm} />} 
+                  component={() => <AuthComponent component={VerifyEmailConfirm} />} 
                 />
               </>
             )} 
           />
           <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
               <>
-                <Route exact path={`${path}/`} component={() => <AuthPage component={Forgot} />} />
-                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthPage component={ResetPasswordEmailSent} />} /> 
+                <Route exact path={`${path}/`} component={() => <AuthComponent component={Forgot} />} />
+                <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={ResetPasswordEmailSent} />} /> 
               </>
             )} 
           />
           <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
               <>
-                <Route exact path={`${path}/${routes.resetValues}`} component={() => <AuthPage component={ResetPassword} />} />
-                <Route path={`${path}/${routes.confirmRoute}`} component={() => <AuthPage component={ResetPasswordConfirm} />} /> 
+                <Route exact path={`${path}/${routes.resetValues}`} component={() => <AuthComponent component={ResetPassword} />} />
+                <Route path={`${path}/${routes.confirmRoute}`} component={() => <AuthComponent component={ResetPasswordConfirm} />} /> 
               </>
             )}
           />
-          <Route path={`/${routes.testRoute}`} component={() => <PublicPage component={TestPage} />} />
         </Switch>
           
         <Footer />

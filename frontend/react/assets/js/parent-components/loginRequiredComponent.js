@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { CheckLoginRedirect } from "../components/checkLogin";
 
 
-export default function LoginRequiredPage(props) {
+export default function LoginRequiredComponent(props) {
   const Component = props.component;
 
   const userData = useSelector(state => state.user);

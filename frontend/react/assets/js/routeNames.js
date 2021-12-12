@@ -12,5 +12,6 @@ export const resetRoute = 'reset';
 export const resetValues = ':uid([0-9A-Za-z_\\-]+)/:token([0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})';
 export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
+export const profileRoute = 'profile';
 
 

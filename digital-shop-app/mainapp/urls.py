@@ -12,6 +12,7 @@ router.register('testdata', TestView, basename='testdata')
 urlpatterns = [
     # Start page
     path('', app),
+    path('profile/', app),
     # Login, Logout, etc.
     path('login/', app),
     path('logout/', app),

@@ -4,7 +4,7 @@ import LoginBox from "../components/loginBox";
 import { CheckLogin } from "../components/checkLogin";
 
 
-export default function PublicPage(props) {
+export default function PublicComponent(props) {
   const Component = props.component;
 
   const userData = useSelector(state => state.user);

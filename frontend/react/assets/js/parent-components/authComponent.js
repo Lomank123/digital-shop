@@ -5,7 +5,7 @@ import { loggedinURL } from "../urls";
 import { CheckLogin } from "../components/checkLogin";
 
 
-export default function AuthPage(props) {
+export default function AuthComponent(props) {
 
   const userData = useSelector(state => state.user);
   // First render (checking refresh token and dispatching data)

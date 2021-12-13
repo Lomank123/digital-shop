@@ -14,7 +14,7 @@ export default function ResetPasswordEmailSent() {
 
     blankAxiosInstance.post(
       passwordResetURL, { email: email }).then((res) => {
-				console.log(res.data.detail);
+				//console.log(res.data.detail);
       }).catch((err) => {
         console.log(err.response);
       });

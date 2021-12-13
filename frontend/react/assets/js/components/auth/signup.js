@@ -19,8 +19,8 @@ export default function Signup() {
 
 	// Field error messages
 	const errorsInitialState = {
-		username: '',
 		email: '',
+		username: '',
 		mismatch_pw: '',
 		password1: '',
 		password2: '',

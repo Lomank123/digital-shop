@@ -19,13 +19,13 @@ export default function Login(props) {
 
 	// Login form
 	const initialFormData = Object.freeze({
-		username: '',
+		email: '',
 		password: '',
 	});
 	const [formData, setFormData] = useState(initialFormData);
 	// Field error messages
 	const errorsInitialState = {
-		username: '',
+		email: '',
 		password: '',
 		incorrect: '',
 	};
@@ -45,7 +45,7 @@ export default function Login(props) {
 
     blankAxiosInstance.post(
       tokenGetURL, {
-        username: formData.username,
+        username: formData.email,
         password: formData.password,
       }, { withCredentials: true }).then((res) => {
 				// Dispatching with user logged in
@@ -61,9 +61,9 @@ export default function Login(props) {
 				history.push(next);
 				//console.log(res);
       }).catch((err) => {
-				//console.log(err);
+				//console.log(err.response);
 				setErrors({
-					username: err.response.data.username,
+					email: err.response.data.email,
 					password: err.response.data.password,
 					incorrect: err.response.data.non_field_errors,
 				});
@@ -78,14 +78,14 @@ export default function Login(props) {
 				margin="normal"
 				required
 				fullWidth
-				id="username"
-				label="Username"
-				name="username"
-				autoComplete="username"
+				id="email"
+				label="Email"
+				name="email"
+				autoComplete="email"
 				autoFocus
 				onChange={handleChange}
-				error={Boolean(errors.username) || Boolean(errors.incorrect)}
-				helperText={errors.username || errors.incorrect}
+				error={Boolean(errors.email) || Boolean(errors.incorrect)}
+				helperText={errors.email || errors.incorrect}
 			/>
 			<TextField
 				variant="outlined"

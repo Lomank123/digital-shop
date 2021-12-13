@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,28 +143,6 @@ REST_FRAMEWORK = {
         #'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-}
-
-CORS_ALLOW_CREDENTIALS=True
-#CORS_ALLOWED_ORIGINS = [
-#    "http://localhost:9000"
-#]
-#CORS_ORIGIN_WHITELIST = (
-#    'localhost:9000',
-#)
-
-REST_AUTH_SERIALIZERS = {
-    'PASSWORD_RESET_SERIALIZER': 'mainapp.serializers.CustomPasswordResetSerializer',
-    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'mainapp.serializers.CustomPasswordResetConfirmSerializer',
-}
-
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'digital-shop-access-token'
-JWT_AUTH_REFRESH_COOKIE = 'digital-shop-refresh-token'
 
 # Email
 EMAIL_HOST = 'smtp.gmail.com'

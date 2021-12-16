@@ -10,8 +10,14 @@ const hostURL = 'http://127.0.0.1:' + portNum + '/';
 export const apiURL = hostURL + 'api/';
 
 export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
-export const userGetURL = apiRestAuthURL + 'user/'
-export const getEntities = apiURL + 'entities/';
+//export const userInfoGetURL = apiURL + 'user-info/';
+//export const userGetURL = apiRestAuthURL + 'user/';
+export const userGetURL = apiURL + 'user-info/';
+export const userProductsGetURL = userGetURL + 'get_user_products/';
+//export const getEntities = apiURL + 'entities/';
+export const productGetURL = apiURL + 'product/';
+export const categoryGetURL = apiURL + 'category/';
+
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';
 export const signupVerifyEmailURL = signupURL + 'verify-email/';

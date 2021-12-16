@@ -1,13 +1,14 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from mainapp.views import EntityViewSet, UserViewSet, app, VerifyTokens, TestView
+from mainapp.views import ProductViewSet, CategoryViewSet, app, VerifyTokens, UserViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from dj_rest_auth.registration.views import VerifyEmailView
 
 
 router = DefaultRouter()
-router.register('entities', EntityViewSet, basename='entities')
-router.register('testdata', TestView, basename='testdata')
+router.register('product', ProductViewSet, basename='product')
+router.register('category', CategoryViewSet, basename='category')
+router.register('user-info', UserViewSet, basename='user-info')
 
 urlpatterns = [
     # Start page

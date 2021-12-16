@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from mainapp.models import CustomEntity, CustomUser
+from mainapp.models import Product, Category, CustomUser
 from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
@@ -36,6 +36,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+"""
 class CustomEntityAdmin(admin.ModelAdmin):
     model = CustomEntity
     list_display = ('user', 'description', 'photo',)
@@ -54,7 +55,9 @@ class CustomEntityAdmin(admin.ModelAdmin):
     )
     search_fields = ('description',)
     ordering = ('user',)
-
+"""
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(CustomEntity, CustomEntityAdmin)
+admin.site.register(Product)
+admin.site.register(Category)
+#admin.site.register(CustomEntity, CustomEntityAdmin)

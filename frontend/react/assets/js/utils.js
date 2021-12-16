@@ -22,14 +22,8 @@ export function addNextParam(redirectUrl, nextUrl) {
 
 // Checks whether user data is available and dispatches the result
 // if strict = true and user not logged in then user will be redirected to login page
-export const getUser = (strict = false) => async dispatch => {
-
-  let instance = blankAxiosInstance;
-  if (strict) {
-    instance = axiosInstance;
-  }
-
-  instance.get(userGetURL, { withCredentials: true }).then((res) => {
+export const getUser = (redirect = false) => async dispatch => {
+  axiosInstance.get(userGetURL, { withCredentials: true, params: { redirect: redirect } }).then((res) => {
     console.log("User data done!");
     //console.log(res.data);
     dispatch({
@@ -38,24 +32,6 @@ export const getUser = (strict = false) => async dispatch => {
     })
   }).catch((err) => {
     console.log("User not authenticated");
-    dispatch({
-      type: 'get_user',
-      payload: 1,
-    });
-  });
-}
-
-// Check whether user logged in or not by checking refresh token
-// Suitable for auth pages because we want to check refresh token only
-export const checkRefreshToken = () => async dispatch => {
-  blankAxiosInstance.get(tokenVerifyURL, { withCredentials: true }).then((res) => {
-    console.log("Refresh token is available.");
-    dispatch({
-      type: 'get_user',
-      payload: 'ok',
-    })
-  }).catch((err) => {
-    console.log("Refresh token is not available.");
     dispatch({
       type: 'get_user',
       payload: 1,

@@ -1,26 +1,16 @@
 import { useLayoutEffect } from "react";
-import { checkRefreshToken, getUser } from "../utils";
+import { getUser } from "../utils";
 import { useDispatch } from "react-redux";
 
 
 // This simply checks whether there is refresh token (no redirect)
-export function CheckLogin() {
+export function CheckLogin(props) {
   const dispatch = useDispatch();
+  let redirect = props.redirect;
 
   useLayoutEffect(() => {
-		dispatch(checkRefreshToken());
-	}, []);
+		dispatch(getUser(redirect));
+	}, [dispatch]);
   
-  return null;
-}
-
-// This will redirect to login page if no tokens provided
-export function CheckLoginRedirect() {
-  const dispatch = useDispatch();
-
-  useLayoutEffect(() => {
-    dispatch(getUser(true));
-  }, [dispatch]);
-
   return null;
 }

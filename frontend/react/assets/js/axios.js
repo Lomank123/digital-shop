@@ -43,6 +43,7 @@ axiosInstance.interceptors.response.use(
 	async function (error) {
 		const originalRequest = error.config;
 		//console.log(error.response);
+		//console.log(originalRequest);
 
 		if (typeof error.response === 'undefined') {
 			alert(
@@ -73,9 +74,13 @@ axiosInstance.interceptors.response.use(
 		) {
 			let isRefreshToken = false;
 
+			let instance = blankAxiosInstance;
+			if (originalRequest.params.redirect) {
+				instance = axiosInstance;
+			}
 			// Check whether refresh token is available and not expired
 			// Without "await" this request won't be made
-			await axiosInstance.get(tokenVerifyURL, { withCredentials: true })
+			await instance.get(tokenVerifyURL, { withCredentials: true, params: originalRequest.params })
 			.then((res) => {
 				isRefreshToken = true;
 				console.log("Refresh token is available and not expired.");

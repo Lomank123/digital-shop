@@ -1,31 +1,31 @@
-import React, { Component, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { blankAxiosInstance, axiosInstance } from '../axios';
-import { getEntities } from '../urls';
+import { categoryGetURL } from '../urls';
 
 
 export default function TestPage() {
-  const [entities, setEntities] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useLayoutEffect(() => {
-    blankAxiosInstance.get('/testdata').then((res) => {
-      setEntities(res.data);
+    blankAxiosInstance.get(categoryGetURL).then((res) => {
+      setCategories(res.data);
       console.log("Done! Test page!");
     });
   }, [])
 
   return (
-    <div>
-      <h3>Entities</h3>
+    <>
+      <h3>Categories</h3>
       {
-        Object.entries(entities).map(([key, entity]) => {
+        Object.entries(categories).map(([key, category]) => {
           return(
             <p key={key}>
               entity number {key} _ 
-              {entity.description} 
+              {category.name} 
             </p>
           )
         })
       }
-    </div>
+    </>
   );
 }

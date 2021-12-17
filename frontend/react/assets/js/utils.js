@@ -1,5 +1,5 @@
-import { blankAxiosInstance, axiosInstance } from "./axios";
-import { tokenVerifyURL, userGetURL } from "./urls";
+import { axiosInstance } from "./axios";
+import { userGetURL } from "./urls";
 import history from "./history";
 
 

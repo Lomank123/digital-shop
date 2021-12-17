@@ -69,7 +69,7 @@ const routing = (
                   <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
                   <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
                   <Route 
-                    path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} 
+                    path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`}
                     component={() => <AuthComponent component={VerifyEmailConfirm} />} 
                   />
                 </>

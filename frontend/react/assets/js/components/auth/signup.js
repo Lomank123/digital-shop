@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import history from '../../history';
+import { emailSentRoute } from '../../routeNames';
 
 
 export default function Signup() {
@@ -48,7 +49,7 @@ export default function Signup() {
       }).then((res) => {
 				//console.log(res.data);
 				history.push({
-          pathname: history.location.pathname + 'email-sent',
+          pathname: history.location.pathname + '/' + emailSentRoute,
           state: {
             email: formData.email,
           },

@@ -24,3 +24,4 @@ node_modules
 
 # Webpack bundles
 digital-shop-app/static/js/**
+frontend/react/assets/ready-build/scripts/**

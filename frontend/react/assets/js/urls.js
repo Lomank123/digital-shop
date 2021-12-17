@@ -1,6 +1,7 @@
 // main urls
 const portNum = 8000;
-const hostURL = 'http://127.0.0.1:' + portNum + '/';
+//const hostURL = 'http://127.0.0.1' + ':' + portNum + '/';
+const hostURL = 'http://127.0.0.1' + '/';
 
 // Unused
 //const frontPortNum = 9000;
@@ -27,7 +28,6 @@ export const signupEmailResendURL = signupURL + 'resend-email/';
 export const tokenGetURL = apiRestAuthURL + 'login/';
 export const logoutURL = apiRestAuthURL + 'logout/';
 export const tokenRefreshURL = apiRestAuthURL + 'token/' + 'refresh/';
-export const tokenVerifyURL = apiURL + 'verify-tokens/';
 
 // Password reset
 export const passwordResetURL = apiRestAuthURL + 'password/' + 'reset/';

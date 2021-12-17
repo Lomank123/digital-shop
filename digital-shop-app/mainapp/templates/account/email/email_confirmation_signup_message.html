@@ -6,7 +6,7 @@
     {% user_display user as user_display %}
     {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
       You're receiving this e-mail because user {{ user_display }} has given your e-mail address to register an account on {{ site_domain }}.
-      To confirm this is correct, go to <a href="http://127.0.0.1:8000/signup/confirm/{{ key }}">Click here</a>
+      To confirm this is correct, go to <a href="http://127.0.0.1/signup/confirm/{{ key }}">Click here</a>
 
     {% endblocktrans %}
   {% endautoescape %}

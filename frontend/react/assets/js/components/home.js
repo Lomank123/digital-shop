@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { categoryGetURL } from '../urls';
 import { blankAxiosInstance } from '../axios';
@@ -13,9 +13,8 @@ export default function Home() {
     if (userData !== null) {
       await blankAxiosInstance.get(categoryGetURL).then((res) => {
         setCategories(res.data);
-        console.log("Entities data done! Home page!");
+        console.log("Categories data done! Home page!");
       });
-      console.log("Getting all data...");
     }
   }
 
@@ -32,8 +31,7 @@ export default function Home() {
         Object.entries(categories).map(([key, category]) => {
           return(
             <p key={key}>
-              category number {key} _ 
-              {category.name} 
+              category: {category.name} 
             </p>
           )
         })

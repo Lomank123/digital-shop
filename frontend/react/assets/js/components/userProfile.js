@@ -1,7 +1,7 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { blankAxiosInstance } from '../axios';
-import { productGetURL, userProductsGetURL } from '../urls';
+import { userProductsGetURL } from '../urls';
 
 
 export default function UserProfile() {

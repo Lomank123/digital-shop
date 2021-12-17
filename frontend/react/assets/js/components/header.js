@@ -1,8 +1,7 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
-import history from '../history';
 import { loginRoute, logoutRoute, signupRoute, profileRoute } from '../routeNames';
 import { useSelector } from 'react-redux';
 

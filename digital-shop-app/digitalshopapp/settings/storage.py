@@ -3,7 +3,7 @@ from .settings import BASE_DIR
 
 
 # Static dirs
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Static
 STATIC_ROOT = '/vol/web/static'

@@ -131,7 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
 # django rest framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

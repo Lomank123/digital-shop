@@ -14,6 +14,7 @@ services:
     volumes:
       - ./digital-shop-app:/digital-shop-app
       - ./data/web:/vol/web
+      - django:/vol/web/static
     ports:
       - 8000:8000
     env_file: .env
@@ -27,7 +28,7 @@ services:
       sh -c "npm run dev"
     volumes:
       - ./frontend/react:/react
-      - react_build:/react/assets/ready-build
+      - react:/react/assets/ready-build
     env_file: .env
 
   nginx:
@@ -37,7 +38,8 @@ services:
       - 80:8080
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf
-      - react_build:/var/www/react
+      - react:/var/www/react
+      - django:/var/www/static
     depends_on:
       - digital-shop-app
       - frontend
@@ -50,4 +52,5 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
 
 volumes:
-  react_build:
+  react:
+  django:

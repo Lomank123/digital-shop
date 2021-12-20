@@ -32,7 +32,7 @@ export const axiosInstance = axios.create({
 
 // This code is going to handle response data before 'then' or 'catch' methods
 // So if access token expires it'll then check refresh token
-// And if refresh token will be expired it'll then make a request to create a new one
+// If no refresh token provided then redirect to login page or return "reject" in promise
 
 // In django settings we have lifetime setting for both accessToken and refreshToken
 // By default they are 5 min for accessToken and 1 day for refreshToken
@@ -42,8 +42,6 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		//console.log(error.response);
-		//console.log(originalRequest);
 
 		if (typeof error.response === 'undefined') {
 			alert(
@@ -76,6 +74,10 @@ axiosInstance.interceptors.response.use(
 			if (originalRequest.params.redirect) {
 				instance = axiosInstance;
 			}
+			//TODO:
+			// If we'll return this instance then it'll indicate as a "resolve" in promises,
+			// so a wrong data (empty actually) will be dispatched instead of code 1 (no user data)
+			// If we won't return instance then an error occurs when logging in with next param (e.g. profile page)
 			return instance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
 				console.log("Access token has been refreshed.")
 				return axiosInstance(originalRequest, { withCredentials: true });

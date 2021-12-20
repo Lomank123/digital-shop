@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.username
+        return self.email
 
 
 # Category, contains lots of products with same qualities

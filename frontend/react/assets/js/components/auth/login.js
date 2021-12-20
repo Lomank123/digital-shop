@@ -38,7 +38,7 @@ export default function Login(props) {
 			[e.target.name]: e.target.value.trim()
 		});
 	};
-
+	
 	// Handles submitting form
 	const handleSubmit = (e) => {
 		e.preventDefault();

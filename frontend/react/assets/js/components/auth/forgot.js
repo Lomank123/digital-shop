@@ -34,7 +34,7 @@ export default function Forgot() {
         email: formData.email,
       }).then((res) => {
         history.push({
-          pathname: history.location.pathname + emailSentRoute,
+          pathname: history.location.pathname + '/' + emailSentRoute,
           state: {
             email: formData.email,
           },

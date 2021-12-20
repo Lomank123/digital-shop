@@ -36,28 +36,46 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
-"""
-class CustomEntityAdmin(admin.ModelAdmin):
-    model = CustomEntity
-    list_display = ('user', 'description', 'photo',)
-    list_filter = ('user',)
+class ProductAdmin(admin.ModelAdmin):
+    model = Product
+    list_display = ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active', 'published', 'updated',)
+    list_filter = ('created_by', 'category', 'is_active', 'in_stock', 'title')
     fieldsets = (
-        ('Information', {'fields': ('user', 'description', 'photo',)}),
+        ('Information', {'fields': ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('user', 'description', 'photo',)
+                'fields': ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active',)
             }
         ),
     )
-    search_fields = ('description',)
-    ordering = ('user',)
-"""
+    search_fields = ('created_by', 'category', 'title', 'description',)
+    ordering = ('category', 'title', 'created_by',)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+    list_display = ('name',)
+    list_filter = ('name',)
+    fieldsets = (
+        ('Information', {'fields': ('name',)}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('name',)
+            }
+        ),
+    )
+    search_fields = ('name',)
+    ordering = ('name',)
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Product)
-admin.site.register(Category)
-#admin.site.register(CustomEntity, CustomEntityAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Category, CategoryAdmin)

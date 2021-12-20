@@ -33,6 +33,8 @@ RUN python -m venv /py && \
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 
+RUN python manage.py collectstatic --noinput
+
 USER digitalshop
 
 CMD ["run.sh"]

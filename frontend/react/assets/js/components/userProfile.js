@@ -75,6 +75,7 @@ export function ProductsInfo(props) {
               <p>Description: {product.description}</p>
               <p>Price: {product.price}</p>
               <p>Image: {product.image}</p>
+              <p><img src={product.image} /></p>
               <p>Category: {product.category_name}</p>
               <p>Created by: {product.creator_name}</p>
               <p>Published: {product.published}</p>

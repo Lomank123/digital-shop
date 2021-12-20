@@ -41,14 +41,14 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active', 'published', 'updated',)
     list_filter = ('created_by', 'category', 'is_active', 'in_stock', 'title')
     fieldsets = (
-        ('Information', {'fields': ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active',)}),
+        ('Information', {'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active',)
+                'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)
             }
         ),
     )

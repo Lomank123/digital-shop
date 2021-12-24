@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Link } from "@material-ui/core";
-import { loginURL } from "../../../urls";
+import { Box } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { loginRoute } from "../../../routeNames";
 
 
 export default function ResetPasswordConfirm() {
@@ -9,7 +10,7 @@ export default function ResetPasswordConfirm() {
       <h3>Password reset successful</h3>
       <p>Your password has been reset. Now you need to log in again.</p>
       <Box>
-        <Link href={loginURL}>Log in</Link>
+        <Link to={'/' + loginRoute}>Log in</Link>
       </Box>
     </>
   );

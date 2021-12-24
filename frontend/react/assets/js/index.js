@@ -26,6 +26,7 @@ import { applyMiddleware } from 'redux';
 import UserProfile from './components/userProfile';
 import { Box } from '@material-ui/core';
 import '../styles/styles.css';
+import NotFound from './components/errors/notFound404';
 
 
 const defaultState = {
@@ -89,17 +90,15 @@ const routing = (
                 </>
               )}
             />
+            <Route component={NotFound} />
           </Switch>
         </Box>
+
+        <Footer key={'footer'} />
 
       </React.StrictMode>
     </Router>
   </Provider>
 )
 
-const footer = (
-  <Footer key={'footer'} />
-)
-
 ReactDOM.render(routing, document.getElementById('root'));
-ReactDOM.render(footer, document.getElementById('footer'));

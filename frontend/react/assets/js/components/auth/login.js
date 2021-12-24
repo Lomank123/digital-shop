@@ -4,18 +4,23 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
 import history from '../../history';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../utils';
 import { useLocation } from 'react-router';
+import { forgotRoute, signupRoute } from '../../routeNames';
 
 
 export default function Login(props) {
 	const dispatch = useDispatch();
 	const search = useLocation().search;
+
+  const handleClickRedirect = (e, route) => {
+    history.push('/' + route);
+  }
 
 	// Login form
 	const initialFormData = Object.freeze({
@@ -121,7 +126,7 @@ export default function Login(props) {
 			<Box mt={2}>
 				<Button
 					variant="outlined"
-					href="/signup"
+					onClick={e => handleClickRedirect(e, signupRoute)}
 					fullWidth
 					color="primary"
 				>
@@ -130,7 +135,7 @@ export default function Login(props) {
 			</Box>
 
 			<Box mt={2} textAlign={"right"}>
-				<Link href="/forgot" variant="body2">
+				<Link to={'/' + forgotRoute}>
 					Forgot password?
 				</Link>
 			</Box>

@@ -28,7 +28,7 @@ services:
       sh -c "npm run dev"
     volumes:
       - ./frontend/react:/react
-      - react:/react/assets/ready-build
+      #- react:/react/assets/ready-build
     env_file: .env
 
   nginx:
@@ -36,13 +36,15 @@ services:
       context: ./nginx
     ports:
       - 80:8080
+    env_file: .env
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf
-      - react:/var/www/react
+      #- react:/var/www/react
       - django:/var/www/static
+      - ./frontend/react/assets/ready-build:/var/www/react
     depends_on:
       - digital-shop-app
-      - frontend
+      #- frontend
 
   db:
     image: postgres:13-alpine
@@ -52,5 +54,5 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
 
 volumes:
-  react:
+  #react:
   django:

@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     # Custom apps
-    'crispy_forms',
     'corsheaders',
     'easy_thumbnails',
     'django_cleanup',

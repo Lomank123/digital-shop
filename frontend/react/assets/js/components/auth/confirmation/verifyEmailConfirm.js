@@ -2,8 +2,9 @@ import { Button } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../../axios";
-import { loginURL, signupVerifyEmailURL } from "../../../urls";
+import { signupVerifyEmailURL } from "../../../urls";
 import history from "../../../history";
+import { loginRoute } from "../../../routeNames";
 
 
 export default function VerifyEmailConfirm() {
@@ -18,7 +19,7 @@ export default function VerifyEmailConfirm() {
       { withCredentials: true, }
     ).then((res) => {
       //console.log(res.data);
-      history.push(loginURL);
+      history.push('/' + loginRoute);
     }).catch((err) => {
       console.log(err.response);
     });

@@ -3,7 +3,6 @@ import { blankAxiosInstance } from '../../axios';
 import { signupURL } from '../../urls';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import history from '../../history';
 import { emailSentRoute } from '../../routeNames';
 

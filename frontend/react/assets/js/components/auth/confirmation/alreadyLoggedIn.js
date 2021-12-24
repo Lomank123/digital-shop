@@ -1,6 +1,7 @@
 import React from "react";
-import Link from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
 import Box from '@material-ui/core/Box';
+import { logoutRoute } from "../../../routeNames";
 
 
 export default function AlreadyLoggedIn() {
@@ -9,9 +10,9 @@ export default function AlreadyLoggedIn() {
       <h3>Already logged in</h3>
       <p>You have already logged in. Maybe you want to logout or go to home page?</p>
       <Box>
-        <Link href="/" variant="body2">Home</Link>
+        <Link to="/">Home</Link>
         <br />
-        <Link href="/logout" variant="body2">Logout</Link>
+        <Link to={'/' + logoutRoute}>Logout</Link>
       </Box>
     </>
   );

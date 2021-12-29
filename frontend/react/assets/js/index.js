@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import history from './history';
 import AuthComponent from './parent-components/authComponent';
-import PageComponent from './parent-components/pageComponent';
+import { PageComponent, LoginRequiredComponent } from './parent-components/pageComponent';
 import Home from './components/home';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -47,13 +47,12 @@ const reducer = (state = defaultState, action) => {
 
 const middleware = [thunk];
 
-const store = createStore(reducer, applyMiddleware(...middleware));
+export const store = createStore(reducer, applyMiddleware(...middleware));
 
 // It's something like a main page where there are header and footer along with all components
 const routing = (
   <Provider store={store}>
     <Router history={history}>
-      <React.StrictMode>
 
         <Header key={'header'} />
 
@@ -62,9 +61,9 @@ const routing = (
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}`} component={() => <PageComponent component={UserProfile} redirect={true} />} />
-            <Route path={`/${routes.logoutRoute}`} component={() => <PageComponent component={Logout} redirect={true} />} />
-            <Route path={`/${routes.loggedInRoute}`} component={() => <PageComponent component={AlreadyLoggedIn} redirect={true} />} />
+            <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile} redirect={true} />} />
+            <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} redirect={true} />} />
+            <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} redirect={true} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
                 <>
                   <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
@@ -96,7 +95,6 @@ const routing = (
 
         <Footer key={'footer'} />
 
-      </React.StrictMode>
     </Router>
   </Provider>
 )

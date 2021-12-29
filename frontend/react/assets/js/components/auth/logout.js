@@ -2,7 +2,6 @@ import React from 'react';
 import { logoutURL } from '../../urls';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import { getUser } from '../../utils';
 import { useDispatch } from 'react-redux';
 import history from '../../history';
 import { blankAxiosInstance } from '../../axios';
@@ -17,7 +16,10 @@ export default function Logout() {
     // Logout request
     blankAxiosInstance.post(logoutURL, {}).then((res) => {
 				// Dispatching with user logged out
-				dispatch(getUser());
+				dispatch({
+          type: 'get_user',
+          payload: 1,
+        });
         // Redirecting after log out
 				history.push('/');
 				console.log(res);

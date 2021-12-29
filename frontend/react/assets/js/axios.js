@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { tokenRefreshURL, apiURL, loginURL } from './urls';
+import { tokenRefreshURL, apiURL, loginURL, userGetURL } from './urls';
 import history from './history';
 import { addNextParam } from './utils';
+import { store } from './index';
+
 
 
 // Added these because of some cases that throw 403 (Forbidden)
@@ -78,14 +80,21 @@ axiosInstance.interceptors.response.use(
 			// If we'll return this instance then it'll indicate as a "resolve" in promises,
 			// so a wrong data (empty actually) will be dispatched instead of code 1 (no user data)
 			// If we won't return instance then an error occurs when logging in with next param (e.g. profile page)
-			return instance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
-				console.log("Access token has been refreshed.")
-				return axiosInstance(originalRequest, { withCredentials: true });
+			// Here's the problem now!!!
+			return instance.post(tokenRefreshURL, {params: {redirect: originalRequest.params.redirect}}).then((res) => {
+				console.log("Token refreshed");
+				return axiosInstance(originalRequest);
 			}).catch((err) => {
-				//console.log(err.response);
-			})
+				//console.log(err);
+				console.log("Token cannot be refreshed");
+				store.dispatch({
+					type: 'get_user',
+					payload: 1,
+				});
+			});
 		}
 		// specific error handling done elsewhere
+		console.log("Rejected");
 		return Promise.reject(error);
 	}
 );

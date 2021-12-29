@@ -9,7 +9,7 @@ services:
         python manage.py wait_for_db &&
         python manage.py makemigrations &&
         python manage.py migrate &&
-        gunicorn digitalshopapp.wsgi --bind 0.0.0.0:8000
+        gunicorn digitalshopapp.wsgi --bind 0.0.0.0:8000 --workers=2
       "
     volumes:
       - ./digital-shop-app:/digital-shop-app
@@ -21,15 +21,15 @@ services:
     depends_on:
       - db
 
-  frontend:
-    build:
-      context: ./frontend
-    command: >
-      sh -c "npm run dev"
-    volumes:
-      - ./frontend/react:/react
-      #- react:/react/assets/ready-build
-    env_file: .env
+  #frontend:
+  #  build:
+  #    context: ./frontend
+  #  command: >
+  #    sh -c "npm run dev"
+  #  volumes:
+  #    - ./frontend/react:/react
+  #    #- react:/react/assets/ready-build
+  #  env_file: .env
 
   nginx:
     build:

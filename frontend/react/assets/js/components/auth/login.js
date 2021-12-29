@@ -56,7 +56,7 @@ export default function Login(props) {
 				// Dispatching with user logged in
 				// We need it just to pass to "next" page the right state from redux store
 				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user
-				dispatch(getUser());
+				getUser();
 				// Redirecting to "next" route or to home page if "next" wasn't specified
 				const urlParams = new URLSearchParams(search);
 				let next = urlParams.get('next');

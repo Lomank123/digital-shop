@@ -1,5 +1,6 @@
 import { axiosInstance } from "./axios";
 import { userGetURL } from "./urls";
+import { store } from './index';
 import history from "./history";
 
 
@@ -21,20 +22,31 @@ export function addNextParam(redirectUrl, nextUrl) {
 //}
 
 // Checks whether user data is available and dispatches the result
-// if strict = true and user not logged in then user will be redirected to login page
-export const getUser = (redirect = false) => async dispatch => {
+// if redirect = true and user not logged in then user will be redirected to login page
+export function getUser(redirect = false) {
   axiosInstance.get(userGetURL, { withCredentials: true, params: { redirect: redirect } }).then((res) => {
-    console.log("User data done!");
-    //console.log(res.data);
-    dispatch({
-      type: 'get_user',
-      payload: res.data,
-    })
+    console.log(res);
+    //console.log("User data done!");
+    if (typeof res !== undefined) {
+      const rawData = res.data[0];
+      const userData = {
+        email: rawData.email,
+        username: rawData.username,
+        id: rawData.id,
+        photo: rawData.photo,
+      }
+      store.dispatch({
+        type: 'get_user',
+        payload: userData,
+      })
+    }
+
   }).catch((err) => {
-    console.log("User not authenticated");
-    dispatch({
+    //console.log(err.response);
+    console.log("getUser error");
+    store.dispatch({
       type: 'get_user',
       payload: 1,
-    });
+    })
   });
 }

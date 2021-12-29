@@ -1,26 +1,20 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { categoryGetURL } from '../urls';
 import { blankAxiosInstance } from '../axios';
 
 
 export default function Home() {
-  const userData = useSelector(state => state.user);
   const [categories, setCategories] = useState([]);
 
   async function getData() {
-    // Getting user data
-    if (userData !== null) {
-      await blankAxiosInstance.get(categoryGetURL).then((res) => {
-        setCategories(res.data);
-        console.log("Categories data done! Home page!");
-      });
-    }
+    await blankAxiosInstance.get(categoryGetURL).then((res) => {
+      setCategories(res.data);
+      console.log("Categories data done! Home page!");
+    });
   }
-
   useLayoutEffect(() => {
     getData();
-  }, [userData])
+  }, [])
 
   return (
     <>

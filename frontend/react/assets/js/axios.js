@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { tokenRefreshURL, apiURL, loginURL, userGetURL } from './urls';
+import { tokenRefreshURL, apiURL, loginURL } from './urls';
 import history from './history';
 import { addNextParam } from './utils';
 import { store } from './index';
@@ -53,18 +53,6 @@ axiosInstance.interceptors.response.use(
 			);
 			return Promise.reject(error);
 		}
-
-    // Case: When user will open your website in order to (e.g.) check his profile
-    // And his refreshToken will be expired at that moment, he will be redirected to login page
-    // by this part of code
-    // This is because only authorized users (with active refresh token) can request to refresh token 
-		if (
-			error.response.status === 401 &&
-			originalRequest.url === tokenRefreshURL
-		) {
-			addNextParam(loginURL, history.location.pathname);
-			return Promise.reject(error);
-		}
 		// If user either doesn't have accessToken or it has expired
 		if (
 			(error.response.data.detail ||
@@ -76,11 +64,7 @@ axiosInstance.interceptors.response.use(
 			if (originalRequest.params.redirect) {
 				instance = axiosInstance;
 			}
-			//TODO:
-			// If we'll return this instance then it'll indicate as a "resolve" in promises,
-			// so a wrong data (empty actually) will be dispatched instead of code 1 (no user data)
-			// If we won't return instance then an error occurs when logging in with next param (e.g. profile page)
-			// Here's the problem now!!!
+			
 			return instance.post(tokenRefreshURL, {params: {redirect: originalRequest.params.redirect}}).then((res) => {
 				console.log("Token refreshed");
 				return axiosInstance(originalRequest);
@@ -91,6 +75,11 @@ axiosInstance.interceptors.response.use(
 					type: 'get_user',
 					payload: 1,
 				});
+				// Redirecting if param was specified
+				if (originalRequest.params.redirect) {
+					addNextParam(loginURL, history.location.pathname);
+				}
+				return Promise.reject(err);
 			});
 		}
 		// specific error handling done elsewhere

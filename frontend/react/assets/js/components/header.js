@@ -18,7 +18,6 @@ export default function Header() {
     axiosInstance.get(userGetURL, {params: {redirect: false}}).then((res) => {
       //console.log(res);
       console.log("Header done!");
-
       const rawData = res.data[0];
       const userData = {
         email: rawData.email,

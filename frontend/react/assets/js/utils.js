@@ -25,8 +25,7 @@ export function addNextParam(redirectUrl, nextUrl) {
 // if redirect = true and user not logged in then user will be redirected to login page
 export function getUser(redirect = false) {
   axiosInstance.get(userGetURL, { withCredentials: true, params: { redirect: redirect } }).then((res) => {
-    console.log(res);
-    //console.log("User data done!");
+    //console.log(res);
     if (typeof res !== undefined) {
       const rawData = res.data[0];
       const userData = {
@@ -40,7 +39,7 @@ export function getUser(redirect = false) {
         payload: userData,
       })
     }
-
+    //console.log("User data done!");
   }).catch((err) => {
     //console.log(err.response);
     console.log("getUser error");

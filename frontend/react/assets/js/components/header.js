@@ -3,40 +3,20 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import { loginRoute, logoutRoute, signupRoute, profileRoute } from '../routeNames';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { Menu, MenuItem, Tooltip, IconButton, Avatar } from '@material-ui/core';
-import { axiosInstance } from '../axios';
-import { userGetURL } from '../urls';
+import { getUser } from '../utils';
 
 
 export default function Header() {
   const userData = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
   
   useLayoutEffect(() => {
-    axiosInstance.get(userGetURL, {params: {redirect: false}}).then((res) => {
-      //console.log(res);
+    getUser(false).then((res) => {
       console.log("Header done!");
-      const rawData = res.data[0];
-      const userData = {
-        email: rawData.email,
-        username: rawData.username,
-        id: rawData.id,
-        photo: rawData.photo,
-      }
-      dispatch({
-        type: 'get_user',
-        payload: userData,
-      })
-      
     }).catch((err) => {
-      //console.log(err);
       console.log("Header error");
-      dispatch({
-        type: 'get_user',
-        payload: 1,
-      })
     });
   }, [])
 

@@ -22,9 +22,9 @@ export default function Logout() {
         });
         // Redirecting after log out
 				history.push('/');
-				console.log(res);
+				console.log("Logout done!");
       }).catch((err) => {
-				console.log(err.response);
+				console.log("Logout error");
 			});
 	}
 

@@ -1,35 +1,19 @@
 import React, { useLayoutEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { axiosInstance } from "../axios";
-import { userGetURL } from "../urls";
+import { getUser } from "../utils";
 
 
 export default function LoginRequiredComponent(props) {
   const Component = props.component;
+  // Here we're using state because we don't want flickering while loading content
+  // With useSelector an issue occurs - flickering if token expired 
   const [data, setData] = useState(null);
-  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    axiosInstance.get(userGetURL, {params: {redirect: true}}).then((res) => {
-      //console.log(res);
-      console.log("Login required done!");
-      const rawData = res.data[0];
-      const userData = {
-        email: rawData.email,
-        username: rawData.username,
-        id: rawData.id,
-        photo: rawData.photo,
-      }
-      dispatch({
-        type: 'get_user',
-        payload: userData,
-      })
-
+    getUser(true).then((res) => {
       setData(res);
+      console.log("Login required done!")
     }).catch((err) => {
-      //console.log(err);
-      console.log("Login required error");
-      setData(null);
+      console.log("Login Required error");
     })
   }, [])
 

@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
 				instance = axiosInstance;
 			}
 			
-			return instance.post(tokenRefreshURL, {params: {redirect: originalRequest.params.redirect}}).then((res) => {
+			return instance.post(tokenRefreshURL, {}).then((res) => {
 				console.log("Token refreshed");
 				return axiosInstance(originalRequest);
 			}).catch((err) => {

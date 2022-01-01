@@ -64,9 +64,7 @@ export default function Login(props) {
 					next = '/';
 				}
 				history.push(next);
-				//console.log(res);
       }).catch((err) => {
-				//console.log(err.response);
 				setErrors({
 					email: err.response.data.email,
 					password: err.response.data.password,

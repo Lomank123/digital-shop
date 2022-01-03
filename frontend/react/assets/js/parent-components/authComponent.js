@@ -8,14 +8,15 @@ export default function AuthComponent(props) {
   const userData = useSelector(state => state.user);
   const [data, setData] = useState(null);
 
+  // Because naturally there'll be no way to get auth pages when both tokens expired but user data exist
+  // we can use userData to indicate whether redirect to logged in page or not
   useEffect(() => {
     if (userData !== null) {
       setData(userData);
     }
-    //console.log(userData);
   }, [userData])
 
-  // First render (checking refresh token and dispatching data)
+  // First render
 	if (data === null) {
     return null;
 	}

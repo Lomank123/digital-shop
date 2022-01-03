@@ -46,7 +46,7 @@ export default function Signup() {
         password2: formData.password2,
         errors: '',
       }).then((res) => {
-				//console.log(res.data);
+				console.log('Signup successful!');
 				history.push({
           pathname: history.location.pathname + '/' + emailSentRoute,
           state: {
@@ -54,6 +54,7 @@ export default function Signup() {
           },
 				});
       }).catch((err) => {
+				console.log('Signup error.');
         setErrors({
           email: err.response.data.email,
           username: err.response.data.username,
@@ -61,7 +62,6 @@ export default function Signup() {
           password1: err.response.data.password1,
           password2: err.response.data.password2,
         });
-				console.log(err.response);
       });
   }
 

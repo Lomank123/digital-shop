@@ -3,17 +3,17 @@ import { getUser } from "../utils";
 
 
 export default function LoginRequiredComponent(props) {
-  const Component = props.component;
-  // Here we're using state because we don't want flickering while loading content
+  // Here we're using useState because we don't want flickering while loading content
   // With useSelector an issue occurs - flickering if token expired 
   const [data, setData] = useState(null);
 
+  // Getting (and setting) user data
   useLayoutEffect(() => {
     getUser(true).then((res) => {
       setData(res);
       console.log("Login required done!")
     }).catch((err) => {
-      console.log("Login Required error");
+      console.log("Login Required error.");
     })
   }, [])
 
@@ -21,6 +21,7 @@ export default function LoginRequiredComponent(props) {
     return null;
 	}
 
+  const Component = props.component;
   return (
     <>
       {

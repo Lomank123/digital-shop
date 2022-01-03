@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { blankAxiosInstance, axiosInstance } from '../axios';
+import { blankAxiosInstance } from '../axios';
 import { categoryGetURL } from '../urls';
 
 

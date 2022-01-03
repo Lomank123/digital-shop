@@ -4,7 +4,8 @@ import history from './history';
 import { addNextParam } from './utils';
 import { store } from './index';
 
-
+// In django settings we have lifetime setting for both accessToken and refreshToken
+// By default they are 5 min for accessToken and 1 day for refreshToken
 
 // Added these because of some cases that throw 403 (Forbidden)
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -32,12 +33,8 @@ export const axiosInstance = axios.create({
 	withCredentials: true,
 })
 
-// This code is going to handle response data before 'then' or 'catch' methods
-// So if access token expires it'll then check refresh token
-// If no refresh token provided then redirect to login page or return "reject" in promise
-
-// In django settings we have lifetime setting for both accessToken and refreshToken
-// By default they are 5 min for accessToken and 1 day for refreshToken
+// This code is going to be executed before any .then() or .catch() methods, before actual response is sent
+// And it's related to axiosInstance only, blankAxiosInstance doesn't need that functionality
 axiosInstance.interceptors.response.use(
 	(response) => {
 		return response;
@@ -66,11 +63,10 @@ axiosInstance.interceptors.response.use(
 			}
 			
 			return instance.post(tokenRefreshURL, {}).then((res) => {
-				console.log("Token refreshed");
+				console.log("Token refreshed!");
 				return axiosInstance(originalRequest);
 			}).catch((err) => {
-				//console.log(err);
-				console.log("Token cannot be refreshed");
+				console.log("Token cannot be refreshed.");
 				store.dispatch({
 					type: 'get_user',
 					payload: 1,
@@ -83,7 +79,7 @@ axiosInstance.interceptors.response.use(
 			});
 		}
 		// specific error handling done elsewhere
-		console.log("Rejected");
+		console.log("Rejected.");
 		return Promise.reject(error);
 	}
 );

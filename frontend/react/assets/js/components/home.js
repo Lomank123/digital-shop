@@ -6,14 +6,14 @@ import { blankAxiosInstance } from '../axios';
 export default function Home() {
   const [categories, setCategories] = useState([]);
 
-  async function getData() {
-    await blankAxiosInstance.get(categoryGetURL).then((res) => {
+  // Getting (and setting) categories data
+  useLayoutEffect(() => {
+    blankAxiosInstance.get(categoryGetURL).then((res) => {
       setCategories(res.data);
       console.log("Categories data done! Home page!");
+    }).catch((err) => {
+      console.log("Categories data error. Home page.");
     });
-  }
-  useLayoutEffect(() => {
-    getData();
   }, [])
 
   return (

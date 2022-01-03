@@ -8,16 +8,15 @@ import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL } from '../../urls';
 import history from '../../history';
-import { useDispatch } from 'react-redux';
 import { getUser } from '../../utils';
 import { useLocation } from 'react-router';
 import { forgotRoute, signupRoute } from '../../routeNames';
 
 
-export default function Login(props) {
-	const dispatch = useDispatch();
+export default function Login() {
 	const search = useLocation().search;
 
+	// Handles redirect on click
   const handleClickRedirect = (e, route) => {
     history.push('/' + route);
   }
@@ -57,6 +56,7 @@ export default function Login(props) {
 				// We need it just to pass to "next" page the right state from redux store
 				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user
 				getUser();
+
 				// Redirecting to "next" route or to home page if "next" wasn't specified
 				const urlParams = new URLSearchParams(search);
 				let next = urlParams.get('next');
@@ -64,7 +64,9 @@ export default function Login(props) {
 					next = '/';
 				}
 				history.push(next);
+				console.log('Login successful!');
       }).catch((err) => {
+				console.log('Login error.');
 				setErrors({
 					email: err.response.data.email,
 					password: err.response.data.password,

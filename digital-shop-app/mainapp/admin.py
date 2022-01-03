@@ -26,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'photo', 'password1', 'password2', 'is_staff', 'is_active')
+                'fields': ('email', 'username', 'photo', 'password1', 'password2', 'is_staff', 'is_active')
             }
         ),
     )

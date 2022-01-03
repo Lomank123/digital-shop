@@ -14,13 +14,6 @@ export function addNextParam(redirectUrl, nextUrl) {
   });
 }
 
-// Old way to add 'next param'
-//export function addNextParam(redirectUrl, nextUrl) {
-  //const newUrl = new URL(redirectUrl);
-  //newUrl.searchParams.set('next', nextUrl);
-  //window.location.href = newUrl;
-//}
-
 // Checks whether user data is available and dispatches the result
 // if redirect = true and user not logged in then user will be redirected to login page
 export async function getUser(redirect = false) {

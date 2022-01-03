@@ -62,9 +62,9 @@ const routing = (
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile} redirect={true} />} />
-            <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} redirect={true} />} />
-            <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} redirect={true} />} />
+            <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
+            <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
+            <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
                 <>
                   <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />

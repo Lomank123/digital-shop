@@ -12,11 +12,12 @@ import { getUser } from '../utils';
 export default function Header() {
   const userData = useSelector(state => state.user, shallowEqual);
   
+  // Getting (and setting) user data
   useLayoutEffect(() => {
     getUser(false).then((res) => {
       console.log("Header done!");
     }).catch((err) => {
-      console.log("Header error");
+      console.log("Header error.");
     });
   }, [])
 

@@ -1,1 +1,266 @@
-[{"model": "mainapp.customuser", "pk": 1, "fields": {"password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=", "last_login": "2022-01-03T12:12:53.331Z", "is_superuser": true, "first_name": "", "last_name": "", "is_staff": true, "is_active": true, "date_joined": "2022-01-03T11:55:30.048Z", "username": "admin", "email": "admin@gmail.com", "photo": "", "is_seller": false, "balance": "0.00", "payment_method": "", "groups": [], "user_permissions": []}}, {"model": "mainapp.customuser", "pk": 2, "fields": {"password": "pbkdf2_sha256$260000$eeoLHK40EmdBNtViBibUgy$aPuWFU9WfDA8D78I3p2zNMVkUnXUO2jqzCcfGlj/3JQ=", "last_login": "2022-01-03T12:12:33.607Z", "is_superuser": false, "first_name": "", "last_name": "", "is_staff": false, "is_active": true, "date_joined": "2022-01-03T12:02:33.586Z", "username": "test1", "email": "test1@gmail.com", "photo": "", "is_seller": false, "balance": "0.00", "payment_method": "", "groups": [], "user_permissions": []}}, {"model": "mainapp.customuser", "pk": 3, "fields": {"password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=", "last_login": null, "is_superuser": false, "first_name": "", "last_name": "", "is_staff": false, "is_active": true, "date_joined": "2022-01-03T12:02:58.857Z", "username": "test2", "email": "test2@gmail.com", "photo": "", "is_seller": false, "balance": "0.00", "payment_method": "", "groups": [], "user_permissions": []}}, {"model": "mainapp.category", "pk": 1, "fields": {"name": "Shoes", "published": "2022-01-03T12:03:48.291Z"}}, {"model": "mainapp.category", "pk": 2, "fields": {"name": "Clothes", "published": "2022-01-03T12:03:53.633Z"}}, {"model": "mainapp.category", "pk": 3, "fields": {"name": "Domestic appliances", "published": "2022-01-03T12:04:40.751Z"}}, {"model": "mainapp.product", "pk": 1, "fields": {"category": 1, "created_by": 1, "title": "New shoes 1", "description": "New shoes 1 description", "image": "", "price": "13.99", "in_stock": true, "is_active": true, "published": "2022-01-03T12:05:51.839Z", "updated": "2022-01-03T12:05:51.839Z"}}, {"model": "mainapp.product", "pk": 2, "fields": {"category": 1, "created_by": 2, "title": "New shoes 2", "description": "New shoes 2 description", "image": "", "price": "18.00", "in_stock": true, "is_active": true, "published": "2022-01-03T12:06:18.681Z", "updated": "2022-01-03T12:06:18.681Z"}}, {"model": "mainapp.product", "pk": 3, "fields": {"category": 3, "created_by": 1, "title": "Toaster", "description": "Just a toaster!", "image": "", "price": "24.99", "in_stock": true, "is_active": true, "published": "2022-01-03T12:07:00.089Z", "updated": "2022-01-03T12:07:00.089Z"}}, {"model": "mainapp.product", "pk": 4, "fields": {"category": 2, "created_by": 3, "title": "Nice dress", "description": "New nice dress!", "image": "", "price": "56.50", "in_stock": false, "is_active": true, "published": "2022-01-03T12:07:34.529Z", "updated": "2022-01-03T12:07:34.529Z"}}, {"model": "mainapp.product", "pk": 5, "fields": {"category": 3, "created_by": 2, "title": "Brilliant computer", "description": "New computer", "image": "", "price": "40.44", "in_stock": true, "is_active": true, "published": "2022-01-03T12:08:09.332Z", "updated": "2022-01-03T12:08:09.332Z"}}, {"model": "mainapp.product", "pk": 6, "fields": {"category": 1, "created_by": 3, "title": "A pair of boots", "description": "Just boots", "image": "", "price": "4.45", "in_stock": true, "is_active": true, "published": "2022-01-03T12:09:05.479Z", "updated": "2022-01-03T12:09:05.479Z"}}, {"model": "mainapp.product", "pk": 7, "fields": {"category": 2, "created_by": 1, "title": "T-shirt", "description": "New T-shirt", "image": "", "price": "12.65", "in_stock": true, "is_active": true, "published": "2022-01-03T12:09:31.678Z", "updated": "2022-01-03T12:09:31.678Z"}}, {"model": "mainapp.product", "pk": 8, "fields": {"category": 2, "created_by": 2, "title": "Gloves", "description": "New gloves", "image": "", "price": "5.54", "in_stock": false, "is_active": true, "published": "2022-01-03T12:09:53.571Z", "updated": "2022-01-03T12:09:53.571Z"}}, {"model": "mainapp.product", "pk": 9, "fields": {"category": 3, "created_by": 3, "title": "Lamp", "description": "New lamp", "image": "", "price": "16.01", "in_stock": false, "is_active": true, "published": "2022-01-03T12:10:30.219Z", "updated": "2022-01-03T12:10:30.219Z"}}]
+[
+{
+  "model": "mainapp.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=",
+    "last_login": "2022-01-05T07:11:43.020Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T11:55:30.048Z",
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "balance": "0.00",
+    "payment_method": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$eeoLHK40EmdBNtViBibUgy$aPuWFU9WfDA8D78I3p2zNMVkUnXUO2jqzCcfGlj/3JQ=",
+    "last_login": "2022-01-03T12:12:33.607Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:33.586Z",
+    "username": "test1",
+    "email": "test1@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "balance": "0.00",
+    "payment_method": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:58.857Z",
+    "username": "test2",
+    "email": "test2@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "balance": "0.00",
+    "payment_method": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 1,
+  "fields": {
+    "name": "Shoes",
+    "published": "2022-01-03T12:03:48.291Z"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 2,
+  "fields": {
+    "name": "Clothes",
+    "published": "2022-01-03T12:03:53.633Z"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 3,
+  "fields": {
+    "name": "Domestic appliances",
+    "published": "2022-01-03T12:04:40.751Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "created_by": 1,
+    "title": "New shoes 1",
+    "description": "New shoes 1 description",
+    "image": "",
+    "price": "13.99",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:05:51.839Z",
+    "updated": "2022-01-03T12:05:51.839Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "created_by": 2,
+    "title": "New shoes 2",
+    "description": "New shoes 2 description",
+    "image": "",
+    "price": "18.00",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:06:18.681Z",
+    "updated": "2022-01-03T12:06:18.681Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 3,
+  "fields": {
+    "category": 3,
+    "created_by": 1,
+    "title": "Toaster",
+    "description": "Just a toaster!",
+    "image": "",
+    "price": "24.99",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:07:00.089Z",
+    "updated": "2022-01-03T12:07:00.089Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 4,
+  "fields": {
+    "category": 2,
+    "created_by": 3,
+    "title": "Nice dress",
+    "description": "New nice dress!",
+    "image": "",
+    "price": "56.50",
+    "in_stock": false,
+    "is_active": true,
+    "published": "2022-01-03T12:07:34.529Z",
+    "updated": "2022-01-03T12:07:34.529Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 5,
+  "fields": {
+    "category": 3,
+    "created_by": 2,
+    "title": "Brilliant computer",
+    "description": "New computer",
+    "image": "",
+    "price": "40.44",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:08:09.332Z",
+    "updated": "2022-01-03T12:08:09.332Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 6,
+  "fields": {
+    "category": 1,
+    "created_by": 3,
+    "title": "A pair of boots",
+    "description": "Just boots",
+    "image": "",
+    "price": "4.45",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:09:05.479Z",
+    "updated": "2022-01-03T12:09:05.479Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "created_by": 1,
+    "title": "T-shirt",
+    "description": "New T-shirt",
+    "image": "",
+    "price": "12.65",
+    "in_stock": true,
+    "is_active": true,
+    "published": "2022-01-03T12:09:31.678Z",
+    "updated": "2022-01-03T12:09:31.678Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 8,
+  "fields": {
+    "category": 2,
+    "created_by": 2,
+    "title": "Gloves",
+    "description": "New gloves",
+    "image": "",
+    "price": "5.54",
+    "in_stock": false,
+    "is_active": true,
+    "published": "2022-01-03T12:09:53.571Z",
+    "updated": "2022-01-03T12:09:53.571Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 9,
+  "fields": {
+    "category": 3,
+    "created_by": 3,
+    "title": "Lamp",
+    "description": "New lamp",
+    "image": "",
+    "price": "16.01",
+    "in_stock": false,
+    "is_active": true,
+    "published": "2022-01-03T12:10:30.219Z",
+    "updated": "2022-01-03T12:10:30.219Z"
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "email": "admin@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "email": "test1@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "email": "test2@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+}
+]

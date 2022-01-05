@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # API Schema
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     # Custom apps
     'corsheaders',
     'easy_thumbnails',
@@ -132,6 +135,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # django rest framework
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -140,6 +144,19 @@ REST_FRAMEWORK = {
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         #'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+# API Schema settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Digital Shop Schema',
+    'DESCRIPTION': 'Initial schema for Digital Shop',
+    'VERSION': '1.0.0',
+    'SERVE_PUBLIC': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'SERVE_AUTHENTICATION': None,   # None will default to DRF's AUTHENTICATION_CLASSES
+    #'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    #'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    #'REDOC_DIST': 'SIDECAR',
 }
 
 # Email

@@ -16,19 +16,21 @@ from mainapp.models import Product, Category, CustomUser
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer
 
 
-#def app(request, *args, **kwargs):
-#    return render(request, 'mainapp/app.html')
-
-
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (AllowAny, )
 
     # Depending on url this must return either all products or just user's ones
     def get_queryset(self):
-        #queryset = Product.objects.filter(created_by=self.request.user)
         queryset = Product.objects.all()
         return queryset
+
+    # Method for getting user related products (used in profile page)
+    @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated])
+    def get_user_products(self, request):
+        products = Product.objects.filter(created_by=self.request.user)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CategoryViewSet(ModelViewSet):
@@ -47,10 +49,3 @@ class UserViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = CustomUser.objects.filter(pk=self.request.user.pk)
         return queryset
-
-    # Method for getting user related products (used in profile page)
-    @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated])
-    def get_user_products(self, request):
-        products = Product.objects.filter(created_by=self.request.user)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)

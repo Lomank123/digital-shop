@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
+from rest_framework_simplejwt.token_blacklist import models
 
 from mainapp.models import Product, Category, CustomUser
 from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
@@ -76,6 +78,16 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 
+class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
+
+    # Need to return True here so we can delete user with these tokens via admin panel
+    def has_delete_permission(self, *args, **kwargs):
+        return True 
+
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
+# Unregistring and registring new outstanding token admin model
+admin.site.unregister(models.OutstandingToken)
+admin.site.register(models.OutstandingToken, CustomOutstandingTokenAdmin)

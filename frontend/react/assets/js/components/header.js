@@ -59,6 +59,16 @@ export default function Header() {
   if (userData !== null && userData !== 1) {
     loggedIn = (
       <Box display={'flex'}>
+
+        <Box
+          display={'flex'}
+          alignItems={'center'}
+          marginRight={3}
+        >
+          <span>Balance: {userData.balance}</span>
+        </Box>
+
+
         <Button
           id='profile-button'
           aria-controls='profile-menu'
@@ -66,9 +76,14 @@ export default function Header() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickMenu}
         >
-          {userData.username}
-          <img className='avatar' src={userData.photo} />
+          <Box className='profile-button-content'>
+            <span>{userData.username}</span>
+          </Box>
+          <Box className='profile-button-content'>
+            <img className='avatar' src={userData.photo} />
+          </Box>
         </Button>
+        
         <Menu
           id='profile-menu'
           anchorEl={anchorEl}

@@ -24,6 +24,7 @@ export async function getUser(redirect = false) {
       username: rawData.username,
       id: rawData.id,
       photo: rawData.photo,
+      balance: rawData.balance,
     }
     store.dispatch({
       type: 'get_user',

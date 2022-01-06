@@ -13,12 +13,12 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     # Controls which fields are displayed on the change list(!) page of the admin.
-    list_display = ('email', 'username', 'is_staff', 'is_active', 'date_joined',)
+    list_display = ('email', 'username', 'balance', 'is_staff', 'is_active', 'is_seller', 'date_joined',)
     # Controls what filters are available
-    list_filter = ('date_joined', 'is_staff', 'is_active',)
+    list_filter = ('date_joined', 'is_staff', 'is_active', 'is_seller',)
     # When editing user
     fieldsets = (
-        ('Information', {'fields': ('email', 'username', 'photo', 'password')}),
+        ('Information', {'fields': ('email', 'username', 'balance', 'photo', 'password', 'is_seller')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
     # When creating new user via admin dashboard
@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'username', 'photo', 'password1', 'password2', 'is_staff', 'is_active')
+                'fields': ('email', 'username', 'balance', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'is_seller')
             }
         ),
     )

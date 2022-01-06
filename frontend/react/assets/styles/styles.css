@@ -20,8 +20,7 @@
 .links-box {
   width: 70%;
   display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  align-items: center;
   flex-grow: 1;
 }
 
@@ -38,9 +37,10 @@
 .logo {
   width: auto;
   display: flex;
+  align-items: center;
   margin-right: 50px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   margin-left: 50px;
 }
 
@@ -54,6 +54,7 @@
 }
 
 .auth-links-box {
+  height: auto;
   display: flex;
   margin-right: 20px;
 }
@@ -62,4 +63,9 @@
   width: 30px;
   height: 30px;
   margin-left: 10px;
+}
+
+.profile-button-content {
+  display: flex;
+  align-self: center;
 }

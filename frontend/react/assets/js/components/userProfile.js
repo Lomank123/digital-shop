@@ -37,7 +37,7 @@ export default function UserProfile() {
 
   return (
     <>
-      <h3>User profile</h3>
+      <h2>User profile</h2>
       <UserInfo data={user} />
       <ProductsInfo data={products} />
     </>
@@ -54,6 +54,11 @@ export function UserInfo(props) {
       <p>Email: {user.email}</p>
       <p>Username: {user.username}</p>
       <p>Photo: {user.photo}</p>
+      <p>First name: {user.first_name}</p>
+      <p>Last name: {user.last_name}</p>
+      <p>Date joined: {user.date_joined}</p>
+      <p>Balance: {user.balance}</p>
+      <p>Payment method: {user.payment_method}</p>
     </>
   );
 }
@@ -68,7 +73,7 @@ export function ProductsInfo(props) {
         Object.entries(products).map(([key, product]) => {
           return(
             <div key={key}>
-              <p>Product info:</p>
+              <p><b>Product info</b></p>
               <p>Title: {product.title}</p>
               <p>Description: {product.description}</p>
               <p>Price: {product.price}</p>

@@ -68,7 +68,6 @@ export default function Header() {
           <span>Balance: {userData.balance}</span>
         </Box>
 
-
         <Button
           id='profile-button'
           aria-controls='profile-menu'

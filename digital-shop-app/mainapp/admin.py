@@ -13,13 +13,13 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     # Controls which fields are displayed on the change list(!) page of the admin.
-    list_display = ('email', 'username', 'balance', 'is_staff', 'is_active', 'is_seller', 'date_joined',)
+    list_display = ('email', 'username', 'balance', 'is_staff', 'is_active', 'date_joined', 'is_seller')
     # Controls what filters are available
-    list_filter = ('date_joined', 'is_staff', 'is_active', 'is_seller',)
+    list_filter = ('date_joined', 'is_staff', 'is_active', 'groups', 'is_seller')
     # When editing user
     fieldsets = (
-        ('Information', {'fields': ('email', 'username', 'balance', 'photo', 'password', 'is_seller')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        ('Information', {'fields': ('email', 'username', 'balance', 'photo', 'password',)}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_seller', 'user_permissions', 'groups')}),
     )
     # When creating new user via admin dashboard
     add_fieldsets = (
@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'username', 'balance', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'is_seller')
+                'fields': ('email', 'username', 'balance', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'user_permissions', 'groups', 'is_seller')
             }
         ),
     )
@@ -60,22 +60,22 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
-    list_display = ('name',)
-    list_filter = ('name',)
+    list_display = ('name', 'verbose')
+    list_filter = ('name', 'verbose')
     fieldsets = (
-        ('Information', {'fields': ('name',)}),
+        ('Information', {'fields': ('name', 'verbose')}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('name',)
+                'fields': ('name', 'verbose')
             }
         ),
     )
-    search_fields = ('name',)
-    ordering = ('name',)
+    search_fields = ('name', 'verbose')
+    ordering = ('name', 'verbose')
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

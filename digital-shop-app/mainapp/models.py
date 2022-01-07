@@ -33,7 +33,7 @@ class CustomUser(AbstractUser):
 # Category, contains lots of products with same qualities
 class Category(models.Model):
     name = models.CharField(max_length=60, verbose_name='Name')
-    published = models.DateTimeField(auto_now_add=True, verbose_name='Published in')
+    verbose = models.CharField(max_length=60, verbose_name='Verbose')
 
     def __str__(self):
         return self.name

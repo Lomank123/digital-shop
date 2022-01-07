@@ -14,4 +14,7 @@ export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
 export const profileRoute = 'profile';
 
+export const categoryRoute = 'category';
+export const categoryValues = ':category_verbose([0-9A-Za-z]+)';
+
 

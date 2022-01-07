@@ -40,6 +40,17 @@ class CategoryViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Category.objects.all()
         return queryset
+    
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path=r'(?P<category_verbose>[^/.]+)')
+    def get_category_products(self, request, category_verbose):
+        # Add check is_valid() or smth, need to return 404 in case of an error
+        category = Category.objects.get(verbose=category_verbose)
+        products = Product.objects.filter(category=category)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(ModelViewSet):

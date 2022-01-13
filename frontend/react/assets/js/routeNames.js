@@ -13,5 +13,11 @@ export const resetValues = ':uid([0-9A-Za-z_\\-]+)/:token([0-9A-Za-z]{1,13}-[0-9
 export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
 export const profileRoute = 'profile';
+export const addProductRoute = 'add-product';
+
+
+// Unused
+//export const categoryRoute = 'category';
+//export const categoryValues = ':category_verbose([0-9A-Za-z]+)';
 
 

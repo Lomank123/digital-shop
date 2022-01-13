@@ -1,5 +1,6 @@
-import { blankAxiosInstance, axiosInstance } from "./axios";
-import { tokenVerifyURL, userGetURL } from "./urls";
+import { axiosInstance } from "./axios";
+import { userGetURL } from "./urls";
+import { store } from './index';
 import history from "./history";
 
 
@@ -13,28 +14,24 @@ export function addNextParam(redirectUrl, nextUrl) {
   });
 }
 
-// Old way to add 'next param'
-//export function addNextParam(redirectUrl, nextUrl) {
-  //const newUrl = new URL(redirectUrl);
-  //newUrl.searchParams.set('next', nextUrl);
-  //window.location.href = newUrl;
-//}
-
 // Checks whether user data is available and dispatches the result
-// if strict = true and user not logged in then user will be redirected to login page
-export const getUser = (redirect = false) => async dispatch => {
-  axiosInstance.get(userGetURL, { withCredentials: true, params: { redirect: redirect } }).then((res) => {
-    console.log("User data done!");
-    //console.log(res.data);
-    dispatch({
+// if redirect = true and user not logged in then user will be redirected to login page
+export async function getUser(redirect = false) {
+  return axiosInstance.get(userGetURL, { params: { redirect: redirect } }).then((res) => {
+    const rawData = res.data[0];
+    const userData = {
+      email: rawData.email,
+      username: rawData.username,
+      id: rawData.id,
+      photo: rawData.photo,
+      balance: rawData.balance,
+      seller: rawData.is_seller,
+    }
+    store.dispatch({
       type: 'get_user',
-      payload: res.data,
+      payload: userData,
     })
-  }).catch((err) => {
-    console.log("User not authenticated");
-    dispatch({
-      type: 'get_user',
-      payload: 1,
-    });
-  });
+    // Here we need to return our data to use it in further .then()
+    return userData;
+  })
 }

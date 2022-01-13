@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { tokenRefreshURL, apiURL, tokenVerifyURL, loginURL } from './urls';
+import { tokenRefreshURL, apiURL, loginURL } from './urls';
 import history from './history';
 import { addNextParam } from './utils';
+import { store } from './index';
 
+// In django settings we have lifetime setting for both accessToken and refreshToken
+// By default they are 5 min for accessToken and 1 day for refreshToken
 
 // Added these because of some cases that throw 403 (Forbidden)
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -30,20 +33,14 @@ export const axiosInstance = axios.create({
 	withCredentials: true,
 })
 
-// This code is going to handle response data before 'then' or 'catch' methods
-// So if access token expires it'll then check refresh token
-// And if refresh token will be expired it'll then make a request to create a new one
-
-// In django settings we have lifetime setting for both accessToken and refreshToken
-// By default they are 5 min for accessToken and 1 day for refreshToken
+// This code is going to be executed before any .then() or .catch() methods, before actual response is sent
+// And it's related to axiosInstance only, blankAxiosInstance doesn't need that functionality
 axiosInstance.interceptors.response.use(
 	(response) => {
 		return response;
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		//console.log(error.response);
-		//console.log(originalRequest);
 
 		if (typeof error.response === 'undefined') {
 			alert(
@@ -53,18 +50,6 @@ axiosInstance.interceptors.response.use(
 			);
 			return Promise.reject(error);
 		}
-
-    // Case: When user will open your website in order to (e.g.) check his profile
-    // And his refreshToken will be expired at that moment, he will be redirected to login page
-    // by this part of code
-    // This is because only authorized users (with active refresh token) can request to refresh token 
-		if (
-			error.response.status === 401 &&
-			originalRequest.url === tokenVerifyURL
-		) {
-			addNextParam(loginURL, history.location.pathname);
-			return Promise.reject(error);
-		}
 		// If user either doesn't have accessToken or it has expired
 		if (
 			(error.response.data.detail ||
@@ -72,36 +57,29 @@ axiosInstance.interceptors.response.use(
 			error.response.status === 401 &&
 			error.response.statusText === 'Unauthorized'
 		) {
-			let isRefreshToken = false;
-
 			let instance = blankAxiosInstance;
 			if (originalRequest.params.redirect) {
 				instance = axiosInstance;
 			}
-			// Check whether refresh token is available and not expired
-			// Without "await" this request won't be made
-			await instance.get(tokenVerifyURL, { withCredentials: true, params: originalRequest.params })
-			.then((res) => {
-				isRefreshToken = true;
-				console.log("Refresh token is available and not expired.");
+			
+			return instance.post(tokenRefreshURL, {}).then((res) => {
+				console.log("Token refreshed!");
+				return axiosInstance(originalRequest);
 			}).catch((err) => {
-				//console.log(err.response);
-				console.log("Refresh token is expired or not available.");
+				console.log("Token cannot be refreshed.");
+				store.dispatch({
+					type: 'get_user',
+					payload: 1,
+				});
+				// Redirecting if param was specified
+				if (originalRequest.params.redirect) {
+					addNextParam(loginURL, history.location.pathname);
+				}
+				return Promise.reject(err);
 			});
-
-			// Then refreshing access token using refresh token
-			if (isRefreshToken) {
-				console.log("Access Token expired.");
-				return axiosInstance.post(tokenRefreshURL, { withCredentials: true }).then((res) => {
-					console.log("Access token has been refreshed.")
-					return axiosInstance(originalRequest, { withCredentials: true });
-					//window.location.reload();
-				}).catch((err) => {
-					console.log(err.response);
-				})
-			}
 		}
 		// specific error handling done elsewhere
+		console.log("Rejected.");
 		return Promise.reject(error);
 	}
 );

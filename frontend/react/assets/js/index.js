@@ -4,6 +4,7 @@ import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import history from './history';
 import AuthComponent from './parent-components/authComponent';
 import PageComponent from './parent-components/pageComponent';
+import LoginRequiredComponent from './parent-components/loginRequiredComponent';
 import Home from './components/home';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -26,6 +27,9 @@ import { applyMiddleware } from 'redux';
 import UserProfile from './components/userProfile';
 import { Box } from '@material-ui/core';
 import '../styles/styles.css';
+import NotFound from './components/errors/notFound404';
+import AddProduct from './components/addProduct';
+import SellerComponent from './parent-components/sellerComponent';
 
 
 const defaultState = {
@@ -46,30 +50,32 @@ const reducer = (state = defaultState, action) => {
 
 const middleware = [thunk];
 
-const store = createStore(reducer, applyMiddleware(...middleware));
+export const store = createStore(reducer, applyMiddleware(...middleware));
 
 // It's something like a main page where there are header and footer along with all components
 const routing = (
   <Provider store={store}>
     <Router history={history}>
-      <React.StrictMode>
 
         <Header key={'header'} />
 
         <Box className='container'>
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
+            <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddProduct} />} />
+
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
+
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}`} component={() => <PageComponent component={UserProfile} redirect={true} />} />
-            <Route path={`/${routes.logoutRoute}`} component={() => <PageComponent component={Logout} redirect={true} />} />
-            <Route path={`/${routes.loggedInRoute}`} component={() => <PageComponent component={AlreadyLoggedIn} redirect={true} />} />
+            <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
+            <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
+            <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
                 <>
                   <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
                   <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
                   <Route 
-                    path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`} 
+                    path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`}
                     component={() => <AuthComponent component={VerifyEmailConfirm} />} 
                   />
                 </>
@@ -89,17 +95,14 @@ const routing = (
                 </>
               )}
             />
+            <Route component={NotFound} />
           </Switch>
         </Box>
 
-      </React.StrictMode>
+        <Footer key={'footer'} />
+
     </Router>
   </Provider>
 )
 
-const footer = (
-  <Footer key={'footer'} />
-)
-
 ReactDOM.render(routing, document.getElementById('root'));
-ReactDOM.render(footer, document.getElementById('footer'));

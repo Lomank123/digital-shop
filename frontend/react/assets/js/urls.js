@@ -1,21 +1,15 @@
 // main urls
-const portNum = 8000;
-const hostURL = 'http://127.0.0.1:' + portNum + '/';
-
-// Unused
-//const frontPortNum = 9000;
-//const localhostURL = 'http://localhost:' + frontPortNum + '/';
+//const portNum = 8000;
+//const hostURL = 'http://127.0.0.1' + ':' + portNum + '/';
+const hostURL = 'http://127.0.0.1' + '/';
 
 // Api urls
 export const apiURL = hostURL + 'api/';
 
 export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
-//export const userInfoGetURL = apiURL + 'user-info/';
-//export const userGetURL = apiRestAuthURL + 'user/';
 export const userGetURL = apiURL + 'user-info/';
-export const userProductsGetURL = userGetURL + 'get_user_products/';
-//export const getEntities = apiURL + 'entities/';
 export const productGetURL = apiURL + 'product/';
+export const userProductsGetURL = userGetURL + 'get_user_products/';
 export const categoryGetURL = apiURL + 'category/';
 
 // Signup
@@ -27,7 +21,6 @@ export const signupEmailResendURL = signupURL + 'resend-email/';
 export const tokenGetURL = apiRestAuthURL + 'login/';
 export const logoutURL = apiRestAuthURL + 'logout/';
 export const tokenRefreshURL = apiRestAuthURL + 'token/' + 'refresh/';
-export const tokenVerifyURL = apiURL + 'verify-tokens/';
 
 // Password reset
 export const passwordResetURL = apiRestAuthURL + 'password/' + 'reset/';

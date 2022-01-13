@@ -8,9 +8,9 @@ import { emailSentRoute } from '../../routeNames';
 
 
 export default function Forgot() {
-	const initialFormData = Object.freeze({
+	const initialFormData = {
     email: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 	// Field error messages
 	const errorsInitialState = {
@@ -34,7 +34,7 @@ export default function Forgot() {
         email: formData.email,
       }).then((res) => {
         history.push({
-          pathname: history.location.pathname + emailSentRoute,
+          pathname: history.location.pathname + '/' + emailSentRoute,
           state: {
             email: formData.email,
           },

@@ -3,18 +3,18 @@ import { blankAxiosInstance } from '../../axios';
 import { signupURL } from '../../urls';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import history from '../../history';
+import { emailSentRoute } from '../../routeNames';
 
 
 export default function Signup() {
 	// Signup form
-	const initialFormData = Object.freeze({
+	const initialFormData = {
     email: '',
     username: '',
     password1: '',
     password2: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 
 	// Field error messages
@@ -34,7 +34,7 @@ export default function Signup() {
 			[e.target.name]: e.target.value.trim()
 		});
 	};
-
+	
 	const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -46,14 +46,15 @@ export default function Signup() {
         password2: formData.password2,
         errors: '',
       }).then((res) => {
-				//console.log(res.data);
+				console.log('Signup successful!');
 				history.push({
-          pathname: history.location.pathname + 'email-sent',
+          pathname: history.location.pathname + '/' + emailSentRoute,
           state: {
             email: formData.email,
           },
 				});
       }).catch((err) => {
+				console.log('Signup error.');
         setErrors({
           email: err.response.data.email,
           username: err.response.data.username,
@@ -61,7 +62,6 @@ export default function Signup() {
           password1: err.response.data.password1,
           password2: err.response.data.password2,
         });
-				console.log(err.response);
       });
   }
 

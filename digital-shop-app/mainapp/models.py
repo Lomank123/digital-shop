@@ -1,7 +1,6 @@
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
-from easy_thumbnails.fields import ThumbnailerField
 from django.conf import settings
 
 from mainapp.managers import CustomUserManager
@@ -9,16 +8,18 @@ from mainapp.managers import CustomUserManager
 
 # Custom user model
 class CustomUser(AbstractUser):
-    username = models.CharField(max_length=40, unique=True, null=True, verbose_name="Username")
-    email = models.EmailField(unique=True, verbose_name="Email address")
-    # ThumbnailerField should be here because django cleanup won't delete thumbnails if ImageField or FileField is used
-    photo = ThumbnailerField(
+    username = models.CharField(max_length=40, unique=True, null=True, verbose_name='Username')
+    email = models.EmailField(unique=True, verbose_name='Email address')
+    photo = models.FileField(
         null=True,
         blank=True,
-        verbose_name="Photo",
+        verbose_name='Photo',
         validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png'))],
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
+    is_seller = models.BooleanField(default=False, verbose_name='Seller')
+    balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
+    payment_method = models.CharField(max_length=80, verbose_name='Payment method')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -26,12 +27,13 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.username
+        return self.email
 
 
 # Category, contains lots of products with same qualities
 class Category(models.Model):
     name = models.CharField(max_length=60, verbose_name='Name')
+    verbose = models.CharField(max_length=60, verbose_name='Verbose')
 
     def __str__(self):
         return self.name
@@ -48,7 +50,7 @@ class Product(models.Model):
 
     title = models.CharField(max_length=60, verbose_name='Title')
     description = models.CharField(max_length=600, blank=True, null=True, verbose_name='Description')
-    image = ThumbnailerField(
+    image = models.FileField(
         null=True,
         blank=True,
         verbose_name='Image',

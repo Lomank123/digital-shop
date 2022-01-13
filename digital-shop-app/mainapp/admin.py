@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
+from rest_framework_simplejwt.token_blacklist import models
 
 from mainapp.models import Product, Category, CustomUser
 from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
@@ -11,13 +13,13 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     # Controls which fields are displayed on the change list(!) page of the admin.
-    list_display = ('email', 'username', 'is_staff', 'is_active', 'date_joined',)
+    list_display = ('email', 'username', 'balance', 'is_staff', 'is_active', 'date_joined', 'is_seller')
     # Controls what filters are available
-    list_filter = ('date_joined', 'is_staff', 'is_active',)
+    list_filter = ('date_joined', 'is_staff', 'is_active', 'groups', 'is_seller')
     # When editing user
     fieldsets = (
-        ('Information', {'fields': ('email', 'username', 'photo', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        ('Information', {'fields': ('email', 'username', 'balance', 'photo', 'password',)}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_seller', 'user_permissions', 'groups')}),
     )
     # When creating new user via admin dashboard
     add_fieldsets = (
@@ -26,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'photo', 'password1', 'password2', 'is_staff', 'is_active')
+                'fields': ('email', 'username', 'balance', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'user_permissions', 'groups', 'is_seller')
             }
         ),
     )
@@ -36,28 +38,56 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
-"""
-class CustomEntityAdmin(admin.ModelAdmin):
-    model = CustomEntity
-    list_display = ('user', 'description', 'photo',)
-    list_filter = ('user',)
+class ProductAdmin(admin.ModelAdmin):
+    model = Product
+    list_display = ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active', 'published', 'updated',)
+    list_filter = ('created_by', 'category', 'is_active', 'in_stock', 'title')
     fieldsets = (
-        ('Information', {'fields': ('user', 'description', 'photo',)}),
+        ('Information', {'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('user', 'description', 'photo',)
+                'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)
             }
         ),
     )
-    search_fields = ('description',)
-    ordering = ('user',)
-"""
+    search_fields = ('created_by', 'category', 'title', 'description',)
+    ordering = ('category', 'title', 'created_by',)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+    list_display = ('name', 'verbose')
+    list_filter = ('name', 'verbose')
+    fieldsets = (
+        ('Information', {'fields': ('name', 'verbose')}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('name', 'verbose')
+            }
+        ),
+    )
+    search_fields = ('name', 'verbose')
+    ordering = ('name', 'verbose')
+
+
+class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
+
+    # Need to return True here so we can delete user with these tokens via admin panel
+    def has_delete_permission(self, *args, **kwargs):
+        return True 
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Product)
-admin.site.register(Category)
-#admin.site.register(CustomEntity, CustomEntityAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Category, CategoryAdmin)
+# Unregistring and registring new outstanding token admin model
+admin.site.unregister(models.OutstandingToken)
+admin.site.register(models.OutstandingToken, CustomOutstandingTokenAdmin)

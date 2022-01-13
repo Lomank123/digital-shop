@@ -8,9 +8,9 @@ import { emailSentRoute } from '../../routeNames';
 
 
 export default function Forgot() {
-	const initialFormData = Object.freeze({
+	const initialFormData = {
     email: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 	// Field error messages
 	const errorsInitialState = {

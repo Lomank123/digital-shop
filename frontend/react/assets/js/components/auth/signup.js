@@ -9,12 +9,12 @@ import { emailSentRoute } from '../../routeNames';
 
 export default function Signup() {
 	// Signup form
-	const initialFormData = Object.freeze({
+	const initialFormData = {
     email: '',
     username: '',
     password1: '',
     password2: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 
 	// Field error messages
@@ -34,7 +34,7 @@ export default function Signup() {
 			[e.target.name]: e.target.value.trim()
 		});
 	};
-
+	
 	const handleSubmit = (e) => {
     e.preventDefault();
 

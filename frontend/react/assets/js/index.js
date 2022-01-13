@@ -28,6 +28,8 @@ import UserProfile from './components/userProfile';
 import { Box } from '@material-ui/core';
 import '../styles/styles.css';
 import NotFound from './components/errors/notFound404';
+import AddProduct from './components/addProduct';
+import SellerComponent from './parent-components/sellerComponent';
 
 
 const defaultState = {
@@ -60,7 +62,10 @@ const routing = (
         <Box className='container'>
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
+            <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddProduct} />} />
+
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
+
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
             <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
             <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />

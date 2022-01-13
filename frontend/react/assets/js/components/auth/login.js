@@ -22,10 +22,10 @@ export default function Login() {
   }
 
 	// Login form
-	const initialFormData = Object.freeze({
+	const initialFormData = {
 		email: '',
 		password: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 	// Field error messages
 	const errorsInitialState = {

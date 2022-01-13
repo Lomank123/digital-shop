@@ -152,7 +152,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Initial schema for Digital Shop',
     'VERSION': '1.0.0',
     'SERVE_PUBLIC': False,
-    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAdminUser'],
     'SERVE_AUTHENTICATION': None,   # None will default to DRF's AUTHENTICATION_CLASSES
     #'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
     #'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',

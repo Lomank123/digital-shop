@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { loginRoute, logoutRoute, signupRoute, profileRoute } from '../routeNames';
+import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute } from '../routeNames';
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { Menu, MenuItem, Tooltip, IconButton, Avatar } from '@material-ui/core';
@@ -67,6 +67,14 @@ export default function Header() {
         >
           <span>Balance: {userData.balance}</span>
         </Box>
+
+        {
+          (userData.seller === true) ? (
+            <Button onClick={e => handleClickRedirect(e, addProductRoute)} className='add-product-btn'>
+              Add product
+            </Button>
+          ) : null
+        }
 
         <Button
           id='profile-button'

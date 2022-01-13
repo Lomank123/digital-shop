@@ -31,5 +31,7 @@ export async function getUser(redirect = false) {
       type: 'get_user',
       payload: userData,
     })
+    // Here we need to return our data to use it in further .then()
+    return userData;
   })
 }

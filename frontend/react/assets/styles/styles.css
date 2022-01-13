@@ -1,13 +1,19 @@
 body {
   background-color: #f6f6f6;
 }
+button:focus { 
+  outline: none !important;
+}
 
 .container {
   min-height: 100vh;
   min-width: 90%;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
+/* header */
 .header-main {
   width: 100%;
   height: auto;
@@ -31,6 +37,10 @@ body {
 .header-link {
   margin-left: 10px !important;
   margin-right: 5px !important;
+}
+
+.add-product-btn {
+  margin-right: 10px !important;
 }
 
 .footer-link {
@@ -122,4 +132,96 @@ body {
 
 .category-button {
   padding: 10px;
+}
+
+/* add product */
+
+.add-product-mainbox {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.head-label {
+  margin-bottom: 30px;
+}
+
+.upload-box {
+  display: flex;
+  max-height: 200px;
+  max-width: 200px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  align-self: center;
+}
+
+.product-image {
+  height: 200px;
+  width: 200px;
+  border-radius: 8px;
+}
+
+.clear-button-layout {
+  display: none;
+}
+
+.clear-button-layout:hover {
+  display: block;
+}
+
+.img-link:hover + .clear-button-layout {
+  display: block;
+}
+
+.choose-image-box {
+  height: 200px;
+  width: 200px;
+
+  display: flex;
+  justify-content: center;
+
+  border: dashed;
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.choose-image-text {
+  align-self: center;
+  font-size: 12px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.button-label-upload {
+  text-align: center;
+  margin-right: 20px;
+}
+
+.img-box {
+  position: relative !important;
+}
+
+.clear-icon {
+  fill: white !important;
+}
+
+.clear-icon:hover {
+  fill: gray !important;
+}
+
+.clear-button {
+  position: absolute !important;
+  top: 0%;
+  right: 0%;
+  width: 10px;
+  height: 10px;
+  background: black !important;
+  border-radius: 0px !important;
+}
+
+.create-product-button {
+  align-self: flex-start;
 }

@@ -1,8 +1,9 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from mainapp.views import ProductViewSet, CategoryViewSet, UserViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+from mainapp.views import ProductViewSet, CategoryViewSet, UserViewSet
 
 
 router = DefaultRouter()

@@ -12,10 +12,10 @@ export default function ResetPassword() {
 
   const params = useParams();
 
-	const initialFormData = Object.freeze({
+	const initialFormData = {
     password1: '',
     password2: '',
-	});
+	};
 	const [formData, setFormData] = useState(initialFormData);
 	// Field error messages
 	const errorsInitialState = {

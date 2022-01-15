@@ -58,7 +58,7 @@ export default function Header() {
 
   if (userData !== null && userData !== 1) {
     loggedIn = (
-      <Box display={'flex'}>
+      <Box display={'flex'} width={'100%'}>
 
         <Box
           display={'flex'}

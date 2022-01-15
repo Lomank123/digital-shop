@@ -16,7 +16,9 @@ export default function Footer() {
 
   return (
     <Box className='footer-main'>
-      {links}
+      <Box className='footer-block'>
+        {links}
+      </Box>
     </Box>
   );
 }

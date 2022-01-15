@@ -41,6 +41,7 @@ services:
       - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf
       #- react:/var/www/react
       - django:/var/www/static
+      # This mount an existing folder to nginx (that's why only django volume exists)
       - ./frontend/react/assets/ready-build:/var/www/react
     depends_on:
       - digital-shop-app

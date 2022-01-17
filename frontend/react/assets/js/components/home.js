@@ -4,6 +4,7 @@ import { blankAxiosInstance } from '../axios';
 import { Box, Button, IconButton } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import { detailProductRoute } from '../routeNames';
 
 
 export default function Home() {
@@ -71,16 +72,16 @@ export default function Home() {
                       alt='no image'
                       className='product-thumbnail' />
                   </Box>
-                  <a className='product-info-box' href='/'>
+                  <Link className='product-info-box' to={detailProductRoute + '/' + product.id + '/'}>
                     <span className='product-title'>{product.title}</span>
                     <span className='product-description'>
                       {
                         (product.description.length <= 100)
                         ? product.description
-                        : (product.description.substring(0, 100).trim() + '...')  
+                        : (product.description.substring(0, 100).trim() + '...')
                       }
                     </span>
-                  </a>
+                  </Link>
                   <Box className='product-price-box'>
                     <span className='product-price'>{product.price}$</span>
                     <IconButton className='purchase-button'><ShoppingCart /></IconButton>

@@ -17,7 +17,15 @@ export default function Footer() {
   return (
     <Box className='footer-main'>
       <Box className='footer-block'>
-        {links}
+        <span className='footer-credentials'>
+          <a
+            href="https://github.com/Lomank123" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            Robert "Lomank" Khakimov
+          </a>
+        </span>
       </Box>
     </Box>
   );

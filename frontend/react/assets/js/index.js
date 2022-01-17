@@ -30,6 +30,7 @@ import '../styles/styles.css';
 import NotFound from './components/errors/notFound404';
 import AddProduct from './components/addProduct';
 import SellerComponent from './parent-components/sellerComponent';
+import DetailProduct from './components/detailProduct';
 
 
 const defaultState = {
@@ -63,6 +64,7 @@ const routing = (
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
             <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddProduct} />} />
+            <Route path={`/${routes.detailProductRoute}/${routes.detailProductValues}`} component={() => <PageComponent component={DetailProduct} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 

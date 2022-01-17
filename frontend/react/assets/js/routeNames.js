@@ -14,6 +14,8 @@ export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
 export const profileRoute = 'profile';
 export const addProductRoute = 'add-product';
+export const detailProductRoute = 'detail';
+export const detailProductValues = ':id([0-9]+)';
 
 
 // Unused

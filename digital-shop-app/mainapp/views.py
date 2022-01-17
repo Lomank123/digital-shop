@@ -66,14 +66,21 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'get_user_products']:
+        if self.action in ['list']:
             permission_classes = [IsAuthenticated]
+        elif self.action in ['retrieve', 'get_user_products']:
+            # AllowAny because we'll need to retrieve user data in product detail page
+            # And as for get_user_products, for example, when accessing another user's page we want to see their products
+            permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        queryset = CustomUser.objects.filter(pk=self.request.user.pk)
+        if self.action in ['retrieve']:
+            queryset = CustomUser.objects.all()
+        else:
+            queryset = CustomUser.objects.filter(pk=self.request.user.pk)
         return queryset
 
     # Method for getting user related products (used in profile page)

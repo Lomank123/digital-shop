@@ -64,6 +64,15 @@ export default function AddProduct() {
         ...postData,
         [e.target.name]: e.target.checked
       });
+    } else if (e.target.name === 'image') {
+      if (!e.target.files || e.target.files.length === 0) {
+        setPostImage(null);
+        return
+      }
+      setPostImage({
+        image: e.target.files,
+      })
+      console.log(e.target.files);
     } else {
       // All other text fields
       setPostData({
@@ -270,7 +279,7 @@ export default function AddProduct() {
               style={{ display: 'none' }}
               id="raised-button-file"
               type="file"
-              onChange={handleImageUpload}
+              onChange={handleChange}
             />
             { previewImage ?
               (

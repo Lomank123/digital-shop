@@ -49,10 +49,12 @@ export default function DetailProduct() {
         <span>Category: <Link to="/">{product.category_name}</Link></span>
       </Box>
 
-      <Box className="detail-default-box detail-product-box">
+      <Box className="default-box detail-product-box">
 
         <Box className="detail-img-box">
-          <img src={product.image} className="detail-img" />
+          <img src={(product.image !== null && product.image !== "")
+                  ? product.image 
+                  : 'http://127.0.0.1/react/images/no-image.jpg'} className="detail-img" />
         </Box>
 
         <Box className="detail-info-box">
@@ -92,10 +94,12 @@ export default function DetailProduct() {
 
       <span className="author-info-label">Seller info</span>
 
-      <Link className="detail-default-box detail-author-box" to={"/"}>
+      <Link className="default-box detail-author-box" to={"/"}>
 
         <Box className="author-avatar-box">
-          <img src={author.photo} alt="author photo" className="author-avatar" />
+          <img src={(author.photo !== null && author.photo !== "")
+                  ? author.photo 
+                  : 'http://127.0.0.1/react/images/no-image.jpg'} alt="author photo" className="author-avatar" />
         </Box>
 
         <Box className="author-credentials">

@@ -1,7 +1,10 @@
+import { Box, Button } from '@material-ui/core';
 import React, { useState, useLayoutEffect } from 'react';
 import { shallowEqual } from 'react-redux';
 import { blankAxiosInstance } from '../axios';
 import { userGetURL, userProductsGetURL } from '../urls';
+import { detailProductRoute } from '../routeNames';
+import { Link } from 'react-router-dom';
 
 
 export default function UserProfile() {
@@ -10,9 +13,10 @@ export default function UserProfile() {
 
 
   useLayoutEffect(() => {
-    //getUser(true);
-
     blankAxiosInstance.get(userGetURL).then((res) => {
+      const joinedDate = new Date(res.data[0].date_joined);
+      res.data[0].date_joined = joinedDate.toISOString().split('T')[0];
+
       setUser(res.data[0]);
       console.log("User data done!");
     }).catch((err) => {
@@ -36,11 +40,12 @@ export default function UserProfile() {
   }
 
   return (
-    <>
-      <h2>User profile</h2>
+    <Box className='user-profile'>
+
       <UserInfo data={user} />
+      <h3 className='your-label'>Your products</h3>
       <ProductsInfo data={products} />
-    </>
+    </Box>
   );
 }
 
@@ -49,17 +54,28 @@ export function UserInfo(props) {
   const user = props.data;
 
   return (
-    <>
-      <h3>User data</h3>
-      <p>Email: {user.email}</p>
-      <p>Username: {user.username}</p>
-      <p>Photo: {user.photo}</p>
-      <p>First name: {user.first_name}</p>
-      <p>Last name: {user.last_name}</p>
-      <p>Date joined: {user.date_joined}</p>
-      <p>Balance: {user.balance}</p>
-      <p>Payment method: {user.payment_method}</p>
-    </>
+    <Box className='default-box profile-box'>
+
+      <Box className='profile-main-info-box'>
+
+        <Box className='profile-img-box'>
+          <img src={(user.photo !== null && user.photo !== "")
+                  ? user.photo 
+                  : 'http://127.0.0.1/react/images/no-image.jpg'} className='profile-img' alt='user photo' />
+        </Box>
+
+        <Box className='profile-main-credentials-box'>
+          <span><b>Email:</b> {user.email}</span>
+          <span><b>Username:</b> {user.username}</span>
+          <span><b>Date joined:</b> {user.date_joined}</span>
+        </Box>
+
+        <Box className='profile-button-box'>
+          <Link to={'/'}>Edit profile</Link>
+        </Box>
+
+      </Box>
+    </Box>
   );
 }
 
@@ -67,28 +83,36 @@ export function ProductsInfo(props) {
   const products = props.data;
 
   return (
-    <>
-      <h3>Products</h3>
-      {
-        Object.entries(products).map(([key, product]) => {
-          return(
-            <div key={key}>
-              <p><b>Product info</b></p>
-              <p>Title: {product.title}</p>
-              <p>Description: {product.description}</p>
-              <p>Price: {product.price}</p>
-              <p>Image: {product.image}</p>
-              <p><img src={product.image} /></p>
-              <p>Category: {product.category_name}</p>
-              <p>Created by: {product.creator_name}</p>
-              <p>Published: {product.published}</p>
-              <p>Updated: {product.updated}</p>
-              <p>In stock: {product.in_stock}</p>
-            </div>
-          )
-        })
-      }
-    
-    </>
+    <Box className='products-box profile-products-box'>
+    {
+      Object.entries(products).map(([key, product]) => {
+        return(
+          <Box key={key} className='product-card'>
+            <Box className='product-thumbnail-box profile-small'>
+              <img
+                src={(product.image !== null && product.image !== "")
+                  ? product.image 
+                  : 'http://127.0.0.1/react/images/no-image.jpg'}
+                alt='no image'
+                className='product-thumbnail profile-small' />
+            </Box>
+            <Link className='product-info-box profile-product-info' to={detailProductRoute + '/' + product.id + '/'}>
+              <span className='product-title'>{product.title}</span>
+              <span className='product-description'>
+                {
+                  (product.description.length <= 100)
+                  ? product.description
+                  : (product.description.substring(0, 100).trim() + '...')
+                }
+              </span>
+            </Link>
+            <Box className='product-price-box'>
+              <span className='product-price'>{product.price}$</span>
+            </Box>
+          </Box>
+        )
+      })
+    }
+  </Box>
   )
 }

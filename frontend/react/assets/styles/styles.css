@@ -17,6 +17,7 @@ button:focus {
 .footer-main {
   display: flex;
   min-width: 960px;
+  max-width: 100%;
   box-shadow: 0px 0px 0px 1px rgb(61 66 81 / 20%), 0px 1px 4px -1px rgb(61 66 81 / 30%);
   background-color: #E8A87C;
   justify-content: flex-end;
@@ -35,6 +36,7 @@ button:focus {
 .header-main {
   display: flex;
   min-width: 960px;
+  max-width: 100%;
   box-shadow: 0px 0px 1px 0px rgb(61 66 81 / 20%), 0px 1px 4px -1px rgb(61 66 81 / 30%);
   background-color: #E8A87C;
 }
@@ -132,7 +134,7 @@ button:focus {
   display: flex;
   font-size: 15px;
   padding: 5px;
-  justify-content: center;
+  align-items: center;
   margin-bottom: 12px;
 
   border-radius: 8px;
@@ -196,8 +198,10 @@ a.product-info-box {
 
 .product-price-box {
   display: flex;
+  height: 100%;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between !important;
+  align-self: flex-start;
   padding-top: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
@@ -348,7 +352,7 @@ a.product-info-box {
 }
 
 /* detail product */
-.detail-default-box {
+.default-box {
   min-width: 100%;
 
   display: flex;
@@ -476,4 +480,68 @@ a.product-info-box {
   object-fit: cover;
 
   border-radius: 8px;
+}
+
+/* user profile user box */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.your-label {
+  margin-left: 30px;
+}
+
+.profile-box {
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.profile-main-info-box {
+  display: flex;
+}
+
+.profile-img-box {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+
+  border-radius: 8px;
+}
+
+.profile-main-credentials-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 18px;
+}
+
+.profile-button-box {
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* user profile products box */
+.profile-products-box {
+  margin-left: 0 !important;
+}
+
+.profile-small {
+  width: 100px !important;
+  height: 100px !important;
+  min-width: 100px !important;
+  min-height: 100px !important;
+}
+
+.profile-product-info {
+  min-height: 0 !important;
 }

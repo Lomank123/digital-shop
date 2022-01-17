@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { blankAxiosInstance } from '../../axios';
 import { passwordResetURL } from '../../urls';
 import history from '../../history';
-import { emailSentRoute } from '../../routeNames';
+import { emailSentRoute } from '../../routes';
 
 
 export default function Forgot() {

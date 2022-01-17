@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Box from '@material-ui/core/Box';
-import { logoutRoute } from "../../../routeNames";
+import { logoutRoute } from "../../../routes";
 
 
 export default function AlreadyLoggedIn() {

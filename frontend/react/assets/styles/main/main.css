@@ -1,0 +1,26 @@
+body {
+  background-color: #f6f6f6;
+}
+button:focus { 
+  outline: none !important;
+}
+
+.root {
+  min-width: 960px;
+  max-width: 100%;
+}
+
+.container {
+  min-height: 100vh;
+  max-width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.default-block {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 16%);
+  background-color: #fff;
+}

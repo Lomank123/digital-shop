@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { passwordResetConfirmURL } from '../../urls';
 import history from '../../history';
-import { resetRoute, confirmRoute } from '../../routeNames';
+import { resetRoute, confirmRoute } from '../../routes';
 import { useParams } from 'react-router';
 
 

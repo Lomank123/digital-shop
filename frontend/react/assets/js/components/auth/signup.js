@@ -4,7 +4,7 @@ import { signupURL } from '../../urls';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import history from '../../history';
-import { emailSentRoute } from '../../routeNames';
+import { emailSentRoute } from '../../routes';
 
 
 export default function Signup() {

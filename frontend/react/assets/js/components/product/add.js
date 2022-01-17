@@ -1,10 +1,11 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MenuItem, TextField, Box, Button, Checkbox, FormControlLabel, IconButton } from "@material-ui/core";
-import { axiosInstance, blankAxiosInstance } from "../axios";
-import { categoryGetURL, productGetURL } from "../urls";
+import { axiosInstance, blankAxiosInstance } from "../../axios";
+import { categoryGetURL, productGetURL } from "../../urls";
 import { Clear } from '@material-ui/icons'
-import { $CombinedState } from "redux";
+
+import '../../../styles/product/add.css';
 
 
 export default function AddProduct() {
@@ -107,6 +108,7 @@ export default function AddProduct() {
     }
   }
 
+  // TODO: Change this so it should save in a higher resolution and quality
   // Resizes the image
   function resizeImage(image, filename) {
     var canvas = document.createElement('canvas'),
@@ -188,9 +190,9 @@ export default function AddProduct() {
     <Box className="add-product-mainbox">
       <h2 className="head-label">Create product</h2>
 
-      <Box className="form-box">
+      <Box className="default-block form-block">
 
-        <Box className="field-box">
+        <Box className="field-block">
           <p className="field-label">Choose category:</p>
           <TextField
             className="field"
@@ -216,7 +218,7 @@ export default function AddProduct() {
           </TextField>
         </Box>
         
-        <Box className="field-box">
+        <Box className="field-block">
           <p className="field-label">Write a title:</p>
           <TextField
             className="field"
@@ -233,7 +235,7 @@ export default function AddProduct() {
           />
         </Box>
         
-        <Box className="field-box">
+        <Box className="field-block">
           <p className="field-label">Enter price:</p>
           <TextField
             className="field"
@@ -251,7 +253,7 @@ export default function AddProduct() {
           />
         </Box>
 
-        <Box className="field-box">
+        <Box className="field-block">
           <p className="field-label">Describe your product:</p>
           <TextField
             className="field"
@@ -268,9 +270,9 @@ export default function AddProduct() {
           />
         </Box>
 
-        <Box className="field-box" display={'flex'} flexDirection={'column'}>
+        <Box className="field-block image-upload-block">
           <p className="field-label">Upload image:</p>
-          <Box className="upload-box">
+          <Box className="upload-block">
             <input
               accept="image/*"
               className='image-input'
@@ -283,13 +285,13 @@ export default function AddProduct() {
             />
             { previewImage ?
               (
-                <Box className="img-box">
+                <Box className="img-block">
                   <a target={'_blank'} href={previewImage} className="img-link" >
                     <img className="product-image" src={previewImage} alt="Image" />
                   </a>
-                  <Box className="clear-button-layout">
+                  <Box className="clear-btn-layout">
                     <IconButton
-                      className="clear-button"
+                      className="clear-btn"
                       onClick={handleDeleteImage}
                     >
                       <Clear className="clear-icon" />
@@ -298,8 +300,8 @@ export default function AddProduct() {
                 </Box>
               )
               : (
-                <label className="button-label-upload" htmlFor="raised-button-file">
-                  <Box className="choose-image-box" component="span">
+                <label className="btn-label-upload" htmlFor="raised-button-file">
+                  <Box className="choose-image-block" component="span">
                     <span className="choose-image-text">Click here to choose image 200x200</span>
                   </Box>
                 </label>
@@ -308,7 +310,7 @@ export default function AddProduct() {
           </Box>
         </Box>
 
-        <Box className="field-box">
+        <Box className="field-block">
           <p className="field-label">Product availability:</p>
           <FormControlLabel
             label='In stock'
@@ -328,7 +330,7 @@ export default function AddProduct() {
 
       <Button
 				type="submit"
-        className="create-product-button"
+        className="create-product-btn"
 				variant="contained"
 				color="primary"
 				onClick={handleSubmit}

@@ -1,0 +1,16 @@
+.footer-block {
+  display: flex;
+  max-width: 100%;
+  box-shadow: 0px 0px 0px 1px rgb(61 66 81 / 20%), 0px 1px 4px -1px rgb(61 66 81 / 30%);
+  background-color: #E8A87C;
+  justify-content: flex-end;
+}
+
+.credentials {
+  margin-right: 20px;
+}
+
+.link {
+  margin-left: 10px !important;
+  margin-right: 5px !important;
+}

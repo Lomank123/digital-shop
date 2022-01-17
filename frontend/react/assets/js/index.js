@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Router, Switch, Redirect } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import history from './history';
 import AuthComponent from './parent-components/authComponent';
 import PageComponent from './parent-components/pageComponent';
@@ -19,18 +19,19 @@ import ResetPasswordEmailSent from './components/auth/confirmation/resetPassword
 import VerifyEmailSent from './components/auth/confirmation/verifyEmailSent';
 import ResetPasswordConfirm from './components/auth/confirmation/resetPasswordConfirm';
 import VerifyEmailConfirm from './components/auth/confirmation/verifyEmailConfirm';
-import * as routes from './routeNames';
+import * as routes from './routes';
 import { createStore } from "redux";
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { applyMiddleware } from 'redux';
-import UserProfile from './components/userProfile';
+import UserProfile from './components/user/profile';
 import { Box } from '@material-ui/core';
-import '../styles/styles.css';
 import NotFound from './components/errors/notFound404';
-import AddProduct from './components/addProduct';
+import AddProduct from './components/product/add';
 import SellerComponent from './parent-components/sellerComponent';
-import DetailProduct from './components/detailProduct';
+import DetailProduct from './components/product/detail';
+
+import '../styles/main/main.css';
 
 
 const defaultState = {
@@ -48,9 +49,7 @@ const reducer = (state = defaultState, action) => {
   }
 
 }
-
 const middleware = [thunk];
-
 export const store = createStore(reducer, applyMiddleware(...middleware));
 
 // It's something like a main page where there are header and footer along with all components

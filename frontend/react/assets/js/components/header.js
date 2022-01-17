@@ -2,11 +2,13 @@ import React, { useLayoutEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute } from '../routeNames';
+import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute } from '../routes';
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
-import { Menu, MenuItem, Tooltip, IconButton, Avatar } from '@material-ui/core';
+import { Menu, MenuItem } from '@material-ui/core';
 import { getUser } from '../utils';
+
+import '../../styles/main/header.css';
 
 
 export default function Header() {
@@ -38,18 +40,18 @@ export default function Header() {
   }
 
   const notLoggedIn = (
-    <Box display={'flex'}>
+    <Box className='no-login-btns'>
       <Button onClick={e => handleClickRedirect(e, loginRoute)}>Login</Button>
       <Button onClick={e => handleClickRedirect(e, signupRoute)}>Sign up</Button>
     </Box>
   )
 
   const links = (
-    <Box className='links-box'>
-      <Link className='header-link' to="/">Home</Link>
-      <Link className='header-link' to="/test">About</Link>
-      <Link className='header-link' to="/">News</Link>
-      <Link className='header-link' to="/">Shop</Link>
+    <Box className='links-block'>
+      <Link className='link' to="/">Home</Link>
+      <Link className='link' to="/test">About</Link>
+      <Link className='link' to="/">News</Link>
+      <Link className='link' to="/">Shop</Link>
     </Box>
   )
 
@@ -58,19 +60,11 @@ export default function Header() {
 
   if (userData !== null && userData !== 1) {
     loggedIn = (
-      <Box display={'flex'} width={'100%'}>
-
-        <Box
-          display={'flex'}
-          alignItems={'center'}
-          marginRight={3}
-        >
-          <span>Balance: {userData.balance}</span>
-        </Box>
+      <Box className='loggedin-btns'>
 
         {
-          (userData.seller === true) ? (
-            <Button onClick={e => handleClickRedirect(e, addProductRoute)} className='add-product-btn'>
+          (userData.seller) ? (
+            <Button className='add-product-btn' onClick={e => handleClickRedirect(e, addProductRoute)}>
               Add product
             </Button>
           ) : null
@@ -83,10 +77,10 @@ export default function Header() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickMenu}
         >
-          <Box className='profile-button-content'>
+          <Box className='profile-btn'>
             <span>{userData.username}</span>
           </Box>
-          <Box className='profile-button-content'>
+          <Box className='profile-btn'>
             <img className='avatar' src={userData.photo} />
           </Box>
         </Button>
@@ -117,7 +111,7 @@ export default function Header() {
           <span className='logo-text'>Digital Shop</span>
         </Box>
         {links}
-        <Box className='auth-links-box'>
+        <Box className='auth-block'>
           {
             (userData !== null) ? (
               (userData !== 1) ? loggedIn : notLoggedIn

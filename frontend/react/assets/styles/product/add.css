@@ -1,0 +1,114 @@
+.add-product-mainbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.head-label {
+  margin-bottom: 30px;
+}
+
+.upload-block {
+  display: flex;
+  max-height: 200px;
+  max-width: 200px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  align-self: center;
+}
+
+.product-image {
+  height: 200px;
+  width: 200px;
+  border-radius: 8px;
+}
+
+.clear-btn-layout {
+  display: none;
+}
+
+.clear-btn-layout:hover {
+  display: block;
+}
+
+.img-link:hover + .clear-btn-layout {
+  display: block;
+}
+
+.choose-image-block {
+  height: 200px;
+  width: 200px;
+
+  display: flex;
+  justify-content: center;
+
+  border: dashed;
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.choose-image-text {
+  align-self: center;
+  font-size: 12px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.btn-label-upload {
+  text-align: center;
+  margin-right: 20px;
+}
+
+.img-block {
+  position: relative !important;
+}
+
+.clear-icon {
+  fill: white !important;
+}
+
+.clear-icon:hover {
+  fill: gray !important;
+}
+
+.clear-btn {
+  position: absolute !important;
+  top: 0%;
+  right: 0%;
+  width: 10px;
+  height: 10px;
+  background: black !important;
+  border-radius: 0px !important;
+}
+
+.create-product-btn {
+  align-self: flex-start;
+  margin-top: 30px !important;
+  margin-bottom: 30px !important;
+}
+
+.field-block {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.field-label {
+  margin-bottom: 6px;
+}
+
+.field {
+  margin-top: 0px !important;
+}
+
+.image-upload-block {
+  display: flex;
+  flex-direction: column;
+}

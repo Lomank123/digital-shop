@@ -10,7 +10,7 @@ import { tokenGetURL } from '../../urls';
 import history from '../../history';
 import { getUser } from '../../utils';
 import { useLocation } from 'react-router';
-import { forgotRoute, signupRoute } from '../../routeNames';
+import { forgotRoute, signupRoute } from '../../routes';
 
 
 export default function Login() {

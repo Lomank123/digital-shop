@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useParams } from "react-router";
-import { blankAxiosInstance } from "../axios";
-import { productGetURL, userGetURL } from "../urls";
+import { blankAxiosInstance } from "../../axios";
+import { productGetURL, userGetURL } from "../../urls";
 import { Link } from "react-router-dom";
+
+import '../../../styles/product/detail.css';
 
 
 export default function DetailProduct() {
@@ -44,33 +46,33 @@ export default function DetailProduct() {
   }
 
   return(
-    <Box className="detail-box">
-      <Box className="small-text detail-category-box">
+    <Box className="detail">
+      <Box className="small-text category-block">
         <span>Category: <Link to="/">{product.category_name}</Link></span>
       </Box>
 
-      <Box className="default-box detail-product-box">
+      <Box className="default-block product-block">
 
-        <Box className="detail-img-box">
+        <Box className="img-block">
           <img src={(product.image !== null && product.image !== "")
                   ? product.image 
-                  : 'http://127.0.0.1/react/images/no-image.jpg'} className="detail-img" />
+                  : 'http://127.0.0.1/react/images/no-image.jpg'} className="image" />
         </Box>
 
-        <Box className="detail-info-box">
-          <span className="detail-title">{product.title}</span>
+        <Box className="info-block">
+          <span className="title">{product.title}</span>
 
           <Box>
-            <span className="detail-description"><b>Description</b></span>
-            <p className="detail-description">{product.description}</p>
+            <span className="description"><b>Description</b></span>
+            <p className="description">{product.description}</p>
           </Box>
 
-          <Box className="detail-date-box">
+          <Box className="date-block">
             <p><b>Publication date:</b> {product.published}</p>
             <p><b>Last update:</b> {product.updated}</p>
           </Box>
 
-          <p className="detail-description detail-in-stock">
+          <p className="description in-stock">
             {
               (product.in_stock) ?
               (<span className="in-stock-true"><b>In stock</b></span>) :
@@ -78,25 +80,25 @@ export default function DetailProduct() {
             }
           </p>
 
-          <Box className="detail-purchase-box">
+          <Box className="purchase-block">
             <Button
-              className="detail-purchase-button"
+              className="purchase-btn"
               variant="contained"
               color="primary"
               disabled={!product.in_stock}
             >
               Purchase
             </Button>
-            <span className="detail-price">{product.price}$</span>
+            <span className="price">{product.price}$</span>
           </Box>
         </Box>
       </Box>
 
       <span className="author-info-label">Seller info</span>
 
-      <Link className="default-box detail-author-box" to={"/"}>
+      <Link className="default-block author-block" to={"/"}>
 
-        <Box className="author-avatar-box">
+        <Box className="author-avatar-block">
           <img src={(author.photo !== null && author.photo !== "")
                   ? author.photo 
                   : 'http://127.0.0.1/react/images/no-image.jpg'} alt="author photo" className="author-avatar" />

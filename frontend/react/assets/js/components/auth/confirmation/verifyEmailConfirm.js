@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../../axios";
 import { signupVerifyEmailURL } from "../../../urls";
 import history from "../../../history";
-import { loginRoute } from "../../../routeNames";
+import { loginRoute } from "../../../routes";
 
 
 export default function VerifyEmailConfirm() {

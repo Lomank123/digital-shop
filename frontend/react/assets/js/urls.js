@@ -3,6 +3,11 @@
 //const hostURL = 'http://127.0.0.1' + ':' + portNum + '/';
 const hostURL = 'http://127.0.0.1' + '/';
 
+// media urls
+export const reactURL = hostURL + 'react/';
+export const imagesURL = reactURL + 'images/';
+export const noImageURL = imagesURL + 'no-image.jpg';
+
 // Api urls
 export const apiURL = hostURL + 'api/';
 

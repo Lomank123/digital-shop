@@ -1,6 +1,9 @@
-.add-product-mainbox {
+.add-product {
   display: flex;
   flex-direction: column;
+  align-self: center;
+  max-width: 900px;
+  width: 100%;
 }
 
 .form-block {

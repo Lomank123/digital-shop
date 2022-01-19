@@ -7,6 +7,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { Menu, MenuItem } from '@material-ui/core';
 import { getUser } from '../utils';
+import { noImageURL } from '../urls';
 
 import '../../styles/main/header.css';
 
@@ -81,7 +82,14 @@ export default function Header() {
             <span>{userData.username}</span>
           </Box>
           <Box className='profile-btn'>
-            <img className='avatar' src={userData.photo} />
+            <img
+              className='avatar'
+              src={
+                    (userData.photo !== null && userData.photo !== "")
+                    ? userData.photo
+                    : noImageURL
+                  } 
+            />
           </Box>
         </Button>
         

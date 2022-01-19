@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../axios";
-import { productGetURL, userGetURL } from "../../urls";
+import { noImageURL, productGetURL, userGetURL } from "../../urls";
 import { Link } from "react-router-dom";
+import history from "../../history";
 
 import '../../../styles/product/detail.css';
 
@@ -45,10 +46,21 @@ export default function DetailProduct() {
     return null;
   }
 
+  const handleClickRedirect = (e) => {
+    e.preventDefault();
+
+    history.push({
+      pathname: '/',
+      state: {
+        category: product.category_name,
+      }
+    })
+  }
+
   return(
     <Box className="detail">
       <Box className="small-text category-block">
-        <span>Category: <Link to="/">{product.category_name}</Link></span>
+        <span>Category: <Link to="" onClick={handleClickRedirect}>{product.category_name}</Link></span>
       </Box>
 
       <Box className="default-block product-block">
@@ -56,7 +68,7 @@ export default function DetailProduct() {
         <Box className="img-block">
           <img src={(product.image !== null && product.image !== "")
                   ? product.image 
-                  : 'http://127.0.0.1/react/images/no-image.jpg'} className="image" />
+                  : noImageURL} className="image" />
         </Box>
 
         <Box className="info-block">
@@ -101,7 +113,7 @@ export default function DetailProduct() {
         <Box className="author-avatar-block">
           <img src={(author.photo !== null && author.photo !== "")
                   ? author.photo 
-                  : 'http://127.0.0.1/react/images/no-image.jpg'} alt="author photo" className="author-avatar" />
+                  : noImageURL} alt="author photo" className="author-avatar" />
         </Box>
 
         <Box className="author-credentials">

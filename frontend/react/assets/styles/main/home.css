@@ -6,7 +6,8 @@
 
 .content-block {
   display: flex;
-  width: 100%;
+  min-width: 100%;
+  justify-content: center;
 }
 
 .categories-block {
@@ -26,6 +27,8 @@
 .products-block {
   display: grid;
   width: 100%;
+  max-width: 900px;
+  align-self: center;
 }
 
 .product-card {
@@ -105,7 +108,7 @@ a.product-info-block {
   color: green;
 }
 
-.purchase-btn {
+.cart-btn {
   width: 30px;
   height: 30px;
 

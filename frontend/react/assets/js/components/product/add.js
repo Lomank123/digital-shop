@@ -187,7 +187,7 @@ export default function AddProduct() {
   }
 
   return (
-    <Box className="add-product-mainbox">
+    <Box className="add-product">
       <h2 className="head-label">Create product</h2>
 
       <Box className="default-block form-block">

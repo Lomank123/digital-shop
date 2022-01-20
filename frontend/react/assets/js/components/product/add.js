@@ -112,7 +112,7 @@ export default function AddProduct() {
   // Resizes the image
   function resizeImage(image, filename) {
     var canvas = document.createElement('canvas'),
-        max_size = 200,   // TODO : pull max size from a site config
+        max_size = 500,   // TODO : pull max size from a site config
         width = image.width,
         height = image.height;
     if (width > height) {
@@ -165,16 +165,16 @@ export default function AddProduct() {
     axiosInstance.post(productGetURL, formData, config).then((res) => {
       console.log('Product created!');
       // Reseting form data to add another product
-      //setPostData({
-      //  ...initialFormData,
-      //  category: postData.category,
-      //});
+      setPostData({
+        ...initialFormData,
+        category: postData.category,
+      });
       setErrors(errorsInitialState);
-      //setPostImage(null);
+      setPostImage(null);
     }).catch((err) => {
       //console.log(err);
       console.log('Product creation error.');
-      console.log(err.response);
+      //console.log(err.response);
       setErrors({
         category: err.response.data.category,
         title: err.response.data.title,
@@ -229,6 +229,7 @@ export default function AddProduct() {
             label="Title"
             name="title"
             fullWidth
+            value={postData.title}
             onChange={handleChange}
             error={Boolean(errors.title)}
             helperText={errors.title}
@@ -247,6 +248,7 @@ export default function AddProduct() {
             label="Price"
             name="price"
             fullWidth
+            value={postData.price}
             error={Boolean(errors.price)}
             helperText={errors.price}
             onChange={handleChange}
@@ -264,6 +266,7 @@ export default function AddProduct() {
             name="description"
             autoComplete="Some description..."
             fullWidth
+            value={postData.description}
             error={Boolean(errors.description)}
             helperText={errors.description}
             onChange={handleChange}
@@ -281,7 +284,8 @@ export default function AddProduct() {
               style={{ display: 'none' }}
               id="raised-button-file"
               type="file"
-              onChange={handleChange}
+              value={postData.image}
+              onChange={handleImageUpload}
             />
             { previewImage ?
               (

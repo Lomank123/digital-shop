@@ -13,7 +13,9 @@
 .categories-block {
   display: flex;
   flex-direction: column;
-  min-width: fit-content;
+  min-width: min-content;
+  width: fit-content;
+  max-width: 300px;
   /* for sticky positioning */
   position: -webkit-sticky;
   position: sticky;
@@ -28,6 +30,7 @@
   display: grid;
   width: 100%;
   max-width: 900px;
+  min-width: 900px;
   align-self: center;
 }
 
@@ -125,4 +128,13 @@ a.product-info-block {
 
 .category-btn {
   padding: 10px;
+}
+
+.no-products-block {
+  text-align: center;
+  font-size: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200px;
 }

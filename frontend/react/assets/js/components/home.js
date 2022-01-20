@@ -12,7 +12,7 @@ import '../../styles/main/home.css';
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
 
   function get_products(url) {
     blankAxiosInstance.get(url).then((res) => {
@@ -66,6 +66,10 @@ export default function Home() {
     get_products(url);
   }
 
+  if (products === null) {
+    return null;
+  }
+
   return (
     <Box className='home-block'>
 
@@ -87,8 +91,16 @@ export default function Home() {
             })
           }
         </Box>
-
-        <DisplayProducts products={products} />
+        
+        {
+          (products.length === 0)
+          ? (
+              <Box className='default-block products-block no-products-block'>
+                <p>No products available.</p>
+              </Box>
+            )
+          : <DisplayProducts products={products} />
+        }
         <DisplayMenu />
 
       </Box>

@@ -4,12 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 from mainapp.managers import CustomUserManager
+from mainapp.validators import validate_whitespaces
 
 
 # Custom user model
 class CustomUser(AbstractUser):
-    username = models.CharField(max_length=40, unique=True, null=True, verbose_name='Username')
-    email = models.EmailField(unique=True, verbose_name='Email address')
+    username = models.CharField(max_length=64, unique=True, null=True, verbose_name='Username')
+    email = models.EmailField(max_length=128, unique=True, verbose_name='Email address')
     photo = models.FileField(
         null=True,
         blank=True,
@@ -18,8 +19,8 @@ class CustomUser(AbstractUser):
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
     is_seller = models.BooleanField(default=False, verbose_name='Seller')
-    balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
-    payment_method = models.CharField(max_length=80, verbose_name='Payment method')
+    #balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
+    #payment_method = models.CharField(max_length=80, verbose_name='Payment method')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -32,8 +33,13 @@ class CustomUser(AbstractUser):
 
 # Category, contains lots of products with same qualities
 class Category(models.Model):
-    name = models.CharField(max_length=60, verbose_name='Name')
-    verbose = models.CharField(max_length=60, verbose_name='Verbose')
+    name = models.CharField(max_length=60, unique=True, verbose_name='Name')
+    verbose = models.CharField(
+        max_length=60,
+        unique=True,
+        verbose_name='Verbose',
+        validators=[validate_whitespaces]
+    )
 
     def __str__(self):
         return self.name
@@ -57,7 +63,12 @@ class Product(models.Model):
         validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png'))],
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
-    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Price')
+    price = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        verbose_name='Price',
+        validators=[validators.MinValueValidator(0.01)]
+    )
     in_stock = models.BooleanField(default=True, verbose_name='In stock')
     is_active = models.BooleanField(default=True, verbose_name='Is active')
     published = models.DateTimeField(auto_now_add=True, verbose_name='Published in')

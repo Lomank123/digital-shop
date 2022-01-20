@@ -13,12 +13,12 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     # Controls which fields are displayed on the change list(!) page of the admin.
-    list_display = ('email', 'username', 'balance', 'is_staff', 'is_active', 'date_joined', 'is_seller')
+    list_display = ('email', 'username', 'is_staff', 'is_active', 'date_joined', 'is_seller')
     # Controls what filters are available
-    list_filter = ('date_joined', 'is_staff', 'is_active', 'groups', 'is_seller')
+    list_filter = ('is_staff', 'is_active', 'is_seller')
     # When editing user
     fieldsets = (
-        ('Information', {'fields': ('email', 'username', 'balance', 'photo', 'password',)}),
+        ('Information', {'fields': ('email', 'username', 'photo', 'password',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_seller', 'user_permissions', 'groups')}),
     )
     # When creating new user via admin dashboard
@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'username', 'balance', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'user_permissions', 'groups', 'is_seller')
+                'fields': ('email', 'username', 'photo', 'password1', 'password2', 'is_staff', 'is_active', 'user_permissions', 'groups', 'is_seller')
             }
         ),
     )
@@ -40,8 +40,8 @@ class CustomUserAdmin(UserAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     model = Product
-    list_display = ('title', 'category', 'price', 'created_by', 'description', 'in_stock', 'is_active', 'published', 'updated',)
-    list_filter = ('created_by', 'category', 'is_active', 'in_stock', 'title')
+    list_display = ('title', 'category', 'price', 'created_by', 'in_stock', 'is_active', 'published', 'updated',)
+    list_filter = ('category', 'is_active', 'in_stock',)
     fieldsets = (
         ('Information', {'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
     )
@@ -54,28 +54,28 @@ class ProductAdmin(admin.ModelAdmin):
             }
         ),
     )
-    search_fields = ('created_by', 'category', 'title', 'description',)
+    search_fields = ('created_by', 'category', 'title',)
     ordering = ('category', 'title', 'created_by',)
 
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
-    list_display = ('name', 'verbose')
-    list_filter = ('name', 'verbose')
+    list_display = ('name', 'verbose',)
+    list_filter = ('name',)
     fieldsets = (
-        ('Information', {'fields': ('name', 'verbose')}),
+        ('Information', {'fields': ('name', 'verbose',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('name', 'verbose')
+                'fields': ('name', 'verbose',)
             }
         ),
     )
-    search_fields = ('name', 'verbose')
-    ordering = ('name', 'verbose')
+    search_fields = ('name', 'verbose',)
+    ordering = ('name', 'verbose',)
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

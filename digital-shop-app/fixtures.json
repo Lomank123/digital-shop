@@ -32,8 +32,6 @@
     "email": "admin@gmail.com",
     "photo": "",
     "is_seller": true,
-    "balance": "0.00",
-    "payment_method": "",
     "groups": [],
     "user_permissions": []
   }
@@ -54,8 +52,6 @@
     "email": "test1@gmail.com",
     "photo": "",
     "is_seller": true,
-    "balance": "0.00",
-    "payment_method": "",
     "groups": [
       1
     ],
@@ -74,12 +70,10 @@
     "is_staff": false,
     "is_active": true,
     "date_joined": "2022-01-03T12:02:58.857Z",
-    "username": "test2",
+    "username": "Fresh new user just arrived to this perfect website and waiting1",
     "email": "test2@gmail.com",
     "photo": "",
     "is_seller": false,
-    "balance": "0.00",
-    "payment_method": "",
     "groups": [],
     "user_permissions": []
   }
@@ -88,8 +82,8 @@
   "model": "mainapp.category",
   "pk": 1,
   "fields": {
-    "name": "Shoes",
-    "verbose": "shoes"
+    "name": "R",
+    "verbose": "r"
   }
 },
 {
@@ -104,8 +98,8 @@
   "model": "mainapp.category",
   "pk": 3,
   "fields": {
-    "name": "Domestic appliances",
-    "verbose": "domestic"
+    "name": "New category with tons of useful products and magnificent vi",
+    "verbose": "new-category-with-tons-of-useful-products-and-magnificent-vi"
   }
 },
 {
@@ -114,10 +108,10 @@
   "fields": {
     "category": 1,
     "created_by": 1,
-    "title": "New shoes 1",
-    "description": "New shoes 1 description",
+    "title": "T",
+    "description": "D",
     "image": "",
-    "price": "13.99",
+    "price": "1",
     "in_stock": true,
     "is_active": true,
     "published": "2022-01-03T12:05:51.839Z",
@@ -146,12 +140,12 @@
   "fields": {
     "category": 3,
     "created_by": 1,
-    "title": "Toaster",
-    "description": "Just a toaster!",
+    "title": "Completely new and utterly unbelievable magnificent toaster1",
+    "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatiseto",
     "image": "",
-    "price": "24.99",
-    "in_stock": true,
-    "is_active": true,
+    "price": "99999.99",
+    "in_stock": false,
+    "is_active": false,
     "published": "2022-01-03T12:07:00.089Z",
     "updated": "2022-01-03T12:07:00.089Z"
   }

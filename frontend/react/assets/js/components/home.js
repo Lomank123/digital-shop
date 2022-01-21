@@ -14,9 +14,14 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
 
+  // Search params
+  // page, category
+
   function get_products(url) {
     blankAxiosInstance.get(url).then((res) => {
+      console.log(res.data);
       setProducts(res.data);
+      window.scrollTo(0, 0);  // After successful request scrolling to the top
     }).catch((err) => {
       console.log("Content data error. Home page.");
     });
@@ -29,22 +34,20 @@ export default function Home() {
       setCategories(res.data);
       console.log("Categories data done! Home page!");
 
-      let url = productGetURL;
-      // Checking whether a state param was provided (to make the right api call).
-      // If we provided category then we should make related api call.
-      // After login redirect or after clicking on "Home" link there'll be no state
-      // because there we haven't provided any state inside Link component
-      try {
-        const category = history.location.state.category;
-        res.data.forEach(element => {
-          if (element.name === category) {
-            url = categoryGetURL + element.verbose + '/';
-            return;
-          }
-        });
-      } catch (error) {
-        //console.log(error);
+      const currUrl = history.location.pathname;
+      const searchParams = new URLSearchParams(history.location.search);
+
+      let url = new URL(productGetURL);
+      const category = searchParams.get("category");
+      const page = searchParams.get("page");
+
+      if (category !== null) {
+        url.href = productGetURL + 'category/' + category;
       }
+      if (page !== null) {
+        url.searchParams.set('page', page);
+      }
+      console.log(url.href);
       // Getting products
       get_products(url);
     }).catch((err) => {
@@ -54,16 +57,62 @@ export default function Home() {
 
   const handleCategoryClick = (e, category) => {
     e.preventDefault();
-    let url = categoryGetURL + category.verbose + '/';
-    if (category === 'all') {
-      url = productGetURL;
-      history.replace({ state: {} })
+    let url = productGetURL;
+    if (category !== 'all') {
+      url = productGetURL + 'category/' + category.verbose + '/';
+      history.replace({ search: '?category=' + category.verbose, })
     } else {
-      history.replace({ state: {
-        category: category.name,
-      }})
+      history.replace({ search: '' })
     }
     get_products(url);
+  }
+
+  const handlePaginationClick = (url) => {
+    const newUrl = new URL(url);
+    const params = new URLSearchParams(history.location.search);
+
+    params.set('page', newUrl.searchParams.get('page')); 
+    if (JSON.parse(params.get('page')) === null) {
+      params.delete('page');
+    }
+
+
+
+    console.log(newUrl.href);
+    history.replace({ search: params.toString() })
+    get_products(newUrl.href);
+  }
+
+  let paginationBlock = null;
+
+  if (products !== null) {
+    paginationBlock = (
+      <Box className='pagination-block'>
+        {
+          (products.previous) ?
+          (
+            <Box className='previous-pages'>
+              <Button onClick={(e) => {handlePaginationClick(products.first)}}>First</Button>
+              <Button onClick={(e) => {handlePaginationClick(products.previous)}}>Previous</Button>
+            </Box>
+          ) :
+          null
+        }
+        <span className='pages-info'>
+          Page {products.number} of {products.num_pages}
+        </span>
+        {
+          (products.next) ?
+          (
+            <Box className='next-pages'>
+              <Button onClick={(e) => {handlePaginationClick(products.next)}}>Next</Button>
+              <Button onClick={(e) => {handlePaginationClick(products.last)}}>Last</Button>
+            </Box>
+          ) :
+          null
+        }
+      </Box>
+    );
   }
 
   if (products === null) {
@@ -73,8 +122,9 @@ export default function Home() {
   return (
     <Box className='home-block'>
 
-      <Box className='content-block'>
+      {paginationBlock}
 
+      <Box className='content-block'>
         <Box className='default-block categories-block'>
           <Button className='category-btn' onClick={(e) => { handleCategoryClick(e, 'all'); }}>
             All categories
@@ -93,17 +143,19 @@ export default function Home() {
         </Box>
         
         {
-          (products.length === 0)
+          (products.count === 0)
           ? (
               <Box className='default-block products-block no-products-block'>
                 <p>No products available.</p>
               </Box>
             )
-          : <DisplayProducts products={products} />
+          : <DisplayProducts products={products.results} />
         }
         <DisplayMenu />
-
       </Box>
+
+      {paginationBlock}
+
     </Box>
   );
 }
@@ -156,7 +208,15 @@ function DisplayMenu(props) {
 
   return(
     <Box className='default-block menu-block'>
-      <span>Menu box</span>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
+      <Button>Button</Button>
     </Box>
   );
 }

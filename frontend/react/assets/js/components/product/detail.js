@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../axios";
-import { noImageURL, productGetURL, userGetURL } from "../../urls";
+import { categoryGetURL, noImageURL, productGetURL, userGetURL } from "../../urls";
 import { Link } from "react-router-dom";
 import history from "../../history";
 
@@ -13,6 +13,7 @@ export default function DetailProduct() {
   const params = useParams();
   const [author, setAuthor] = useState(null);
   const [product, setProduct] = useState(null);
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
     blankAxiosInstance.get(productGetURL + params.id + '/').then((res) => {
@@ -32,12 +33,21 @@ export default function DetailProduct() {
 
   useEffect(() => {
     if (product !== null) {
+      // Setting author info
       blankAxiosInstance.get(userGetURL + product.created_by + '/').then((res) => {
         setAuthor(res.data);
         console.log('Detail user done!');
       }).catch((err) => {
         console.log(err);
         console.log('Detail user error.');
+      })
+      // Setting category info
+      blankAxiosInstance.get(categoryGetURL + product.category + '/').then((res) => {
+        setCategory(res.data);
+        console.log('Category get done!');
+      }).catch((err) => {
+        console.log(err);
+        console.log('Category get error.');
       })
     }
   }, [product])
@@ -51,9 +61,7 @@ export default function DetailProduct() {
 
     history.push({
       pathname: '/',
-      state: {
-        category: product.category_name,
-      }
+      search: '?category=' + category.verbose,
     })
   }
 

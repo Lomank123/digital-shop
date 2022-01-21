@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from collections import OrderedDict
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -15,15 +16,17 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from mainapp.models import Product, Category, CustomUser
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer
+from mainapp.pagination import ProductPagination
 
 
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = (AllowAny, )
     parser_classes = [MultiPartParser, FormParser]
+    pagination_class = ProductPagination
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ['list', 'retrieve', 'get_category_products']:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
@@ -32,6 +35,21 @@ class ProductViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Product.objects.all()
         return queryset
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path=r'category/(?P<category_verbose>[^/.]+)')
+    def get_category_products(self, request, category_verbose):
+        category = Category.objects.get(verbose=category_verbose)
+        products = Product.objects.filter(category=category)
+        # Creating pagination
+        page = self.paginate_queryset(products)   # Paginating queryset (products)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)       # Serializing paginated queryset
+            return self.get_paginated_response(serializer.data)     # Returning serialized data
+        # Error case
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryViewSet(ModelViewSet):
@@ -43,22 +61,11 @@ class CategoryViewSet(ModelViewSet):
         return queryset
     
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'get_category_products']:
+        if self.action in ['list', 'retrieve']:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
-    
-    @action(
-        methods=['get'],
-        detail=False,
-        url_path=r'(?P<category_verbose>[^/.]+)')
-    def get_category_products(self, request, category_verbose):
-        # Add check is_valid() or smth, need to return 404 in case of an error
-        category = Category.objects.get(verbose=category_verbose)
-        products = Product.objects.filter(category=category)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(ModelViewSet):

@@ -15,7 +15,7 @@
   flex-direction: column;
   min-width: min-content;
   width: fit-content;
-  max-width: 300px;
+  max-width: 230px;
   /* for sticky positioning */
   position: -webkit-sticky;
   position: sticky;
@@ -30,7 +30,7 @@
   display: grid;
   width: 100%;
   max-width: 900px;
-  min-width: 900px;
+  min-width: 466px;
   align-self: center;
 }
 
@@ -119,8 +119,11 @@ a.product-info-block {
 }
 
 .menu-block {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
   height: fit-content;
+  max-width: 400px;
+  width: fit-content;
   min-width: fit-content;
   padding: 30px;
   margin-left: 30px;
@@ -137,4 +140,28 @@ a.product-info-block {
   flex-direction: column;
   justify-content: center;
   min-height: 200px;
+}
+
+/* pagination */
+
+.pagination-block {
+  display: flex;
+  min-width: 100%;
+  min-height: 37px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pages-info {
+  align-self: center;
+}
+
+.previous-pages {
+  display: flex;
+  margin-right: 30px;
+}
+
+.next-pages {
+  display: flex;
+  margin-left: 30px;
 }

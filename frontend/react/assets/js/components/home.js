@@ -19,7 +19,7 @@ export default function Home() {
 
   function get_products(url) {
     blankAxiosInstance.get(url).then((res) => {
-      console.log(res.data);
+      //console.log(res.data);
       setProducts(res.data);
       window.scrollTo(0, 0);  // After successful request scrolling to the top
     }).catch((err) => {
@@ -34,20 +34,17 @@ export default function Home() {
       setCategories(res.data);
       console.log("Categories data done! Home page!");
 
-      const currUrl = history.location.pathname;
       const searchParams = new URLSearchParams(history.location.search);
-
       let url = new URL(productGetURL);
       const category = searchParams.get("category");
       const page = searchParams.get("page");
-
+      // Checking search params
       if (category !== null) {
         url.href = productGetURL + 'category/' + category;
       }
       if (page !== null) {
         url.searchParams.set('page', page);
       }
-      console.log(url.href);
       // Getting products
       get_products(url);
     }).catch((err) => {
@@ -75,12 +72,13 @@ export default function Home() {
     if (JSON.parse(params.get('page')) === null) {
       params.delete('page');
     }
-
-
-
-    console.log(newUrl.href);
     history.replace({ search: params.toString() })
     get_products(newUrl.href);
+  }
+
+  function getCategoryParam() {
+    const params = new URLSearchParams(history.location.search);
+    return params.get('category');
   }
 
   let paginationBlock = null;
@@ -126,14 +124,29 @@ export default function Home() {
 
       <Box className='content-block'>
         <Box className='default-block categories-block'>
-          <Button className='category-btn' onClick={(e) => { handleCategoryClick(e, 'all'); }}>
+          <Button
+            className={'category-btn' +
+              ((getCategoryParam() === null) ?
+              (' ' + 'category-selected') :
+              ''
+            )}
+            onClick={(e) => { handleCategoryClick(e, 'all'); }}
+          >
             All categories
           </Button>
           {
             Object.entries(categories).map(([key, category]) => {
               return(
-                <Button key={key} className='category-btn' onClick={(e) => {
-                  handleCategoryClick(e, category);}}
+                <Button
+                  key={key}
+                  className={'category-btn' +
+                    ((category.verbose === getCategoryParam()) ?
+                    (' ' + 'category-selected') :
+                    ''
+                  )}
+                  onClick={(e) => {
+                    handleCategoryClick(e, category);
+                  }}
                 >
                   {category.name}
                 </Button>

@@ -35,3 +35,32 @@ export async function getUser(redirect = false) {
     return userData;
   })
 }
+
+// Resizes the image
+export function resizeImage(image, filename, setter) {
+  var canvas = document.createElement('canvas'),
+      max_size = 500,   // TODO : pull max size from a site config
+      width = image.width,
+      height = image.height;
+  if (width > height) {
+      if (width > max_size) {
+          height *= max_size / width;
+          width = max_size;
+      }
+  } else {
+      if (height > max_size) {
+          width *= max_size / height;
+          height = max_size;
+      }
+  }
+  canvas.width = width;
+  canvas.height = height;
+  canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+  // Converting to Blob and then to new file which then set to postImage
+  canvas.toBlob((blob) => {
+    const newFile = new File([blob], filename, { type: 'image/jpeg', lastModified: Date.now() });
+    setter({
+      image: [newFile],
+    });
+  }, 'image/jpeg', 1);
+}

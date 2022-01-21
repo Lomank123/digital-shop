@@ -75,6 +75,11 @@
   position: relative !important;
 }
 
+.product-image-error-block {
+  color: rgba(255, 0, 0, 0.575);
+  text-align: end;
+}
+
 .clear-icon {
   fill: white !important;
 }

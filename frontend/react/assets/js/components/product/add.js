@@ -4,6 +4,7 @@ import { MenuItem, TextField, Box, Button, Checkbox, FormControlLabel, IconButto
 import { axiosInstance, blankAxiosInstance } from "../../axios";
 import { categoryGetURL, productGetURL } from "../../urls";
 import { Clear } from '@material-ui/icons'
+import { resizeImage } from "../../utils";
 
 import '../../../styles/product/add.css';
 
@@ -70,10 +71,25 @@ export default function AddProduct() {
         setPostImage(null);
         return
       }
+      const fileSize = e.target.files[0].size / 1024 / 1024; // in MB
+      // Checking file size
+      if (fileSize > 1.5) {
+        console.log("File size exceeds 1.5 MB. Cannot load this image.");
+        setPostImage(null);
+        setErrors({
+          ...errors,
+          image: 'File size exceeds 1.5 MB. Cannot load this image.',
+        })
+        return
+      } else {
+        setErrors({
+          ...errors,
+          image: '',
+        })
+      }
       setPostImage({
         image: e.target.files,
       })
-      console.log(e.target.files);
     } else {
       // All other text fields
       setPostData({
@@ -83,60 +99,45 @@ export default function AddProduct() {
     }
   }
 
+  // This function may be used instead of handleChange in input tag with id "raised-button-file"
+  // It will force to resize the image if it's bigger than needed (default resolution: 500x500)
   const handleImageUpload = (e) => {
-
+    // Checking file availability
     if (!e.target.files || e.target.files.length === 0) {
       setPostImage(null);
+      //setErrors({
+      //  ...errors,
+      //  image: 'No files detected. Try again.',
+      //})
       return
     }
 
     var file = e.target.files[0];
-    console.log(file);
+    const fileSize = file.size / 1024 / 1024; // in MB
+    // Checking file size
+    if (fileSize > 1.5) {
+      console.log("File size exceeds 1.5 MB. Cannot load this image.");
+      setPostImage(null);
+      setErrors({
+        ...errors,
+        image: 'File size exceeds 1.5 MB. Cannot load this image.',
+      })
+      return
+    }
 
-    if(file.type.match(/image.*/)) {
+    if (file.type.match(/image.*/)) {
       console.log('An image has been loaded');
       var reader = new FileReader();
 
       reader.onload = function (readerEvent) {
         var image = new Image();
         image.onload = function (imageEvent) {
-          resizeImage(image, file.name);
+          resizeImage(image, file.name, setPostImage);
         }
         image.src = readerEvent.target.result;
       }
       reader.readAsDataURL(file);
     }
-  }
-
-  // TODO: Change this so it should save in a higher resolution and quality
-  // Resizes the image
-  function resizeImage(image, filename) {
-    var canvas = document.createElement('canvas'),
-        max_size = 500,   // TODO : pull max size from a site config
-        width = image.width,
-        height = image.height;
-    if (width > height) {
-        if (width > max_size) {
-            height *= max_size / width;
-            width = max_size;
-        }
-    } else {
-        if (height > max_size) {
-            width *= max_size / height;
-            height = max_size;
-        }
-    }
-    canvas.width = width;
-    canvas.height = height;
-    canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-    // Converting to Blob and then to new file which then set to postImage
-    canvas.toBlob((blob) => {
-      const newFile = new File([blob], filename, { type: 'image/jpeg', lastModified: Date.now() });
-      console.log(newFile);
-      setPostImage({
-        image: [newFile],
-      });
-    }, 'image/jpeg', 1);
   }
 
   const handleDeleteImage = (e) => {
@@ -185,7 +186,7 @@ export default function AddProduct() {
       });
     });
   }
-
+  
   return (
     <Box className="add-product">
       <h2 className="head-label">Create product</h2>
@@ -285,7 +286,7 @@ export default function AddProduct() {
               id="raised-button-file"
               type="file"
               value={postData.image}
-              onChange={handleImageUpload}
+              onChange={handleChange}
             />
             { previewImage ?
               (
@@ -306,12 +307,19 @@ export default function AddProduct() {
               : (
                 <label className="btn-label-upload" htmlFor="raised-button-file">
                   <Box className="choose-image-block" component="span">
-                    <span className="choose-image-text">Click here to choose image 200x200</span>
+                    <span className="choose-image-text">Click here to choose image</span>
                   </Box>
                 </label>
               )
             }
           </Box>
+          {
+            (errors.image !== null && errors.image !== '') ? (
+              <Box className="product-image-error-block">
+                <span className="product-image-error-text">{errors.image}</span>
+              </Box>
+            ) : null
+          }
         </Box>
 
         <Box className="field-block">

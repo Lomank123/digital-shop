@@ -133,6 +133,11 @@ a.product-info-block {
   padding: 10px;
 }
 
+.category-selected {
+  /* #79716c1f  #E8A87C */
+  background-color: #79716c1f !important;
+}
+
 .no-products-block {
   text-align: center;
   font-size: 32px;

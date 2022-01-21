@@ -5,6 +5,7 @@ from django.conf import settings
 
 from mainapp.managers import CustomUserManager
 from mainapp.validators import validate_whitespaces
+from mainapp.validators import validate_file_size
 
 
 # Custom user model
@@ -15,7 +16,7 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         verbose_name='Photo',
-        validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png'))],
+        validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png')), validate_file_size],
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
     is_seller = models.BooleanField(default=False, verbose_name='Seller')
@@ -60,7 +61,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         verbose_name='Image',
-        validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png'))],
+        validators=[validators.FileExtensionValidator(allowed_extensions=('jpg', 'png')), validate_file_size],
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
     price = models.DecimalField(

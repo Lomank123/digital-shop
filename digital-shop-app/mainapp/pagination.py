@@ -12,13 +12,14 @@ class ProductPagination(PageNumberPagination):
 	Additional fields:
 		- 'number' - contains number of a current page
 		- 'num_pages' - contains pages count number
+		- 'first' - url to the first page
+		- 'last' - url to the last page
 
 	"""
 	page_size = 10
 	page_query_param = 'page'
 	max_page_size = 20
 
-    # Forming our data ('number' and 'num_pages' were added manually)
 	def get_paginated_response(self, data):
 		return Response(OrderedDict([
             ('count', self.page.paginator.count),

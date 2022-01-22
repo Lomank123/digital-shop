@@ -14,7 +14,7 @@ export const apiURL = hostURL + 'api/';
 export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
 export const userGetURL = apiURL + 'user-info/';
 export const productGetURL = apiURL + 'product/';
-export const userProductsGetURL = userGetURL + 'get_user_products/';
+export const userProductsGetURL = productGetURL + 'get_user_products/';
 export const categoryGetURL = apiURL + 'category/';
 
 // Signup

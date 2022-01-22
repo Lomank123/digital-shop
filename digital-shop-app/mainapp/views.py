@@ -26,7 +26,7 @@ class ProductViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'get_category_products']:
+        if self.action in ['list', 'retrieve', 'get_category_products', 'get_user_products']:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
@@ -50,6 +50,13 @@ class ProductViewSet(ModelViewSet):
             return self.get_paginated_response(serializer.data)     # Returning serialized data
         # Error case
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    # Method for getting user related products (used in profile page)
+    @action(methods=['get'], detail=False, url_path=r'get_user_products/(?P<user_id>[0-9])')
+    def get_user_products(self, request, user_id):
+        products = Product.objects.filter(created_by=user_id)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CategoryViewSet(ModelViewSet):
@@ -75,7 +82,7 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action in ['list']:
             permission_classes = [IsAuthenticated]
-        elif self.action in ['retrieve', 'get_user_products']:
+        elif self.action in ['retrieve']:
             # AllowAny because we'll need to retrieve user data in product detail page
             # And as for get_user_products, for example, when accessing another user's page we want to see their products
             permission_classes = [AllowAny]
@@ -89,10 +96,3 @@ class UserViewSet(ModelViewSet):
         else:
             queryset = CustomUser.objects.filter(pk=self.request.user.pk)
         return queryset
-
-    # Method for getting user related products (used in profile page)
-    @action(methods=['get'], detail=False)
-    def get_user_products(self, request):
-        products = Product.objects.filter(created_by=self.request.user)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)

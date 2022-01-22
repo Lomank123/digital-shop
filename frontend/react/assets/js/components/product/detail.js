@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import history from "../../history";
 
 import '../../../styles/product/detail.css';
+import { profileRoute } from "../../routes";
 
 
 export default function DetailProduct() {
@@ -116,7 +117,7 @@ export default function DetailProduct() {
 
       <span className="author-info-label">Seller info</span>
 
-      <Link className="default-block author-block" to={"/"}>
+      <Link className="default-block author-block" to={'/' + profileRoute + '/' + author.id + '/'}>
 
         <Box className="author-avatar-block">
           <img src={(author.photo !== null && author.photo !== "")

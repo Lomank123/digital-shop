@@ -143,6 +143,7 @@ a.product-info-block {
   font-size: 32px;
   display: flex;
   flex-direction: column;
+  align-self: flex-start;
   justify-content: center;
   min-height: 200px;
 }

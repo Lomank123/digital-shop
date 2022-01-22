@@ -1,25 +1,38 @@
 import { Box } from '@material-ui/core';
-import React, { useState, useLayoutEffect } from 'react';
-import { shallowEqual } from 'react-redux';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { blankAxiosInstance } from '../../axios';
 import { noImageURL, userGetURL, userProductsGetURL } from '../../urls';
 import { Link } from 'react-router-dom';
 import { detailProductRoute } from "../../routes";
+import { useParams } from 'react-router';
 
 import '../../../styles/user/profile.css';
 
 
 export default function UserProfile() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
+  const userData = useSelector(state => state.user);
+  const [isThisUser, setIsThisUser] = useState(null);
+  const params = useParams();
 
+  useEffect(() => {
+    if (userData !== null && user !== null) {
+      if (userData.username === user.username && userData.email === user.email) {
+        setIsThisUser(true);
+      } else {
+        setIsThisUser(false);
+      }
+    }
+  }, [user, userData, params])
 
   useLayoutEffect(() => {
-    blankAxiosInstance.get(userGetURL).then((res) => {
-      const joinedDate = new Date(res.data[0].date_joined);
-      res.data[0].date_joined = joinedDate.toISOString().split('T')[0];
+    blankAxiosInstance.get(userGetURL + params.id + '/').then((res) => {
+      const joinedDate = new Date(res.data.date_joined);
+      res.data.date_joined = joinedDate.toISOString().split('T')[0];
 
-      setUser(res.data[0]);
+      setUser(res.data);
       console.log("User data done!");
     }).catch((err) => {
       console.log(err);
@@ -27,7 +40,7 @@ export default function UserProfile() {
       //console.log(err.response);
     });
 
-    blankAxiosInstance.get(userProductsGetURL).then((res) => {
+    blankAxiosInstance.get(userProductsGetURL + params.id).then((res) => {
       setProducts(res.data);
       console.log("Products data done!");
     }).catch((err) => {
@@ -35,23 +48,29 @@ export default function UserProfile() {
       console.log("Products data error");
       //console.log(err.response);
     });
-  }, [])
+  }, [params])
 
-  if (shallowEqual(user, [])) {
+  if (user === null) {
     return null;
   }
 
   return (
     <Box className='profile'>
-      <UserInfo data={user} />
-      <h3 className='your-label'>Your products</h3>
-      <ProductsInfo products={products} />
+      <h3 className='your-label'>User profile</h3>
+      <UserInfo data={user} isUser={isThisUser} />
+      <h3 className='your-label'>{(isThisUser) ? 'Your products' : user.username + "\'s products"}</h3>
+      <ProductsInfo products={products} isUser={isThisUser} />
     </Box>
   );
 }
 
 export function UserInfo(props) {
   const user = props.data;
+  const isUser = props.isUser;
+
+  if (user === null) {
+    return null;
+  }
 
   return (
     <Box className='default-block user-block'>
@@ -71,7 +90,9 @@ export function UserInfo(props) {
         </Box>
 
         <Box className='edit-btn-block'>
-          <Link to={'/'}>Edit profile</Link>
+          {
+            (isUser) ? <Link to={'/'}>Edit profile</Link> : null
+          }
         </Box>
 
       </Box>
@@ -81,6 +102,7 @@ export function UserInfo(props) {
 
 export function ProductsInfo(props) {
   const products = props.products;
+  const isUser = props.isUser;
 
   return(
     <Box className='products-block'>
@@ -97,7 +119,7 @@ export function ProductsInfo(props) {
                 className='product-preview profile-preview' />
             </Box>
 
-            <Link className='product-info-block profile-product-info-block' to={detailProductRoute + '/' + product.id + '/'}>
+            <Link className='product-info-block profile-product-info-block' to={'/' + detailProductRoute + '/' + product.id + '/'}>
               <span className='product-title'>{product.title}</span>
               <span className='product-description'>
                 {
@@ -110,7 +132,10 @@ export function ProductsInfo(props) {
 
             <Box className='product-price-block'>
               <span className='product-price'>{product.price}$</span>
-              <Link to={'/'} className="product-edit-link">Edit</Link>
+              {
+                (isUser) ? (<Link to={'/'} className="product-edit-link">Edit</Link>) : null
+              }
+              
             </Box>
 
           </Box>

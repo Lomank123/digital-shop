@@ -63,12 +63,12 @@ const routing = (
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
             <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddProduct} />} />
-            <Route path={`/${routes.detailProductRoute}/${routes.detailProductValues}`} component={() => <PageComponent component={DetailProduct} />} />
+            <Route path={`/${routes.detailProductRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
+            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
             <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
             <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (

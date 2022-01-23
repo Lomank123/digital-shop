@@ -51,11 +51,12 @@ export default function Login() {
       tokenGetURL, {
         username: formData.email,
         password: formData.password,
-      }, { withCredentials: true }).then((res) => {
-				// Dispatching with user logged in
-				// We need it just to pass to "next" page the right state from redux store
-				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user
-				getUser();
+      }, { withCredentials: true }).then(async (res) => {
+				// Dispatching with user logged in.
+				// We need it just to pass to "next" page the right state from redux store.
+				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user.
+				// We need to wait for this api call otherwise user will be thrown to loggedIn page instead of next param route.
+				await getUser();
 
 				// Redirecting to "next" route or to home page if "next" wasn't specified
 				const urlParams = new URLSearchParams(search);

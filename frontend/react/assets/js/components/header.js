@@ -105,7 +105,7 @@ export default function Header() {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
         >
-          <MenuItem onClick={e => handleClickRedirect(e, profileRoute + '/' + userData.id)}>Profile</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, profileRoute + '/' + userData.id + '/')}>Profile</MenuItem>
           <MenuItem onClick={e => handleClickRedirect(e, logoutRoute)}>Log out</MenuItem>
         </Menu>
       </Box>

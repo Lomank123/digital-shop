@@ -1,32 +1,25 @@
-import React, { useLayoutEffect, useState } from "react";
-import { getUser } from "../utils";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router";
+import { loginURL } from "../urls";
+import history from "../history";
 
 
 export default function LoginRequiredComponent(props) {
-  // Here we're using useState because we don't want flickering while loading content
-  // With useSelector an issue occurs - flickering if token expired 
-  const [data, setData] = useState(null);
+  const userData = useSelector(state => state.user);
 
-  // Getting (and setting) user data
-  useLayoutEffect(() => {
-    getUser(true).then((res) => {
-      setData(res);
-      console.log("Login required done!")
-    }).catch((err) => {
-      console.log("Login Required error.");
-    })
-  }, [])
+  if (userData === 1) {
+    return <Redirect to={loginURL + '?next=' + history.location.pathname} />
+  }
 
-  if (data === null) {
+  if (userData === null) {
     return null;
 	}
 
   const Component = props.component;
   return (
     <>
-      {
-        (data !== null) ? (<Component />) : null
-      }
+      <Component />
     </>
   )
 }

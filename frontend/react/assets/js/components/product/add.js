@@ -148,7 +148,7 @@ export default function AddProduct() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const config = { headers: { 'Content-Type': 'multipart/form-data' }, params: { redirect: true } };
+    const config = { headers: { 'Content-Type': 'multipart/form-data' }, params: { redirect: false } };
     let formData = new FormData();
     formData.append('created_by', userData.id);
     formData.append('category', postData.category);
@@ -176,14 +176,18 @@ export default function AddProduct() {
       //console.log(err);
       console.log('Product creation error.');
       //console.log(err.response);
-      setErrors({
-        category: err.response.data.category,
-        title: err.response.data.title,
-        description: err.response.data.description,
-        image: err.response.data.image,
-        price: err.response.data.price,
-        in_stock: err.response.data.in_stock,
-      });
+
+      // This check is needed to prevent memory leak (the problem wasn't useSelector despite the text in console)
+      if (err.response.status !== 401) {
+        setErrors({
+          category: err.response.data.category,
+          title: err.response.data.title,
+          description: err.response.data.description,
+          image: err.response.data.image,
+          price: err.response.data.price,
+          in_stock: err.response.data.in_stock,
+        });
+      }
     });
   }
   

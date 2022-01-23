@@ -68,7 +68,7 @@ const routing = (
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={UserProfile}/>} />
+            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
             <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
             <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (

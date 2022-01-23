@@ -4,62 +4,83 @@ import { useSelector } from 'react-redux';
 import { blankAxiosInstance } from '../../axios';
 import { noImageURL, userGetURL, userProductsGetURL } from '../../urls';
 import { Link } from 'react-router-dom';
-import { detailProductRoute } from "../../routes";
 import { useParams } from 'react-router';
+import { DisplayPagination, DisplayProducts, get_products } from '../product/display';
+import history from '../../history';
 
 import '../../../styles/user/profile.css';
 
 
 export default function UserProfile() {
   const [user, setUser] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   const userData = useSelector(state => state.user);
-  const [isThisUser, setIsThisUser] = useState(null);
+  const [isOwner, setIsOwner] = useState(null);
   const params = useParams();
 
   useEffect(() => {
     if (userData !== null && user !== null) {
       if (userData.username === user.username && userData.email === user.email) {
-        setIsThisUser(true);
+        setIsOwner(true);
       } else {
-        setIsThisUser(false);
+        setIsOwner(false);
       }
+    } else {
+      setIsOwner(false);
     }
   }, [user, userData, params])
 
   useLayoutEffect(() => {
+    // Getting user data
     blankAxiosInstance.get(userGetURL + params.id + '/').then((res) => {
       const joinedDate = new Date(res.data.date_joined);
       res.data.date_joined = joinedDate.toISOString().split('T')[0];
-
       setUser(res.data);
       console.log("User data done!");
     }).catch((err) => {
       console.log(err);
       console.log("User data error");
-      //console.log(err.response);
     });
 
-    blankAxiosInstance.get(userProductsGetURL + params.id).then((res) => {
-      setProducts(res.data);
-      console.log("Products data done!");
-    }).catch((err) => {
-      console.log(err);
-      console.log("Products data error");
-      //console.log(err.response);
-    });
-  }, [params])
+    // Getting products data
+    const searchParams = new URLSearchParams(history.location.search);
+    const page = searchParams.get("page");
+    let url = new URL(userProductsGetURL + params.id);
+    if (page !== null) {
+      url.searchParams.set('page', page);
+    }
+    get_products(url, setProducts);
+  }, [params.id])
 
-  if (user === null) {
+  if (user === null || products === null) {
     return null;
   }
 
   return (
     <Box className='profile'>
       <h3 className='your-label'>User profile</h3>
-      <UserInfo data={user} isUser={isThisUser} />
-      <h3 className='your-label'>{(isThisUser) ? 'Your products' : user.username + "\'s products"}</h3>
-      <ProductsInfo products={products} isUser={isThisUser} />
+      <UserInfo data={user} isUser={isOwner} />
+      <h3 className='your-label'>{(isOwner) ? 'Your products' : user.username + "\'s products"}</h3>
+      {
+        (products.count === 0)
+        ? (
+            <Box className='default-block products-block no-products-block'>
+              <p>No products available.</p>
+            </Box>
+          )
+        : (
+            <Box>
+              <DisplayPagination products={products} setter={setProducts} />
+              <DisplayProducts
+                products={products.results}
+                size={'small'}
+                mode={'edit'}
+                isOwner={isOwner}
+              />
+              <DisplayPagination products={products} setter={setProducts} />
+            </Box>
+          )
+      }
     </Box>
   );
 }
@@ -97,51 +118,5 @@ export function UserInfo(props) {
 
       </Box>
     </Box>
-  );
-}
-
-export function ProductsInfo(props) {
-  const products = props.products;
-  const isUser = props.isUser;
-
-  return(
-    <Box className='products-block'>
-    {
-      Object.entries(products).map(([key, product]) => {
-        return(
-          <Box key={key} className='default-block product-card'>
-            <Box className='product-preview-block profile-preview-block'>
-              <img
-                src={(product.image !== null && product.image !== "")
-                  ? product.image 
-                  : noImageURL}
-                alt='no image'
-                className='product-preview profile-preview' />
-            </Box>
-
-            <Link className='product-info-block profile-product-info-block' to={'/' + detailProductRoute + '/' + product.id + '/'}>
-              <span className='product-title'>{product.title}</span>
-              <span className='product-description'>
-                {
-                  (product.description.length <= 100)
-                  ? product.description
-                  : (product.description.substring(0, 100).trim() + '...')
-                }
-              </span>
-            </Link>
-
-            <Box className='product-price-block'>
-              <span className='product-price'>{product.price}$</span>
-              {
-                (isUser) ? (<Link to={'/'} className="product-edit-link">Edit</Link>) : null
-              }
-              
-            </Box>
-
-          </Box>
-        )
-      })
-    }
-  </Box>
   );
 }

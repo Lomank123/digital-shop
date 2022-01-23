@@ -1,33 +1,26 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router";
-import { getUser } from "../utils";
+import { useSelector } from "react-redux";
+import { loginURL } from "../urls";
+import { addNextParam } from "../utils";
+import history from "../history";
 
 
 export default function SellerComponent(props) {
-  const [data, setData] = useState(null);
+  const userData = useSelector(state => state.user);
 
-  // Getting (and setting) user data
-  useLayoutEffect(() => {
-    getUser(true).then((res) => {
-      setData(res);
-      console.log("Seller required done!")
-    }).catch((err) => {
-      console.log("Seller Required error.");
-    })
-  }, [])
+  if (userData === 1) {
+    return <Redirect to={loginURL + '?next=' + history.location.pathname} />
+  }
 
-  if (data === null) {
+  if (userData === null) {
     return null;
 	}
 
   const Component = props.component;
   return (
     <>
-      {
-        (data !== null) ? 
-          ((data.seller === true) ? (<Component />) : (<Redirect to={'/'} />))
-          : null
-      }
+      {(userData.seller === true) ? (<Component />) : (<Redirect to={'/'} />)}
     </>
   )
 }

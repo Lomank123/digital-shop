@@ -55,8 +55,11 @@ class ProductViewSet(ModelViewSet):
     @action(methods=['get'], detail=False, url_path=r'get_user_products/(?P<user_id>[0-9])')
     def get_user_products(self, request, user_id):
         products = Product.objects.filter(created_by=user_id)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        page = self.paginate_queryset(products)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)       # Serializing paginated queryset
+            return self.get_paginated_response(serializer.data)     # Returning serialized data
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryViewSet(ModelViewSet):

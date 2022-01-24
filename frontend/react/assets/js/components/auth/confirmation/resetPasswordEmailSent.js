@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import history from "../../../history";
 
+import '../../../../styles/auth/auth.css';
+
 
 export default function ResetPasswordEmailSent() {
   const email = history.location.state.email;
@@ -14,29 +16,33 @@ export default function ResetPasswordEmailSent() {
 
     blankAxiosInstance.post(
       passwordResetURL, { email: email }).then((res) => {
-				//console.log(res.data.detail);
       }).catch((err) => {
         console.log(err.response);
       });
   }
 
   return(
-    <>
-      <h3>Reset password email sent</h3>
-      <p>
-        Email confirmation message has been sent. If you don't see any, press the button below to resend it.
-      </p>
-      <Box>
+    <Box className="default-block auth-block">
+      <h3 className="auth-h3">Reset password email sent</h3>
+
+      <Box textAlign={'center'}>
+        <span>
+          Email confirmation message has been sent. If you don't see any, press the button below to resend it.
+        </span>
+      </Box>
+
+      <Box className="auth-btns-block">
         <Button
+          className="auth-btn reset-resend-btn"
           type="button"
-          fullWidth
           variant="contained"
           color="primary"
           onClick={handleSubmit}
         >
-          Resend confirmation message
+          Send again
         </Button>
       </Box>
-    </>
+
+    </Box>
   );
 }

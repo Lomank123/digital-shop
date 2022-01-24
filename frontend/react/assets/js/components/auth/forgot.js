@@ -5,6 +5,9 @@ import { blankAxiosInstance } from '../../axios';
 import { passwordResetURL } from '../../urls';
 import history from '../../history';
 import { emailSentRoute } from '../../routes';
+import { Box } from '@material-ui/core';
+
+import '../../../styles/auth/auth.css';
 
 
 export default function Forgot() {
@@ -49,31 +52,38 @@ export default function Forgot() {
   }
 
   return (
-    <>
-      <h3>Forgot password</h3>
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="email"
-        label="Email Address"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={handleChange}
-        error={Boolean(errors.email)}
-        helperText={errors.email}
-      />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-      >
-        Send
-      </Button>
-    </>
+    <Box className='default-block auth-block'>
+      <h3 className='auth-h3'>Forgot password</h3>
+
+      <Box className='auth-textfield-block'>
+        <TextField
+          className='forgot-textfield'
+          variant="outlined"
+          margin="normal"
+          required
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          onChange={handleChange}
+          error={Boolean(errors.email)}
+          helperText={errors.email}
+        />
+      </Box>
+
+      <Box className='auth-btns-block'>
+        <Button
+          className='auth-btn'
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+        >
+          Send
+        </Button>
+      </Box>
+    </Box>
   );
 }

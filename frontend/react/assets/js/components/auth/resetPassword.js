@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { blankAxiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Box, Button } from '@material-ui/core';
 import { passwordResetConfirmURL } from '../../urls';
 import history from '../../history';
 import { resetRoute, confirmRoute } from '../../routes';
 import { useParams } from 'react-router';
+
+import '../../../styles/auth/auth.css';
 
 
 export default function ResetPassword() {
@@ -59,45 +61,51 @@ export default function ResetPassword() {
   }
 
   return (
-    <>
-      <h3>Reset password</h3>
-			<TextField
-				variant="outlined"
-				margin="normal"
-				required
-				fullWidth
-				name="password1"
-				label="Password"
-				type="password"
-				id="password1"
-				autoComplete="current-password"
-        error={Boolean(errors.password1) || Boolean(errors.uid) || Boolean(errors.token)}
-        helperText={errors.password1 || errors.uid || errors.token}
-				onChange={handleChange}
-			/>
-			<TextField
-				variant="outlined"
-				margin="normal"
-				required
-				fullWidth
-				name="password2"
-				label="Confirm password"
-				type="password"
-				id="password2"
-				autoComplete="confirm-password"
-				onChange={handleChange}
-        error={Boolean(errors.password2)}
-        helperText={errors.password2}
-			/>
-			<Button
-				type="submit"
-				fullWidth
-				variant="contained"
-				color="primary"
-				onClick={handleSubmit}
-			>
-				Confirm
-			</Button>
-    </>
+    <Box className='default-block auth-block'>
+      <h3 className='auth-h3'>Reset password</h3>
+
+			<Box className='auth-textfield-block'>
+				<TextField
+					variant="outlined"
+					margin="normal"
+					required
+					name="password1"
+					label="Password"
+					type="password"
+					id="password1"
+					autoComplete="current-password"
+					error={Boolean(errors.password1) || Boolean(errors.uid) || Boolean(errors.token)}
+					helperText={errors.password1 || errors.uid || errors.token}
+					onChange={handleChange}
+				/>
+				<TextField
+					variant="outlined"
+					margin="normal"
+					required
+					name="password2"
+					label="Confirm password"
+					type="password"
+					id="password2"
+					autoComplete="confirm-password"
+					onChange={handleChange}
+					error={Boolean(errors.password2)}
+					helperText={errors.password2}
+				/>
+			</Box>
+
+			<Box className='auth-btns-block'>
+				<Button
+					className='auth-btn'
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="primary"
+					onClick={handleSubmit}
+				>
+					Confirm
+				</Button>
+			</Box>
+
+    </Box>
   );
 }

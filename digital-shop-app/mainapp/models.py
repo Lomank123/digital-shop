@@ -10,8 +10,8 @@ from mainapp.validators import validate_file_size
 
 # Custom user model
 class CustomUser(AbstractUser):
-    username = models.CharField(max_length=64, unique=True, null=True, verbose_name='Username')
-    email = models.EmailField(max_length=128, unique=True, verbose_name='Email address')
+    username = models.CharField(max_length=20, unique=True, null=True, verbose_name='Username')
+    email = models.EmailField(max_length=64, unique=True, verbose_name='Email address')
     photo = models.FileField(
         null=True,
         blank=True,

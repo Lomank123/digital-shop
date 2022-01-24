@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { blankAxiosInstance } from '../../axios';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
@@ -11,6 +9,9 @@ import history from '../../history';
 import { getUser } from '../../utils';
 import { useLocation } from 'react-router';
 import { forgotRoute, signupRoute } from '../../routes';
+
+import '../../../styles/auth/login.css';
+import '../../../styles/auth/auth.css';
 
 
 export default function Login() {
@@ -77,69 +78,67 @@ export default function Login() {
 	}
 
 	return(
-		<>
-			<h3>Login</h3>
-			<TextField
-				variant="outlined"
-				margin="normal"
-				required
-				fullWidth
-				id="email"
-				label="Email"
-				name="email"
-				autoComplete="email"
-				autoFocus
-				onChange={handleChange}
-				error={Boolean(errors.email) || Boolean(errors.incorrect)}
-				helperText={errors.email || errors.incorrect}
-			/>
-			<TextField
-				variant="outlined"
-				margin="normal"
-				required
-				fullWidth
-				name="password"
-				label="Password"
-				type="password"
-				id="password"
-				autoComplete="current-password"
-				onChange={handleChange}
-				error={Boolean(errors.password) || Boolean(errors.incorrect)}
-				helperText={errors.password || errors.incorrect}
-			/>
-			<FormControlLabel
-				control={<Checkbox value="remember" color="primary" />}
-				label="Remember me"
-			/>
+		<Box className='default-block auth-block'>
+			<h3 className='auth-h3'>Login</h3>
 
-			<Box>
+			<Box className='auth-textfield-block'>
+				<TextField
+					className='login-field'
+					variant="outlined"
+					margin="normal"
+					required
+					id="email"
+					label="Email"
+					name="email"
+					autoComplete="email"
+					autoFocus
+					onChange={handleChange}
+					error={Boolean(errors.email) || Boolean(errors.incorrect)}
+					helperText={errors.email || errors.incorrect}
+				/>
+				<TextField
+					className='login-password-field'
+					variant="outlined"
+					margin="normal"
+					required
+					name="password"
+					label="Password"
+					type="password"
+					id="password"
+					autoComplete="current-password"
+					onChange={handleChange}
+					error={Boolean(errors.password) || Boolean(errors.incorrect)}
+					helperText={errors.password || errors.incorrect}
+				/>
+			</Box>
+
+			<Box className='auth-btns-block'>
 				<Button
+					className='login-btn'
 					type="submit"
-					fullWidth
 					variant="contained"
 					color="primary"
 					onClick={handleSubmit}
 				>
-					Sign In
+					Log In
 				</Button>
-			</Box>
-
-			<Box mt={2}>
+			
 				<Button
+					className='login-signup-btn'
 					variant="outlined"
 					onClick={e => handleClickRedirect(e, signupRoute)}
-					fullWidth
 					color="primary"
 				>
 					Sign Up
 				</Button>
+
 			</Box>
 
-			<Box mt={2} textAlign={"right"}>
-				<Link to={'/' + forgotRoute}>
-					Forgot password?
+			<Box className='login-forgot-block'>
+				<Link to={'/' + forgotRoute} className='forgot-link'>
+						Forgot password?
 				</Link>
 			</Box>
-		</>
+		</Box>
 	)
 }

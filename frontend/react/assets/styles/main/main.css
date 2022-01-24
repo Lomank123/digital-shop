@@ -24,3 +24,20 @@ button:focus {
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 16%);
   background-color: #fff;
 }
+
+.auth-block {
+  width: fit-content;
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  padding: 30px;
+  margin-top: 30px;
+}
+
+.auth-h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}

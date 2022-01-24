@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { logoutURL } from '../../urls';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useDispatch } from 'react-redux';
 import history from '../../history';
-import { blankAxiosInstance, axiosInstance } from '../../axios';
+import { axiosInstance } from '../../axios';
+
+import '../../../styles/auth/auth.css';
 
 
 export default function Logout() {
@@ -34,19 +36,21 @@ export default function Logout() {
 
 
   return (
-    <>
-      <h3>Logout</h3>
+    <Box className='default-block auth-block'>
+      <h3 className='auth-h3'>Logout</h3>
       <p>Do you want to logout?</p>
-      <Box>
-        <Button
-          variant="outlined"
-          type="submit"
-          color="primary"
-          onClick={handleSubmit}
-        >
-          Logout
-        </Button>
-      </Box>
-    </>
+
+      <Button
+        className='logout-btn'
+        variant="contained"
+        type="submit"
+        color="primary"
+        onClick={handleSubmit}
+      >
+        Logout
+      </Button>
+
+
+    </Box>
   );
 }

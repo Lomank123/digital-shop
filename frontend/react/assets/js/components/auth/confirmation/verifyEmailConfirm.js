@@ -1,10 +1,12 @@
-import { Button } from "@material-ui/core";
+import { Button, Box } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../../axios";
 import { signupVerifyEmailURL } from "../../../urls";
 import history from "../../../history";
 import { loginRoute } from "../../../routes";
+
+import '../../../../styles/auth/auth.css';
 
 
 export default function VerifyEmailConfirm() {
@@ -18,7 +20,6 @@ export default function VerifyEmailConfirm() {
       { key: params.key },
       { withCredentials: true, }
     ).then((res) => {
-      //console.log(res.data);
       history.push('/' + loginRoute);
     }).catch((err) => {
       console.log(err.response);
@@ -26,18 +27,23 @@ export default function VerifyEmailConfirm() {
   }
 
   return(
-    <>
-      <h3>Email confirmation</h3>
+    <Box className="default-block auth-block">
+      <h3 className="auth-h3">Email confirmation</h3>
       <p>To confirm your email click the button below.</p>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-      >
-        Confirm
-      </Button>
-    </>
+
+      <Box className="auth-btns-block">
+        <Button
+          className="auth-btn verify-confirm-btn"
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+        >
+          Confirm
+        </Button>
+      </Box>
+
+    </Box>
   );
 }

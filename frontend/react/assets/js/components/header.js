@@ -119,7 +119,7 @@ export default function Header() {
           <span className='logo-text'>Digital Shop</span>
         </Box>
         {links}
-        <Box className='auth-block'>
+        <Box className='header-auth-block'>
           {
             (userData !== null) ? (
               (userData !== 1) ? loggedIn : notLoggedIn

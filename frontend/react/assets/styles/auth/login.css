@@ -1,0 +1,22 @@
+.login-btn {
+  min-height: 30px !important;
+  min-width: 130px !important;
+  margin-right: 5px !important;
+}
+
+.login-signup-btn {
+  min-height: 30px !important;
+  min-width: 130px !important;
+  margin-left: 5px !important;
+}
+
+.login-forgot-block {
+  text-align: end;
+  width: 100%;
+
+  margin-top: 15px;
+}
+
+.forgot-link {
+  width: fit-content;
+}

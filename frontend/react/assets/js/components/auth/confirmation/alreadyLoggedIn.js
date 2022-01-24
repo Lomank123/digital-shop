@@ -1,19 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Box from '@material-ui/core/Box';
-import { logoutRoute } from "../../../routes";
+import { Box, Button } from "@material-ui/core";
+import history from "../../../history";
+
+import '../../../../styles/auth/auth.css';
 
 
 export default function AlreadyLoggedIn() {
+
+  const handleRedirect = (e) => {
+    e.preventDefault();
+    history.push('/');
+  } 
+
   return (
-    <>
-      <h3>Already logged in</h3>
-      <p>You have already logged in. Maybe you want to logout or go to home page?</p>
-      <Box>
-        <Link to="/">Home</Link>
-        <br />
-        <Link to={'/' + logoutRoute}>Logout</Link>
+    <Box className="default-block auth-block">
+      <h3 className="auth-h3">Already logged in</h3>
+
+      <Box textAlign={'center'}>
+        <p>You have already logged in. Maybe you want to go to home page?</p>
       </Box>
-    </>
+
+      <Box className="auth-btns-block">
+        <Button
+          className="auth-btn"
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={handleRedirect}
+        >
+          Home
+        </Button>
+      </Box>
+
+    </Box>
   );
 }

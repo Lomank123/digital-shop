@@ -98,12 +98,6 @@
   border-radius: 0px !important;
 }
 
-.create-product-btn {
-  align-self: flex-start;
-  margin-top: 30px !important;
-  margin-bottom: 30px !important;
-}
-
 .field-block {
   margin-top: 6px;
   margin-bottom: 6px;
@@ -120,4 +114,22 @@
 .image-upload-block {
   display: flex;
   flex-direction: column;
+}
+
+.add-buttons-block {
+  display: flex;
+  width: 100%;
+}
+
+.create-product-btn {
+  align-self: flex-start;
+  margin-top: 30px !important;
+  margin-bottom: 30px !important;
+}
+
+.delete-product-btn {
+  background-color: rgba(177, 5, 5, 0.856) !important;
+  margin-top: 30px !important;
+  margin-bottom: 30px !important;
+  margin-left: 10px !important;
 }

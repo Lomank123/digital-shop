@@ -1,11 +1,12 @@
-import React from "react";
-import { ShoppingCart } from '@material-ui/icons';
+import React, { useState } from "react";
+import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { detailProductRoute } from '../../routes';
+import { detailProductRoute, editProductRoute } from '../../routes';
 import { noImageURL } from "../../urls";
 import { Box, Button, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../../axios";
 import history from "../../history";
+import { DeleteDialog } from "../dialog";
 
 
 export function DisplayProducts(props) {
@@ -14,11 +15,27 @@ export function DisplayProducts(props) {
   const mode = props.mode;            // default, edit
   const isOwner = props.isOwner;      // For edit mode
 
+  const [open, setOpen] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
+
   // normal + default => for home page
   // small + edit + isOwner => profile page
   // - prop: products - dict with products info to display
 	// - prop: size (small, normal) - sets the size of each product card (normal for home page, small for profile page)
 	// - prop: mode (default, edit) - sets e.g. 'Edit' button for profile page instead of purchase button (which is set by default)
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
+  const handleOpen = (id) => {
+    setCurrentId(id);
+    setOpen(true);
+  }
+
+  const handleEdit = (id) => {
+    history.push(`/${editProductRoute}/${id}/`);
+  }
 
   return(
     <Box className='products-block'>
@@ -56,8 +73,27 @@ export function DisplayProducts(props) {
               <span className='product-price'>{product.price}$</span>
               {
                 (mode === 'edit')
-                ? ((isOwner) ? (<Link to={'/'} className="product-edit-link">Edit</Link>) : null)
-                : (<IconButton className='cart-btn'><ShoppingCart /></IconButton>)
+                ? (
+                    (isOwner)
+                    ? (
+                        <Box display={'flex'} justifyContent={'flex-end'}>
+                          <IconButton className="display-delete-btn" onClick={() => {handleOpen(product.id)}}><Delete /></IconButton>
+                          <IconButton className="display-edit-btn" onClick={() => {handleEdit(product.id)}}><Edit /></IconButton>
+                          <DeleteDialog
+                            productId={currentId}
+                            open={open}
+                            handleClose={handleClose}
+                            reload={true}
+                          />
+                        </Box>
+                      )
+                    : null
+                  )
+                : (
+                    (product.in_stock) ? (<IconButton className='cart-btn'><ShoppingCart /></IconButton>) : (
+                      <span className="out-of-stock-label" >Out of stock</span>
+                    )
+                  )
               }
             </Box>
           );

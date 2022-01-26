@@ -15,6 +15,7 @@ export const testRoute = 'test';
 export const profileRoute = 'profile';
 export const addProductRoute = 'add-product';
 export const detailProductRoute = 'detail';
+export const editProductRoute = 'edit';
 
 // Can be used as id url param
 export const idValues = ':id([0-9]+)';

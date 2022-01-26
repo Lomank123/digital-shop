@@ -27,7 +27,7 @@ import { applyMiddleware } from 'redux';
 import UserProfile from './components/user/profile';
 import { Box } from '@material-ui/core';
 import NotFound from './components/errors/notFound404';
-import AddProduct from './components/product/add';
+import AddEditProduct from './components/product/add-edit';
 import SellerComponent from './parent-components/sellerComponent';
 import DetailProduct from './components/product/detail';
 
@@ -62,8 +62,9 @@ const routing = (
         <Box className='container'>
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
-            <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddProduct} />} />
+            <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddEditProduct} />} />
             <Route path={`/${routes.detailProductRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
+            <Route path={`/${routes.editProductRoute}/${routes.idValues}`} component={() => <SellerComponent component={AddEditProduct} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 

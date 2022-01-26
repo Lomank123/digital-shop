@@ -60,13 +60,23 @@ export default function UserProfile() {
     <Box className='profile'>
       <h3 className='your-label'>User profile</h3>
       <UserInfo data={user} isUser={isOwner} />
-      <h3 className='your-label'>{(isOwner) ? 'Your products' : user.username + "\'s products"}</h3>
+
+      {
+        (user.is_seller)
+        ? (<h3 className='your-label'>{(isOwner) ? 'Your products' : user.username + "\'s products"}</h3>)
+        : null
+      }
+
       {
         (products.count === 0)
-        ? (
-            <Box className='default-block products-block no-products-block'>
-              <p>No products available.</p>
-            </Box>
+        ? ( 
+            (user.is_seller)
+            ? (
+                <Box className='default-block products-block no-products-block'>
+                  <p>No products available.</p>
+                </Box>
+              )
+            : null
           )
         : (
             <Box>

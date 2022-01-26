@@ -96,6 +96,7 @@ a.product-info-block {
 .product-price-block {
   display: flex;
   height: 100%;
+  min-width: 100px;
   flex-direction: column;
   justify-content: space-between !important;
   align-self: flex-start;
@@ -107,8 +108,15 @@ a.product-info-block {
 
 .product-price {
   font-weight: bold;
-  font-size: 17px;
+  font-size: 18px;
   color: green;
+  text-align: end;
+}
+
+.out-of-stock-label {
+  font-size: 14px;
+  text-align: end;
+  color: rgba(206, 29, 29, 0.76);
 }
 
 .cart-btn {

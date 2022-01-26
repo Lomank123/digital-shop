@@ -17,6 +17,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from mainapp.models import Product, Category, CustomUser
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer
 from mainapp.pagination import ProductPagination
+from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
 
 
 class ProductViewSet(ModelViewSet):
@@ -26,10 +27,11 @@ class ProductViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'get_category_products', 'get_user_products']:
+        safe_actions = ['list', 'retrieve', 'get_category_products', 'get_user_products']
+        if self.action in safe_actions:
             permission_classes = [AllowAny]
         else:
-            permission_classes = [IsAdminUser]
+            permission_classes = [IsSellerOrReadOnly, IsOwnerOrReadOnly]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
@@ -71,7 +73,8 @@ class CategoryViewSet(ModelViewSet):
         return queryset
     
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        safe_actions = ['list', 'retrieve']
+        if self.action in safe_actions:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]

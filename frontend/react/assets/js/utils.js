@@ -64,3 +64,20 @@ export function resizeImage(image, filename, setter) {
     });
   }, 'image/jpeg', 1);
 }
+
+// This func gets timestamp for images (or other files)
+export function getTimestamp(filename='') {
+  const date = new Date();
+  // Formatting date
+  const dateString = date.toISOString()
+    .replaceAll('T', '_')
+    .replaceAll('Z', '')
+    .replaceAll('.', '-')
+    .replaceAll(':', '-');
+  
+  if (filename === '') {
+    return dateString;
+  }
+
+  return `${dateString}_${filename}`;
+}

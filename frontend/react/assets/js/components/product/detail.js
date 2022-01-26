@@ -1,20 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, IconButton } from "@material-ui/core";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../axios";
 import { categoryGetURL, noImageURL, productGetURL, userGetURL } from "../../urls";
 import { Link } from "react-router-dom";
 import history from "../../history";
+import { editProductRoute, profileRoute } from "../../routes";
+import { useSelector } from "react-redux";
+import { Delete, Edit } from '@material-ui/icons';
+import { DeleteDialog } from "../dialog";
 
 import '../../../styles/product/detail.css';
-import { profileRoute } from "../../routes";
+import '../../../styles/user/profile.css';
 
 
 export default function DetailProduct() {
   const params = useParams();
+  const userData = useSelector(state => state.user);
   const [author, setAuthor] = useState(null);
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
+  const handleEdit = (id) => {
+    history.push(`/${editProductRoute}/${id}/`);
+  }
 
   useEffect(() => {
     blankAxiosInstance.get(productGetURL + params.id + '/').then((res) => {
@@ -53,7 +71,7 @@ export default function DetailProduct() {
     }
   }, [product])
 
-  if (product === null || author === null) {
+  if (product === null || author === null || userData === null) {
     return null;
   }
 
@@ -113,6 +131,25 @@ export default function DetailProduct() {
             <span className="price">{product.price}$</span>
           </Box>
         </Box>
+
+        {
+          (userData.id === author.id)
+          ? (
+              <Box className="detail-links-block">
+                <IconButton className="display-delete-btn" onClick={handleOpen}><Delete /></IconButton>
+                <IconButton className="display-edit-btn" onClick={() => {handleEdit(params.id)}}><Edit /></IconButton>
+                <DeleteDialog
+                  productId={params.id}
+                  open={open}
+                  handleClose={handleClose}
+                  reload={'home'}
+                />
+              </Box>
+            )
+          : null
+        }
+
+
       </Box>
 
       <span className="author-info-label">Seller info</span>

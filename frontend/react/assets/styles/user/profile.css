@@ -93,3 +93,16 @@
 .product-edit-link {
   align-self: flex-end;
 }
+
+.display-delete-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0px !important;
+  margin-right: 10px !important;
+}
+
+.display-edit-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0px !important;
+}

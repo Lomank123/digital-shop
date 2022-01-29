@@ -9,6 +9,7 @@ import { DisplayPagination, DisplayProducts, get_products } from '../product/dis
 import history from '../../history';
 
 import '../../../styles/user/profile.css';
+import { editProfileRoute } from '../../routes';
 
 
 export default function UserProfile() {
@@ -57,7 +58,7 @@ export default function UserProfile() {
   }
 
   return (
-    <Box className='profile'>
+    <Box className='default-main-block'>
       <h3 className='your-label'>User profile</h3>
       <UserInfo data={user} isUser={isOwner} />
 
@@ -122,7 +123,7 @@ export function UserInfo(props) {
 
         <Box className='edit-btn-block'>
           {
-            (isUser) ? <Link to={'/'}>Edit profile</Link> : null
+            (isUser) ? <Link to={`/${editProfileRoute}/${user.id}`}>Edit profile</Link> : null
           }
         </Box>
 

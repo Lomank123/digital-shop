@@ -85,7 +85,7 @@ export default function DetailProduct() {
   }
 
   return(
-    <Box className="detail">
+    <Box className="default-main-block product-detail">
       <Box className="small-text category-block">
         <span>Category: <Link to="" onClick={handleClickRedirect}>{product.category_name}</Link></span>
       </Box>

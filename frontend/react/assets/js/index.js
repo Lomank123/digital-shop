@@ -30,6 +30,7 @@ import NotFound from './components/errors/notFound404';
 import AddEditProduct from './components/product/add-edit';
 import SellerComponent from './parent-components/sellerComponent';
 import DetailProduct from './components/product/detail';
+import EditProfile from './components/user/edit';
 
 import '../styles/main/main.css';
 
@@ -63,13 +64,15 @@ const routing = (
           <Switch>
             <Route exact path="/" component={() => <PageComponent component={Home} />} />
             <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddEditProduct} />} />
-            <Route path={`/${routes.detailProductRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
+            <Route path={`/${routes.productRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
             <Route path={`/${routes.editProductRoute}/${routes.idValues}`} component={() => <SellerComponent component={AddEditProduct} />} />
+
+            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
+            <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 
             <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
             <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
             <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
             <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
@@ -78,7 +81,7 @@ const routing = (
                   <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
                   <Route 
                     path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`}
-                    component={() => <AuthComponent component={VerifyEmailConfirm} />} 
+                    component={() => <PageComponent component={VerifyEmailConfirm} />} 
                   />
                 </>
               )}

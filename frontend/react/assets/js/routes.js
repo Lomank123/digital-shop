@@ -1,4 +1,11 @@
-// Route names
+// Routes
+
+// Can be used as id url param
+export const idValues = ':id([0-9]+)';
+// If you're using regex and see a backslash '\' then add another backslash otherwise regex won't work in some cases
+export const resetValues = ':uid([0-9A-Za-z_\\-]+)/:token([0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})';
+
+// Auth
 export const authRoute = 'auth';
 export const signupRoute = 'signup';
 export const signupConfirmValues = ':key([-:\\w]+)';
@@ -8,20 +15,14 @@ export const logoutRoute = 'logout';
 export const forgotRoute = 'forgot';
 export const emailSentRoute = 'email-sent';
 export const resetRoute = 'reset';
-// If you're using regex and see a backslash '\' then add another backslash otherwise regex won't work in some cases
-export const resetValues = ':uid([0-9A-Za-z_\\-]+)/:token([0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})';
 export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
+
+// Profile
 export const profileRoute = 'profile';
-export const addProductRoute = 'add-product';
-export const detailProductRoute = 'detail';
-export const editProductRoute = 'edit';
+export const editProfileRoute = `${profileRoute}/edit`;
 
-// Can be used as id url param
-export const idValues = ':id([0-9]+)';
-
-// Unused
-//export const categoryRoute = 'category';
-//export const categoryValues = ':category_verbose([0-9A-Za-z]+)';
-
-
+// Product
+export const productRoute = 'product';
+export const addProductRoute = `${productRoute}/add`;
+export const editProductRoute = `${productRoute}/edit`;

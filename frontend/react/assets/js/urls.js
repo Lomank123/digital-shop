@@ -28,8 +28,10 @@ export const logoutURL = apiRestAuthURL + 'logout/';
 export const tokenRefreshURL = apiRestAuthURL + 'token/' + 'refresh/';
 
 // Password reset
-export const passwordResetURL = apiRestAuthURL + 'password/' + 'reset/';
+export const passwordURL = apiRestAuthURL + 'password/';
+export const passwordResetURL = passwordURL + 'reset/';
 export const passwordResetConfirmURL = passwordResetURL + 'confirm/';
+export const passwordChangeURL = passwordURL + 'change/';
 
 // Auth urls
 export const loginURL = '/login/';

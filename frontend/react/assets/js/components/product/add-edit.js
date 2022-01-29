@@ -1,14 +1,15 @@
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { MenuItem, TextField, Box, Button, Checkbox, FormControlLabel, IconButton } from "@material-ui/core";
+import { MenuItem, TextField, Box, Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import { axiosInstance, blankAxiosInstance } from "../../axios";
 import { categoryGetURL, productGetURL } from "../../urls";
-import { Clear } from '@material-ui/icons'
-import { resizeImage, getTimestamp } from "../../utils";
 import { useParams } from "react-router";
 import { DeleteDialog } from "../dialog";
+import { ImageUpload } from "../imageUpload";
+import history from "../../history";
 
-import '../../../styles/product/add.css';
+import '../../../styles/product/add-edit.css';
+import { productRoute } from "../../routes";
 
 
 export default function AddEditProduct() {
@@ -37,9 +38,8 @@ export default function AddEditProduct() {
 
 	const [errors, setErrors] = useState(errorsInitialState);
   const [postData, setPostData] = useState(initialFormData);
-  const [postImage, setPostImage] = useState(null);                     // For storing image
-  const [previewImage, setPreviewImage] = useState(null);               // For preview image
-  const [primaryImage, setPrimaryImage] = useState({ image: null });    // For primary loaded image (needed for comparison before sending request)
+  const [postImage, setPostImage] = useState(null);   // For storing image
+  const [imgUrl, setImgUrl] = useState(null);
 
   // params.id is the indicator that we're trying to edit product
   // Categories get
@@ -55,9 +55,6 @@ export default function AddEditProduct() {
   useLayoutEffect(() => {
     // If id param exists then it's editing otherwise creating new
     if (params.id) {
-      console.log('Edit product mode.');
-      // Here we want to receive product info using it's id
-      // And then set it to postData form
       blankAxiosInstance.get(productGetURL + params.id + '/').then(async (res) => {
         setPostData({
           category: res.data.category,
@@ -66,46 +63,17 @@ export default function AddEditProduct() {
           price: res.data.price,
           in_stock: res.data.in_stock,
         });
-        
-        // Setting image
-        await fetch(res.data.image).then(result => result.blob()).then((blob) => {
-          let oldName = res.data.image.split('/').pop();
-          let file = new File([blob], oldName, { type: 'image/jpeg', lastModified: Date.now() });
-          setPostImage({
-            image: file,
-          });
-          setPrimaryImage({
-            image: file,
-          });
-          console.log("Image get done!");
-        }).catch((error) => {
-          console.log("Image get err.");
-        });
+
+        setImgUrl(res.data.image);
 
         console.log("Edit product get done!");
       }).catch((err) => {
         console.log("Edit product get error.");
       })
-      // Before making request there should be the 'if' checking params.id
-      // We can either check it to display different button with 'PUT' request (e.g. 'Edit' button)
-
-      // After editing don't forget to update postData form with new values (not with empty strings)
-    } else {
-      console.log('Create product mode.');
     }
   }, [])
 
-  // Setting preview image
-  useEffect(() => {
-    if (!postImage) {
-        setPreviewImage(null);
-        return
-    }
-    const objectUrl = URL.createObjectURL(postImage.image);
-    setPreviewImage(objectUrl);
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl)
-  }, [postImage])
+
 
   // Handles all changes in different fields
   const handleChange = (e) => {
@@ -119,34 +87,6 @@ export default function AddEditProduct() {
         ...postData,
         [e.target.name]: e.target.checked
       });
-    } else if (e.target.name === 'image') {
-      if (!e.target.files || e.target.files.length === 0) {
-        setPostImage(null);
-        return
-      }
-      const fileSize = e.target.files[0].size / 1024 / 1024; // in MB
-      // Checking file size
-      if (fileSize > 1.5) {
-        console.log("File size exceeds 1.5 MB. Cannot load this image.");
-        setPostImage(null);
-        setErrors({
-          ...errors,
-          image: 'File size exceeds 1.5 MB. Cannot load this image.',
-        })
-        return
-      } else {
-        setErrors({
-          ...errors,
-          image: '',
-        })
-      }
-
-      const blob = e.target.files[0];
-      const newFile = new File([blob], getTimestamp(blob.name), { type: blob.type });
-
-      setPostImage({
-        image: newFile,
-      })
     } else {
       // All other text fields
       setPostData({
@@ -154,52 +94,6 @@ export default function AddEditProduct() {
         [e.target.name]: e.target.value.trim()
       });
     }
-  }
-
-  // This function may be used instead of handleChange in input tag with id "raised-button-file"
-  // It will force to resize the image if it's bigger than needed (default resolution: 500x500)
-  const handleImageUpload = (e) => {
-    // Checking file availability
-    if (!e.target.files || e.target.files.length === 0) {
-      setPostImage(null);
-      //setErrors({
-      //  ...errors,
-      //  image: 'No files detected. Try again.',
-      //})
-      return
-    }
-
-    var file = e.target.files[0];
-    const fileSize = file.size / 1024 / 1024; // in MB
-    // Checking file size
-    if (fileSize > 1.5) {
-      console.log("File size exceeds 1.5 MB. Cannot load this image.");
-      setPostImage(null);
-      setErrors({
-        ...errors,
-        image: 'File size exceeds 1.5 MB. Cannot load this image.',
-      })
-      return
-    }
-
-    if (file.type.match(/image.*/)) {
-      console.log('An image has been loaded');
-      var reader = new FileReader();
-
-      reader.onload = function (readerEvent) {
-        var image = new Image();
-        image.onload = function (imageEvent) {
-          resizeImage(image, file.name, setPostImage);
-        }
-        image.src = readerEvent.target.result;
-      }
-      reader.readAsDataURL(file);
-    }
-  }
-
-  const handleDeleteImage = (e) => {
-    e.preventDefault();
-    setPostImage(null);
   }
 
   const handleSubmit = (e) => {
@@ -210,12 +104,13 @@ export default function AddEditProduct() {
     formData.append('category', postData.category);
     formData.append('title', postData.title);
     formData.append('description', postData.description);
+    
     if (postImage !== null) {
-      if (postImage.image !== primaryImage.image) {
-        formData.append('image', postImage.image);
+      if (postImage === '') {
+        formData.append('image', '');
+      } else {
+        formData.append('image', postImage);
       }
-    } else {
-      formData.append('image', '');
     }
     formData.append('price', postData.price);
     formData.append('in_stock', postData.in_stock);
@@ -241,10 +136,11 @@ export default function AddEditProduct() {
     axiosInstance(config).then((res) => {
       // Reseting errors
       setErrors(errorsInitialState);
-
       // If it was editing then no need to reset fields
       if (params.id) {
         console.log('Product edited!');
+        setPostImage(null);
+        history.push('/' + productRoute + '/' + params.id + '/');
         return;
       }
 
@@ -281,7 +177,7 @@ export default function AddEditProduct() {
   }
 
   return (
-    <Box className="add-product">
+    <Box className="default-main-block">
       <h2 className="head-label">{(params.id) ? 'Edit product' : 'Create product'}</h2>
 
       <Box className="default-block form-block">
@@ -289,7 +185,7 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Choose category:</p>
           <TextField
-            className="field"
+            className="form-field"
             select
             variant="outlined"
             id="category-select"
@@ -315,7 +211,7 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Write a title:</p>
           <TextField
-            className="field"
+            className="form-field"
             variant="outlined"
             margin="normal"
             required
@@ -333,7 +229,7 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Enter price:</p>
           <TextField
-            className="field"
+            className="form-field"
             type='number'
             variant="outlined"
             margin="normal"
@@ -352,7 +248,7 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Describe your product:</p>
           <TextField
-            className="field"
+            className="form-field"
             variant="outlined"
             margin="normal"
             id="description"
@@ -367,53 +263,12 @@ export default function AddEditProduct() {
           />
         </Box>
 
-        <Box className="field-block image-upload-block">
-          <p className="field-label">Upload image:</p>
-          <Box className="upload-block">
-            <input
-              accept="image/*"
-              className='image-input'
-              label="image"
-              name="image"
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              type="file"
-              value={postData.image}
-              onChange={handleChange}
-            />
-            { previewImage ?
-              (
-                <Box className="img-block">
-                  <a target={'_blank'} href={previewImage} className="img-link" >
-                    <img className="product-image" src={previewImage} alt="Image" />
-                  </a>
-                  <Box className="clear-btn-layout">
-                    <IconButton
-                      className="clear-btn"
-                      onClick={handleDeleteImage}
-                    >
-                      <Clear className="clear-icon" />
-                    </IconButton>
-                  </Box>
-                </Box>
-              )
-              : (
-                <label className="btn-label-upload" htmlFor="raised-button-file">
-                  <Box className="choose-image-block" component="span">
-                    <span className="choose-image-text">Click here to choose image</span>
-                  </Box>
-                </label>
-              )
-            }
-          </Box>
-          {
-            (errors.image !== null && errors.image !== '') ? (
-              <Box className="product-image-error-block">
-                <span className="product-image-error-text">{errors.image}</span>
-              </Box>
-            ) : null
-          }
-        </Box>
+        <ImageUpload
+          postImage={postImage}
+          setPostImage={setPostImage}
+          url={imgUrl}
+          edit={(params.id) ? true : false}
+        />
 
         <Box className="field-block">
           <p className="field-label">Product availability:</p>
@@ -441,7 +296,7 @@ export default function AddEditProduct() {
           color="primary"
           onClick={handleSubmit}
         >
-          { (params.id) ? 'Edit product' : 'Add product' }
+          { (params.id) ? 'Save' : 'Add' }
         </Button>
         {
           (params.id) ? (
@@ -452,7 +307,7 @@ export default function AddEditProduct() {
                 color="primary"
                 onClick={handleOpen}
               >
-                Delete product
+                Delete
               </Button>
               <DeleteDialog
                 productId={params.id}

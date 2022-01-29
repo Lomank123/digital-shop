@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.exceptions import NotAuthenticated
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -25,5 +26,9 @@ class IsSellerOrReadOnly(permissions.BasePermission):
 	def has_permission(self, request, view):
 		if request.method in permissions.SAFE_METHODS:
 			return True
-		return bool(request.user and request.user.is_seller)
 
+		try:
+			permission = bool(request.user and request.user.is_seller)
+			return permission
+		except AttributeError:
+			raise NotAuthenticated()

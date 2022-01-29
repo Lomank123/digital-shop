@@ -18,10 +18,21 @@ LOGOUT_REDIRECT_URL = '/login/'
 # django-allauth params
 
 SITE_ID = 1
-#ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# If you want to let users log in even if they didn't verify their email choose "optional"
+# "none" - no email message at all
+# "mandatory" - unable to log in until confirm email. Sends confirmation email message
+# "optional" - user can login even without email confirmation. Sends confirmation email message
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+# Determines the expiration date of email confirmation mails (# of days). 3 by default
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+# Cooldown before sending another verification email message (in seconds, default 180)
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+# This enabled old_password field in password change endpoint
+OLD_PASSWORD_FIELD_ENABLED = True
+# Set this to True to logout when password was changed
+#LOGOUT_ON_PASSWORD_CHANGE = True
 
 
 # Token authentication

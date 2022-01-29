@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { detailProductRoute, editProductRoute } from '../../routes';
+import { productRoute, editProductRoute } from '../../routes';
 import { noImageURL } from "../../urls";
 import { Box, Button, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../../axios";
@@ -55,7 +55,7 @@ export function DisplayProducts(props) {
           const infoBox = (
             <Link
               className={'product-info-block' + ((size === 'small') ? (' ' + 'profile-product-info-block') : '')}
-              to={'/' + detailProductRoute + '/' + product.id + '/'}
+              to={'/' + productRoute + '/' + product.id + '/'}
             >
               <span className='product-title'>{product.title}</span>
               <span className='product-description'>

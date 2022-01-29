@@ -19,6 +19,14 @@ button:focus {
   flex-direction: column;
 }
 
+.default-main-block {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
 .default-block {
   border-radius: 8px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 16%);
@@ -40,4 +48,20 @@ button:focus {
 .auth-h3 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.form-field {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.form-btns-block {
+  display: flex;
+  width: 100%;
+}
+
+.form-submit-btn {
+  align-self: flex-start;
+  min-width: 100px !important;
+  margin-top: 10px !important;
 }

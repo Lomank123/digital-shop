@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from collections import OrderedDict
+from allauth.account.models import EmailAddress
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -102,3 +103,24 @@ class UserViewSet(ModelViewSet):
         else:
             queryset = CustomUser.objects.filter(pk=self.request.user.pk)
         return queryset
+
+    def update(self, request, *args, **kwargs):
+        # We need to change EmailAdress model instance before updating user instance
+        # So here we serialize data first
+        # Here we passing self.get_object(), because we need our existing object that is going to be changed
+        # Without it there'll be an error upon checking is_valid(), obj with this username already exists
+        serializer = self.get_serializer(self.get_object(), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Then get new email from validated data
+        new_email = serializer.validated_data['email']
+        # Checking if new email equals to old one
+        if self.request.user.email != new_email:
+            # If not, changing email address and sending confirmation message to new email
+            print("Email changed")
+            address = EmailAddress.objects.filter(user=self.request.user).get()
+            address.change(request, new_email)  # This does all the magic (sends email message and change EmailAdress instance)
+            print("Confirmation message sent")
+        else:
+            print("Email is the same")
+        # Performing update of user instance
+        return super().update(request, *args, **kwargs)

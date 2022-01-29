@@ -1,21 +1,15 @@
-.add-product {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  max-width: 900px;
-  width: 100%;
+.field-block {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
-.form-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  padding: 20px;
+.field-label {
+  margin-bottom: 6px;
 }
 
-.head-label {
-  margin-bottom: 30px;
+.image-upload-block {
+  display: flex;
+  flex-direction: column;
 }
 
 .upload-block {
@@ -96,40 +90,4 @@
   height: 10px;
   background: black !important;
   border-radius: 0px !important;
-}
-
-.field-block {
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-.field-label {
-  margin-bottom: 6px;
-}
-
-.field {
-  margin-top: 0px !important;
-}
-
-.image-upload-block {
-  display: flex;
-  flex-direction: column;
-}
-
-.add-buttons-block {
-  display: flex;
-  width: 100%;
-}
-
-.create-product-btn {
-  align-self: flex-start;
-  margin-top: 30px !important;
-  margin-bottom: 30px !important;
-}
-
-.delete-product-btn {
-  background-color: rgba(177, 5, 5, 0.856) !important;
-  margin-top: 30px !important;
-  margin-bottom: 30px !important;
-  margin-left: 10px !important;
 }

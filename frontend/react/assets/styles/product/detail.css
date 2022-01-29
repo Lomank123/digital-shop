@@ -1,3 +1,7 @@
+.product-detail {
+  max-width: 1150px !important;
+}
+
 .small-text {
   min-width: 100%;
   font-size: 14px;
@@ -35,8 +39,8 @@
 }
 
 .image {
-  width: 400px;
-  height: 600px;
+  width: 300px;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -48,7 +52,7 @@
 }
 
 .title {
-  font-size: 48px;
+  font-size: 40px;
   margin-bottom: 20px;
 }
 

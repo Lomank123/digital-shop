@@ -1,0 +1,30 @@
+.form-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.head-label {
+  margin-bottom: 30px;
+}
+
+.add-buttons-block {
+  display: flex;
+  width: 100%;
+}
+
+.create-product-btn {
+  align-self: flex-start;
+  width: 100px !important;
+  margin-top: 15px !important;
+  margin-bottom: 30px !important;
+}
+
+.delete-product-btn {
+  background-color: rgba(177, 5, 5, 0.856) !important;
+  width: 100px !important;
+  margin-top: 15px !important;
+  margin-bottom: 30px !important;
+  margin-left: 10px !important;
+}

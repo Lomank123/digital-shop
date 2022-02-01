@@ -1,12 +1,13 @@
 import React from 'react';
-import { logoutURL } from '../../urls';
+import { cartGetURL, logoutURL, userDeleteCartCookieURL } from '../../urls';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useDispatch } from 'react-redux';
 import history from '../../history';
-import { axiosInstance } from '../../axios';
+import { axiosInstance, blankAxiosInstance } from '../../axios';
 
 import '../../../styles/auth/auth.css';
+import { getCart } from '../../utils';
 
 
 export default function Logout() {
@@ -16,8 +17,13 @@ export default function Logout() {
 		e.preventDefault();
 
     // Logout request
-    axiosInstance.post(logoutURL, {}, { params: { redirect: false } }).then((res) => {
+    axiosInstance.post(logoutURL, {}, { params: { redirect: false } }).then(async (res) => {
+        // Deleting user cart id cookie
+        await blankAxiosInstance.post(userDeleteCartCookieURL, {});
+        // Creating new cart if previous one attaches to user
+        await getCart();
 				// Dispatching with user logged out
+        // Order is important, that's why dispatching data should be the last operation
 				dispatch({
           type: 'get_user',
           payload: 1,

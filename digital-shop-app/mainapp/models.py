@@ -74,6 +74,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Is active')
     published = models.DateTimeField(auto_now_add=True, verbose_name='Published in')
     updated = models.DateTimeField(auto_now=True, verbose_name='Updated in')
+    quantity = models.IntegerField(default=1, verbose_name='Quantity')
 
     def __str__(self):
         return self.title
@@ -84,12 +85,27 @@ class Product(models.Model):
         ordering = ['-published']
 
 
-"""
-# For the future
-# Represents shopping cart, may contain multiple products
 class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name="User")
+    is_deleted = models.BooleanField(default=False, verbose_name='Deleted')
     creation_date = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Creation date')
-    # TODO: Need to find what to add here from others
-    # Many-to-many field (because a single cart may contain multiple products and multiple carts may contain the same product)
-    # Foreign key field (because cart owner is out user and nobody else)
-"""
+
+    class Meta:
+        verbose_name_plural = 'Carts'
+        verbose_name = 'Cart'
+        ordering = ['-creation_date']
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Cart")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
+    quantity = models.IntegerField(default=1, verbose_name="Quantity")
+
+    @property
+    def total_price(self):
+        "Returns total price for amount of product"
+        return self.quantity * self.product.price
+
+    class Meta:
+        verbose_name_plural = 'Cart items'
+        verbose_name = 'Cart item'

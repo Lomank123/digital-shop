@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,10 +16,11 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from mainapp.models import Product, Category, CustomUser
-from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer
+from mainapp.models import Product, Category, CustomUser, Cart, CartItem
+from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer
 from mainapp.pagination import ProductPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
+from mainapp.services import CartService
 
 
 class ProductViewSet(ModelViewSet):
@@ -87,9 +89,9 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     def get_permissions(self):
-        if self.action in ['list']:
+        if self.action in ['list', 'get_user_cart']:
             permission_classes = [IsAuthenticated]
-        elif self.action in ['retrieve']:
+        elif self.action in ['retrieve', 'delete_user_cart_id_cookie']:
             # AllowAny because we'll need to retrieve user data in product detail page
             # And as for get_user_products, for example, when accessing another user's page we want to see their products
             permission_classes = [AllowAny]
@@ -124,3 +126,94 @@ class UserViewSet(ModelViewSet):
             print("Email is the same")
         # Performing update of user instance
         return super().update(request, *args, **kwargs)
+
+    # Used on user log in
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_user_cart'
+    )
+    def get_user_cart(self, request):
+        response = Response(status=status.HTTP_200_OK)
+        cart_obj = Cart.objects.filter(user=self.request.user, is_deleted=False).first()
+        # Perhaps this code should be moved to separate service (UserCartService)
+        # Here we set anonymous cart as a new user cart if logged in user doesn't have one
+        if not cart_obj:
+            anon_cart_id = self.request.COOKIES["cart_id"]
+            anon_cart = Cart.objects.filter(id=anon_cart_id).first()
+            print("Anonymous cart becomes user cart: ", anon_cart)
+            if anon_cart.user:
+                print("Anon cart already has user!!")
+                new_cart = Cart.objects.create()
+                anon_cart = new_cart
+                expires = datetime.datetime.now() + datetime.timedelta(days=30)
+                response.set_cookie('cart_id', anon_cart.id, expires=expires, httponly=True, samesite='Lax')
+                print("Created another cart for this user!")
+            cart_obj = anon_cart
+            cart_obj.user = self.request.user
+            cart_obj.save()
+            # Deleting cart_id cookie after attaching cart
+            response.delete_cookie('cart_id', samesite='Lax')
+        else:
+            print("User already has cart!")
+
+        # Setting user_cart_id cookie only if it doesn't exist at the moment
+        if self.request.COOKIES.get('user_cart_id', None) is None:
+            print("user_cart_id cookie set!")
+            expires = datetime.datetime.now() + datetime.timedelta(days=30)
+            response.set_cookie('user_cart_id', cart_obj.id, expires=expires, httponly=True, samesite='Lax')
+        else:
+            print("user_cart_id cookie already exists!")
+
+        return response
+
+    # Used on log out
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='delete_user_cart_id_cookie'
+    )
+    def delete_user_cart_id_cookie(self, request):
+        response = Response(data={"detail": "Cookie successfully deleted."} ,status=status.HTTP_200_OK)
+        user_cart_id = self.request.COOKIES.get('user_cart_id', None)
+        if user_cart_id:
+            response.delete_cookie('user_cart_id', samesite='Lax')
+            return response
+        return Response(data={"detail": "This cookie doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CartViewSet(ModelViewSet):
+    serializer_class = CartSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_permissions(self):
+        safe_actions = ['list', 'retrieve', 'get_cart']
+        if self.action in safe_actions:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    def get_queryset(self):
+        queryset = Cart.objects.all()
+        return queryset
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_cart'
+    )
+    def get_cart(self, request):
+        cart_response = CartService(request).execute()
+        return cart_response
+
+
+class CartItemViewSet(ModelViewSet):
+    serializer_class = CartItemSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = CartItem.objects.all()
+        return queryset
+
+

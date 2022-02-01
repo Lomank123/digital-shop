@@ -26,3 +26,6 @@ export const editProfileRoute = `${profileRoute}/edit`;
 export const productRoute = 'product';
 export const addProductRoute = `${productRoute}/add`;
 export const editProductRoute = `${productRoute}/edit`;
+
+export const purchaseRoute = 'purchase';
+export const cartRoute = 'cart';

@@ -31,12 +31,14 @@ import AddEditProduct from './components/product/add-edit';
 import SellerComponent from './parent-components/sellerComponent';
 import DetailProduct from './components/product/detail';
 import EditProfile from './components/user/edit';
-
+import Purchase from './components/purchase';
+import Cart from './components/cart';
 import '../styles/main/main.css';
 
 
 const defaultState = {
   user: null,
+  cart: null,
 };
 
 // E.g.:
@@ -45,6 +47,8 @@ const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case 'get_user':
       return {...state, user: action.payload};
+    case 'get_cart':
+      return {...state, cart: action.payload};
     default:
       return state;
   }
@@ -69,6 +73,9 @@ const routing = (
 
             <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
             <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
+
+            <Route path={`/${routes.cartRoute}`} component={() => <PageComponent component={Cart} />} />
+            <Route path={`/${routes.purchaseRoute}`} component={() => <LoginRequiredComponent component={Purchase} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 

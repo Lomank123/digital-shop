@@ -13,9 +13,13 @@ export const apiURL = hostURL + 'api/';
 
 export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
 export const userGetURL = apiURL + 'user-info/';
+export const userGetCartURL = userGetURL + 'get_user_cart/';
+export const userDeleteCartCookieURL = userGetURL + 'delete_user_cart_id_cookie/';
 export const productGetURL = apiURL + 'product/';
 export const userProductsGetURL = productGetURL + 'get_user_products/';
 export const categoryGetURL = apiURL + 'category/';
+export const cartURL = apiURL + 'cart/';
+export const cartGetURL = cartURL + 'get_cart/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

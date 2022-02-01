@@ -4,9 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { tokenGetURL } from '../../urls';
+import { tokenGetURL, userGetCartURL } from '../../urls';
 import history from '../../history';
-import { getUser } from '../../utils';
+import { getCart, getUser } from '../../utils';
 import { useLocation } from 'react-router';
 import { forgotRoute, signupRoute } from '../../routes';
 
@@ -53,10 +53,14 @@ export default function Login() {
         username: formData.email,
         password: formData.password,
       }, { withCredentials: true }).then(async (res) => {
+				// To avoid flickering this api call should go first
+				// Setting user cart id to cookie
+				await blankAxiosInstance.get(userGetCartURL);
 				// Dispatching with user logged in.
 				// We need it just to pass to "next" page the right state from redux store.
 				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user.
 				// We need to wait for this api call otherwise user will be thrown to loggedIn page instead of next param route.
+				await getCart();
 				await getUser();
 
 				// Redirecting to "next" route or to home page if "next" wasn't specified

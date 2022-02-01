@@ -62,3 +62,14 @@
   height: 30px;
   margin-left: 10px;
 }
+
+.cart-block {
+  display: flex;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.cart-page-btn {
+  width: 100%;
+  height: 100%;
+}

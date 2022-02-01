@@ -3,11 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
 from rest_framework_simplejwt.token_blacklist import models
 
-from mainapp.models import Product, Category, CustomUser
+from mainapp.models import Product, Category, CustomUser, CartItem, Cart
 from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 # Here we can configure how the model will look like in admin dashboard
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -38,6 +39,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     model = Product
     list_display = ('id', 'title', 'category', 'price', 'created_by', 'in_stock', 'is_active', 'published', 'updated',)
@@ -58,6 +60,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('category', 'title', 'created_by',)
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
     list_display = ('name', 'verbose',)
@@ -78,6 +81,12 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ('name', 'verbose',)
 
 
+#@admin.register(CartItem)
+#class CartItemAdmin(admin.ModelAdmin):
+#    model = CartItem
+#    list_display = ('cart', 'product', 'quantity')
+
+
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
 
     # Need to return True here so we can delete user with these tokens via admin panel
@@ -85,9 +94,9 @@ class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
         return True 
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Category, CategoryAdmin)
 # Unregistring and registring new outstanding token admin model
 admin.site.unregister(models.OutstandingToken)
 admin.site.register(models.OutstandingToken, CustomOutstandingTokenAdmin)
+
+admin.site.register(CartItem)
+admin.site.register(Cart)

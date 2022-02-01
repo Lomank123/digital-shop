@@ -37,8 +37,8 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 # Token authentication
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
 
 CORS_ALLOW_CREDENTIALS=True

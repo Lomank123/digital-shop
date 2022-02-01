@@ -1,5 +1,5 @@
-import { axiosInstance } from "./axios";
-import { userGetURL } from "./urls";
+import { axiosInstance, blankAxiosInstance } from "./axios";
+import { cartGetURL, userGetURL } from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -34,6 +34,24 @@ export async function getUser(redirect = false) {
     // Here we need to return our data to use it in further .then()
     return userData;
   })
+}
+
+export async function getCart() {
+  return blankAxiosInstance.get(cartGetURL).then((res) => {
+    const rawData = res.data;
+    const cartData = {
+      id: rawData.id,
+      user: rawData.user,
+      is_deleted: rawData.is_deleted,
+      creation_date: rawData.creation_date,
+    }
+    store.dispatch({
+      type: 'get_cart',
+      payload: cartData,
+    })
+    // Here we need to return our data to use it in further .then()
+    return cartData;
+  });
 }
 
 // Resizes the image

@@ -28,6 +28,12 @@ export const cartGetURL = cartURL + 'get_cart/';
 export const userGetCartURL = cartURL + 'get_user_cart/';
 export const userDeleteCartCookieURL = cartURL + 'delete_user_cart_id_cookie/';
 
+// CartItem
+export const cartItemURL = apiURL + 'cart-item/';
+export const cartItemAddURL = cartItemURL + 'add_item_to_cart/';
+export const userCartItemGetURL = cartItemURL + 'get_user_cart_items/';
+export const nonUserCartItemGetURL = cartItemURL + 'get_non_user_cart_items/';
+
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';
 export const signupVerifyEmailURL = signupURL + 'verify-email/';

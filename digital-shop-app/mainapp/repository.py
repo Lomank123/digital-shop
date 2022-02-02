@@ -1,4 +1,4 @@
-from mainapp.models import Cart
+from mainapp.models import Cart, Product, CartItem
 
 
 class CartRepository:
@@ -28,3 +28,29 @@ class CartRepository:
 	def get_user_cart_by_id(user) -> Cart:
 		cart = Cart.objects.filter(user=user, is_deleted=False).first()
 		return cart
+
+
+class ProductRepository:
+
+	@staticmethod
+	def get_product_by_id(product_id) -> Product:
+		product = Product.objects.filter(id=product_id).first()
+		return product
+
+
+class CartItemRepository:
+
+	@staticmethod
+	def set_cart_item_or_none(product, cart):
+		# Check whether the same cart item exists
+		# Because one product can't be in the same cart more than once
+		item = CartItem.objects.filter(product=product, cart=cart).first()
+		if item is None:
+			new_cart_item = CartItem.objects.create(quantity=1, cart=cart, product=product)
+			return new_cart_item
+		return None
+
+	@staticmethod
+	def get_cart_related_items(cart):
+		cart_items = CartItem.objects.filter(cart=cart)
+		return cart_items

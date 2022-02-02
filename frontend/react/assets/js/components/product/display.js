@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { productRoute, editProductRoute } from '../../routes';
-import { noImageURL } from "../../urls";
+import { cartItemAddURL, noImageURL } from "../../urls";
 import { Box, Button, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../../axios";
 import history from "../../history";
 import { DeleteDialog } from "../dialog";
+import { useSelector } from "react-redux";
 
 
 export function DisplayProducts(props) {
@@ -15,6 +16,7 @@ export function DisplayProducts(props) {
   const mode = props.mode;            // default, edit
   const isOwner = props.isOwner;      // For edit mode
 
+  const cartData = useSelector(state => state.cart);
   const [open, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
 
@@ -35,6 +37,25 @@ export function DisplayProducts(props) {
 
   const handleEdit = (id) => {
     history.push(`/${editProductRoute}/${id}/`);
+  }
+
+  const handleAddToCart = (product_id) => {
+    blankAxiosInstance.post(cartItemAddURL,
+      { 
+        product_id: product_id,
+        cart_id: cartData.id,
+      }
+    ).then((res) => {
+      console.log(res);
+      console.log("Product has been added to cart!");
+    }).catch((err) => {
+      console.log(err);
+      console.log("Procuct add to cart error.")
+    })
+  }
+
+  if (cartData === null) {
+    return null;
   }
 
   return(
@@ -90,9 +111,9 @@ export function DisplayProducts(props) {
                     : null
                   )
                 : (
-                    (product.in_stock) ? (<IconButton className='cart-btn'><ShoppingCart /></IconButton>) : (
-                      <span className="out-of-stock-label" >Out of stock</span>
-                    )
+                    (product.in_stock)
+                    ? (<IconButton className='cart-btn' onClick={() => {handleAddToCart(product.id)}}><ShoppingCart /></IconButton>)
+                    : (<span className="out-of-stock-label" >Out of stock</span>)
                   )
               }
             </Box>

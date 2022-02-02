@@ -20,7 +20,7 @@ from mainapp.models import Product, Category, CustomUser, Cart, CartItem
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer
 from mainapp.pagination import ProductPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
-from mainapp.services import CartService
+from mainapp.services import CartService, CartItemService
 
 
 class ProductViewSet(ModelViewSet):
@@ -178,6 +178,47 @@ class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
 
+    def get_permissions(self):
+        safe_actions = ['add_item_to_cart', 'get_non_user_cart_items', 'get_user_cart_items']
+        if self.action in safe_actions:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
     def get_queryset(self):
         queryset = CartItem.objects.all()
         return queryset
+
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='add_item_to_cart'
+    )
+    def add_item_to_cart(self, request):
+        # In request.data there should be id of a product
+        response = CartItemService(request).add_to_cart_execute()
+        return response
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_non_user_cart_items'
+    )
+    def get_non_user_cart_items(self, request):
+        service = CartService(request)
+        non_user_cart_id = service._get_non_user_cart_id_from_cookie()
+        response = CartItemService(request).get_cart_related_items_execute(non_user_cart_id)
+        return response
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_user_cart_items'
+    )
+    def get_user_cart_items(self, request):
+        service = CartService(request)
+        user_cart_id = service._get_user_cart_id_from_cookie()
+        response = CartItemService(request).get_cart_related_items_execute(user_cart_id)
+        return response
+    

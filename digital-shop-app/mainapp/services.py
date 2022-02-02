@@ -1,7 +1,7 @@
 import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
-from mainapp.repository import CartRepository
-from mainapp.serializers import CartSerializer
+from mainapp.repository import CartRepository, ProductRepository, CartItemRepository
+from mainapp.serializers import CartSerializer, CartItemSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -69,4 +69,37 @@ class CartService:
 	def user_cart_id_delete_execute(self):
 		response = Response(data={"detail": "Cookie successfully deleted."}, status=status.HTTP_200_OK)
 		self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)
+		return response
+
+
+class CartItemService:
+	
+	__slots__ = 'request'
+
+
+	def __init__(self, request):
+		self.request = request
+
+	@staticmethod
+	def _build_response(cart_items, many=False):
+		response = Response(status=status.HTTP_200_OK)
+		if cart_items is not None:
+			serializer = CartItemSerializer(cart_items, many=many)
+			response.data = serializer.data
+		else:
+			response.status_code = status.HTTP_400_BAD_REQUEST
+			response.data = {"detail": "Cannot serialize cart items because there is none."}
+		return response
+	
+	def add_to_cart_execute(self):
+		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		cart_item = CartItemRepository.set_cart_item_or_none(product, cart)
+		response = self._build_response(cart_item)
+		return response
+
+	def get_cart_related_items_execute(self, cart_id):
+		cart = CartRepository.get_or_create_cart_by_id(cart_id, create=False)
+		cart_items = CartItemRepository.get_cart_related_items(cart)
+		response = self._build_response(cart_items, many=True)
 		return response

@@ -1,3 +1,4 @@
+import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
 from mainapp.repository import CartRepository
 from mainapp.serializers import CartSerializer
@@ -5,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-# TODO: Need to rename most of functions and move some string consts to consts.py
 class CartService:
 
 	__slots__ = 'cookie_manager', 'request',
@@ -46,9 +46,9 @@ class CartService:
 		response = Response(data={"detail": "Check cart on login succcessful."}, status=status.HTTP_200_OK)
 		if cart is None:
 			cart = self._attach_cart_to_user_if_none()
-			self._delete_cart_id_from_cookie(response, 'cart_id')
+			self._delete_cart_id_from_cookie(response, consts.NON_USER_CART_ID_COOKIE_NAME)
 			response.data = {"detail": "New cart has been attached to this user."}
-		self._set_cart_id_to_cookie(response, cart.id, 'user_cart_id', forced=True)
+		self._set_cart_id_to_cookie(response, cart.id, consts.USER_CART_ID_COOKIE_NAME, forced=True)
 		return response
 
 	# For getting cart (user or anonymous)
@@ -56,7 +56,7 @@ class CartService:
 		cart_id = self._get_either_cart_id_from_cookie()
 		cart = CartRepository.get_or_create_cart_by_id(cart_id)
 		response = self._build_response(cart)
-		self._set_cart_id_to_cookie(response, cart.id, 'cart_id')
+		self._set_cart_id_to_cookie(response, cart.id, consts.NON_USER_CART_ID_COOKIE_NAME)
 		return response
 
 	# For getting or setting user cart upon login
@@ -68,5 +68,5 @@ class CartService:
 	# For deleting user_cart_id cookie upon log out
 	def user_cart_id_delete_execute(self):
 		response = Response(data={"detail": "Cookie successfully deleted."}, status=status.HTTP_200_OK)
-		self._delete_cart_id_from_cookie(response, 'user_cart_id')
+		self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)
 		return response

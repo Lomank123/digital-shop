@@ -1,5 +1,6 @@
 import datetime
 from http import cookies
+import mainapp.consts as consts
 
 
 class CartCookieManager:
@@ -15,29 +16,29 @@ class CartCookieManager:
 		Returns user cart id if such cookie exists, otherwise checks for non-user cart cookie.
 		If no cookies exist None is returned.
 		"""
-		user_cart_id = self.request.COOKIES.get('user_cart_id', None)
+		user_cart_id = self.request.COOKIES.get(consts.USER_CART_ID_COOKIE_NAME, None)
 		if user_cart_id is not None:
 			return user_cart_id
-		return self.request.COOKIES.get('cart_id', None)
+		return self.request.COOKIES.get(consts.NON_USER_CART_ID_COOKIE_NAME, None)
 	
 	def get_user_cart_id(self):
 		"""
 		Returns user cart id.
 		"""
-		return self.request.COOKIES.get('user_cart_id', None)
+		return self.request.COOKIES.get(consts.USER_CART_ID_COOKIE_NAME, None)
 	
 	def get_cart_id(self):
 		"""
 		Returns non-user cart id.
 		"""
-		return self.request.COOKIES.get('cart_id', None)
+		return self.request.COOKIES.get(consts.NON_USER_CART_ID_COOKIE_NAME, None)
 
 	def set_cart_cookie(self, response, cookie_name, value):
 		"""
 		Sets cookie with given cookie_name and value.
-		By default cookie expiration date is now + 1 month.
+		Default expiration time is defined in consts.py.
 		"""
-		expires = datetime.datetime.now() + datetime.timedelta(days=30)
+		expires = datetime.datetime.now() + datetime.timedelta(days=consts.CART_ID_COOKIE_EXPIRATION_DAYS)
 		response.set_cookie(cookie_name, value, expires=expires, httponly=True, samesite='Lax')
 
 	def set_cart_id_if_not_exists(self, response, cart_id, cookie_name, forced=False):

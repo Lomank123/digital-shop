@@ -134,37 +134,7 @@ class UserViewSet(ModelViewSet):
         url_path='get_user_cart'
     )
     def get_user_cart(self, request):
-        response = Response(status=status.HTTP_200_OK)
-        cart_obj = Cart.objects.filter(user=self.request.user, is_deleted=False).first()
-        # Perhaps this code should be moved to separate service (UserCartService)
-        # Here we set anonymous cart as a new user cart if logged in user doesn't have one
-        if not cart_obj:
-            anon_cart_id = self.request.COOKIES["cart_id"]
-            anon_cart = Cart.objects.filter(id=anon_cart_id).first()
-            print("Anonymous cart becomes user cart: ", anon_cart)
-            if anon_cart.user:
-                print("Anon cart already has user!!")
-                new_cart = Cart.objects.create()
-                anon_cart = new_cart
-                expires = datetime.datetime.now() + datetime.timedelta(days=30)
-                response.set_cookie('cart_id', anon_cart.id, expires=expires, httponly=True, samesite='Lax')
-                print("Created another cart for this user!")
-            cart_obj = anon_cart
-            cart_obj.user = self.request.user
-            cart_obj.save()
-            # Deleting cart_id cookie after attaching cart
-            response.delete_cookie('cart_id', samesite='Lax')
-        else:
-            print("User already has cart!")
-
-        # Setting user_cart_id cookie only if it doesn't exist at the moment
-        if self.request.COOKIES.get('user_cart_id', None) is None:
-            print("user_cart_id cookie set!")
-            expires = datetime.datetime.now() + datetime.timedelta(days=30)
-            response.set_cookie('user_cart_id', cart_obj.id, expires=expires, httponly=True, samesite='Lax')
-        else:
-            print("user_cart_id cookie already exists!")
-
+        response = CartService(request).user_cart_execute()
         return response
 
     # Used on log out
@@ -174,12 +144,8 @@ class UserViewSet(ModelViewSet):
         url_path='delete_user_cart_id_cookie'
     )
     def delete_user_cart_id_cookie(self, request):
-        response = Response(data={"detail": "Cookie successfully deleted."} ,status=status.HTTP_200_OK)
-        user_cart_id = self.request.COOKIES.get('user_cart_id', None)
-        if user_cart_id:
-            response.delete_cookie('user_cart_id', samesite='Lax')
-            return response
-        return Response(data={"detail": "This cookie doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
+        response = CartService(request).user_cart_id_delete_execute()
+        return response
 
 
 class CartViewSet(ModelViewSet):

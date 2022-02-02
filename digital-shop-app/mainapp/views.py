@@ -89,9 +89,9 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     def get_permissions(self):
-        if self.action in ['list', 'get_user_cart']:
+        if self.action in ['list']:
             permission_classes = [IsAuthenticated]
-        elif self.action in ['retrieve', 'delete_user_cart_id_cookie']:
+        elif self.action in ['retrieve']:
             # AllowAny because we'll need to retrieve user data in product detail page
             # And as for get_user_products, for example, when accessing another user's page we want to see their products
             permission_classes = [AllowAny]
@@ -118,14 +118,40 @@ class UserViewSet(ModelViewSet):
         # Checking if new email equals to old one
         if self.request.user.email != new_email:
             # If not, changing email address and sending confirmation message to new email
-            print("Email changed")
             address = EmailAddress.objects.filter(user=self.request.user).get()
             address.change(request, new_email)  # This does all the magic (sends email message and change EmailAdress instance)
             print("Confirmation message sent")
-        else:
-            print("Email is the same")
         # Performing update of user instance
         return super().update(request, *args, **kwargs)
+
+
+class CartViewSet(ModelViewSet):
+    serializer_class = CartSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_permissions(self):
+        safe_actions = ['list', 'retrieve', 'get_cart', 'delete_user_cart_id_cookie']
+        if self.action in safe_actions:
+            permission_classes = [AllowAny]
+        elif self.action in ['get_user_cart']:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    def get_queryset(self):
+        queryset = Cart.objects.all()
+        return queryset
+
+    # Used in the header when open website
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_cart'
+    )
+    def get_cart(self, request):
+        cart_response = CartService(request).either_cart_execute()
+        return cart_response
 
     # Used on user log in
     @action(
@@ -148,32 +174,6 @@ class UserViewSet(ModelViewSet):
         return response
 
 
-class CartViewSet(ModelViewSet):
-    serializer_class = CartSerializer
-    permission_classes = (IsAuthenticated, )
-
-    def get_permissions(self):
-        safe_actions = ['list', 'retrieve', 'get_cart']
-        if self.action in safe_actions:
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAdminUser]
-        return [permission() for permission in permission_classes]
-
-    def get_queryset(self):
-        queryset = Cart.objects.all()
-        return queryset
-
-    @action(
-        methods=['get'],
-        detail=False,
-        url_path='get_cart'
-    )
-    def get_cart(self, request):
-        cart_response = CartService(request).execute()
-        return cart_response
-
-
 class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
@@ -181,5 +181,3 @@ class CartItemViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = CartItem.objects.all()
         return queryset
-
-

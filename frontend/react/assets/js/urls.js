@@ -10,16 +10,23 @@ export const noImageURL = imagesURL + 'no-image.jpg';
 
 // Api urls
 export const apiURL = hostURL + 'api/';
-
 export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
+
+// User
 export const userGetURL = apiURL + 'user-info/';
-export const userGetCartURL = userGetURL + 'get_user_cart/';
-export const userDeleteCartCookieURL = userGetURL + 'delete_user_cart_id_cookie/';
+
+// Product
 export const productGetURL = apiURL + 'product/';
 export const userProductsGetURL = productGetURL + 'get_user_products/';
+
+// Category
 export const categoryGetURL = apiURL + 'category/';
+
+// Cart
 export const cartURL = apiURL + 'cart/';
 export const cartGetURL = cartURL + 'get_cart/';
+export const userGetCartURL = cartURL + 'get_user_cart/';
+export const userDeleteCartCookieURL = cartURL + 'delete_user_cart_id_cookie/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

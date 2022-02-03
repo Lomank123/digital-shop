@@ -16,26 +16,27 @@ export default function Cart() {
 
   useLayoutEffect(() => {
     blankAxiosInstance.get(userCartItemGetURL).then((res) => {
-      setCartItems(res);
+      setCartItems(res.data);
+      //console.log(res);
       console.log("Cart items get done!");
     }).catch((err) => {
+      setCartItems({});
       console.log(err);
       console.log("Cart items get error.");
     })
 
     blankAxiosInstance.get(nonUserCartItemGetURL).then((res) => {
-      setSecondCartItems(res);
-      console.log("Cart items get done!");
+      setSecondCartItems(res.data);
+      //console.log(res);
+      console.log("Cart items non-user get done!");
     }).catch((err) => {
+      setSecondCartItems({});
       console.log(err);
-      console.log("Cart items get error.");
+      console.log("Cart items non-user get error.");
     })
   }, [])
 
-  console.log(cartItems);
-  console.log(secondCartItems);
-
-  if (userCart === null || cartItems === null) {
+  if (userCart === null || cartItems === null || secondCartItems === null) {
     return null;
   }
 
@@ -46,6 +47,38 @@ export default function Cart() {
       <p>{userCart.user}</p>
       <p>{userCart.creation_date}</p>
       <p>{userCart.is_deleted}</p>
+
+      <Box>
+        <hr />
+        <h3>User cart</h3>
+        {
+          Object.entries(cartItems.results).map(([key, cartItem]) => {
+            return(
+              <Box key={key}>
+                <p>{cartItem.product.title}</p>
+                <p>{cartItem.product.price}$</p>
+              </Box>
+            );
+          })
+        }
+      </Box>
+
+      <Box>
+        <hr />
+        <h3>Non User cart</h3>
+        {
+          Object.entries(secondCartItems.results).map(([key, cartItem]) => {
+            return(
+              <Box key={key}>
+                <p>{cartItem.product.title}</p>
+                <p>{cartItem.product.price}$</p>
+              </Box>
+            );
+          })
+        }
+      </Box>
+
+
     </Box>
   )
 }

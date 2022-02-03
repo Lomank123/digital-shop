@@ -1,7 +1,7 @@
 import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
 from mainapp.repository import CartRepository, ProductRepository, CartItemRepository
-from mainapp.serializers import CartSerializer, CartItemSerializer
+from mainapp.serializers import CartSerializer, CartItemSerializer, ProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -81,25 +81,36 @@ class CartItemService:
 		self.request = request
 
 	@staticmethod
-	def _build_response(cart_items, many=False):
-		response = Response(status=status.HTTP_200_OK)
-		if cart_items is not None:
-			serializer = CartItemSerializer(cart_items, many=many)
-			response.data = serializer.data
-		else:
+	def _build_add_response(cart_item):
+		response = Response(data={"detail": "Product has been added."}, status=status.HTTP_200_OK)
+		if cart_item is None:
 			response.status_code = status.HTTP_400_BAD_REQUEST
-			response.data = {"detail": "Cannot serialize cart items because there is none."}
+			response.data = {"detail": "Cannot add product to cart."}
 		return response
-	
-	def add_to_cart_execute(self):
+
+	def add_execute(self):
 		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
 		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
 		cart_item = CartItemRepository.set_cart_item_or_none(product, cart)
-		response = self._build_response(cart_item)
+		response = self._build_add_response(cart_item)
 		return response
 
-	def get_cart_related_items_execute(self, cart_id):
+	@staticmethod
+	def _build_response(cart_items, viewset_instance):
+		page = viewset_instance.paginate_queryset(cart_items)
+		if page is not None:
+			serializer = viewset_instance.get_serializer(page, many=True)
+			return viewset_instance.get_paginated_response(serializer.data)
+		response = Response(data={"detail": "Cannot serialize cart items because there is none."}, status=status.HTTP_400_BAD_REQUEST)
+		return response
+
+	@staticmethod
+	def _get_cart_related_items(cart_id):
 		cart = CartRepository.get_or_create_cart_by_id(cart_id, create=False)
 		cart_items = CartItemRepository.get_cart_related_items(cart)
-		response = self._build_response(cart_items, many=True)
+		return cart_items
+
+	def get_execute(self, cart_id, viewset_instance):
+		cart_items = self._get_cart_related_items(cart_id)
+		response = self._build_response(cart_items, viewset_instance)
 		return response

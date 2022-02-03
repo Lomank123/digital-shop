@@ -53,7 +53,7 @@ class Category(models.Model):
 # Product, some good selling in the shop
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Category')
-    created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='products_created', verbose_name='Created by')
+    created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_by', verbose_name='Created by')
 
     title = models.CharField(max_length=60, verbose_name='Title')
     description = models.CharField(max_length=600, blank=True, null=True, verbose_name='Description')
@@ -86,7 +86,7 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name="User")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name="User", related_name='user')
     is_deleted = models.BooleanField(default=False, verbose_name='Deleted')
     creation_date = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Creation date')
 
@@ -97,8 +97,8 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Cart")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Cart", related_name='cart')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product", related_name='product')
     quantity = models.IntegerField(default=1, verbose_name="Quantity")
 
     @property

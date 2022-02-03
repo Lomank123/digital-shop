@@ -177,6 +177,7 @@ class CartViewSet(ModelViewSet):
 class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
+    pagination_class = ProductPagination
 
     def get_permissions(self):
         safe_actions = ['add_item_to_cart', 'get_non_user_cart_items', 'get_user_cart_items']
@@ -197,7 +198,7 @@ class CartItemViewSet(ModelViewSet):
     )
     def add_item_to_cart(self, request):
         # In request.data there should be id of a product
-        response = CartItemService(request).add_to_cart_execute()
+        response = CartItemService(request).add_execute()
         return response
 
     @action(
@@ -206,9 +207,8 @@ class CartItemViewSet(ModelViewSet):
         url_path='get_non_user_cart_items'
     )
     def get_non_user_cart_items(self, request):
-        service = CartService(request)
-        non_user_cart_id = service._get_non_user_cart_id_from_cookie()
-        response = CartItemService(request).get_cart_related_items_execute(non_user_cart_id)
+        non_user_cart_id = CartService(request)._get_non_user_cart_id_from_cookie()
+        response = CartItemService(request).get_execute(non_user_cart_id, self)
         return response
 
     @action(
@@ -217,8 +217,6 @@ class CartItemViewSet(ModelViewSet):
         url_path='get_user_cart_items'
     )
     def get_user_cart_items(self, request):
-        service = CartService(request)
-        user_cart_id = service._get_user_cart_id_from_cookie()
-        response = CartItemService(request).get_cart_related_items_execute(user_cart_id)
+        user_cart_id = CartService(request)._get_user_cart_id_from_cookie()
+        response = CartItemService(request).get_execute(user_cart_id, self)
         return response
-    

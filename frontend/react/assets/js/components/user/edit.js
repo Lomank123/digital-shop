@@ -16,10 +16,6 @@ export default function EditProfile() {
   const initialFormData = {
     username: "",
     email: "",
-    is_staff: "",
-    is_active: "",
-    is_seller: "",
-    is_superuser: "",
 	};
   // Field error messages
 	const errorsInitialState = {
@@ -37,10 +33,6 @@ export default function EditProfile() {
         setPostData({
           username: res.data.username,
           email: res.data.email,
-          is_staff: res.data.is_staff,
-          is_active: res.data.is_active,
-          is_seller: res.data.is_seller,
-          is_superuser:  res.data.is_superuser,
         });
 
         setImgUrl(res.data.photo);
@@ -65,10 +57,6 @@ export default function EditProfile() {
     let formData = new FormData();
     formData.append('username', postData.username);
     formData.append('email', postData.email);
-    formData.append('is_staff', postData.is_staff);
-    formData.append('is_active', postData.is_active);
-    formData.append('is_seller', postData.is_seller);
-    formData.append('is_superuser', postData.is_superuser);
 
     if (postImage !== null) {
       if (postImage === '') {
@@ -78,7 +66,7 @@ export default function EditProfile() {
       }
     }
 
-    let method = 'put';
+    let method = 'patch';
     let url = userGetURL + params.id + '/';
     // Config for axiosInstance
     let config = {

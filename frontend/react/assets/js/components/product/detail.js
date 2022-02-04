@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton } from "@material-ui/core";
 import { useParams } from "react-router";
 import { blankAxiosInstance } from "../../axios";
-import { categoryGetURL, noImageURL, productGetURL, userGetURL } from "../../urls";
+import { categoryGetURL, noImageURL, productGetURL, userGetURL, cartItemAddURL } from "../../urls";
 import { Link } from "react-router-dom";
 import history from "../../history";
 import { editProductRoute, profileRoute } from "../../routes";
@@ -16,6 +16,7 @@ import '../../../styles/user/profile.css';
 
 export default function DetailProduct() {
   const params = useParams();
+  const cartData = useSelector(state => state.cart);
   const userData = useSelector(state => state.user);
   const [author, setAuthor] = useState(null);
   const [product, setProduct] = useState(null);
@@ -32,6 +33,21 @@ export default function DetailProduct() {
 
   const handleEdit = (id) => {
     history.push(`/${editProductRoute}/${id}/`);
+  }
+
+  const handleAddToCart = (product_id) => {
+    blankAxiosInstance.post(cartItemAddURL,
+      { 
+        product_id: product_id,
+        cart_id: cartData.id,
+      }
+    ).then((res) => {
+      console.log(res);
+      console.log("Product has been added to cart!");
+    }).catch((err) => {
+      console.log(err);
+      console.log("Procuct add to cart error.")
+    })
   }
 
   useEffect(() => {
@@ -124,9 +140,10 @@ export default function DetailProduct() {
               className="purchase-btn"
               variant="contained"
               color="primary"
+              onClick={() => {handleAddToCart(params.id)}}
               disabled={!product.in_stock}
             >
-              Purchase
+              Add to cart
             </Button>
             <span className="price">{product.price}$</span>
           </Box>

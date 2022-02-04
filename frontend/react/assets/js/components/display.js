@@ -83,9 +83,13 @@ export function DisplayProducts(props) {
               <span className='product-title'>{product.title}</span>
               <span className='product-description'>
                 {
-                  (product.description.length <= 100)
-                  ? product.description
-                  : (product.description.substring(0, 100).trim() + '...')
+                  (product.description)
+                  ? (
+                      (product.description.length <= 100)
+                      ? product.description
+                      : (product.description.substring(0, 100).trim() + '...')
+                    )
+                  : null
                 }
               </span>
             </Link>
@@ -95,22 +99,18 @@ export function DisplayProducts(props) {
             <Box className='product-price-block'>
               <span className='product-price'>{product.price}$</span>
               {
-                (mode === 'edit')
+                (isOwner)
                 ? (
-                    (isOwner)
-                    ? (
-                        <Box display={'flex'} justifyContent={'flex-end'}>
-                          <IconButton className="display-delete-btn" onClick={() => {handleOpen(product.id)}}><Delete /></IconButton>
-                          <IconButton className="display-edit-btn" onClick={() => {handleEdit(product.id)}}><Edit /></IconButton>
-                          <DeleteDialog
-                            productId={currentId}
-                            open={open}
-                            handleClose={handleClose}
-                            reload={true}
-                          />
-                        </Box>
-                      )
-                    : null
+                    <Box display={'flex'} justifyContent={'flex-end'}>
+                      <IconButton className="display-delete-btn" onClick={() => {handleOpen(product.id)}}><Delete /></IconButton>
+                      <IconButton className="display-edit-btn" onClick={() => {handleEdit(product.id)}}><Edit /></IconButton>
+                      <DeleteDialog
+                        productId={currentId}
+                        open={open}
+                        handleClose={handleClose}
+                        reload={true}
+                      />
+                    </Box>
                   )
                 : (
                     (product.in_stock)
@@ -154,18 +154,40 @@ export function DisplayPagination(props) {
     paginationBlock = (
       <Box className='pagination-block'>
 
-        <Box className='previous-pages' visibility={(products.previous) ? 'visible' : 'hidden'}>
-          <Button onClick={(e) => {handlePaginationClick(products.first)}}>First</Button>
-          <Button onClick={(e) => {handlePaginationClick(products.previous)}}>Previous</Button>
+        <Box className='previous-pages'>
+          <Button 
+            onClick={(e) => {handlePaginationClick(products.first)}}
+            disabled={!Boolean(products.previous)}
+          >
+            First
+          </Button>
+
+          <Button
+            onClick={(e) => {handlePaginationClick(products.previous)}}
+            disabled={!Boolean(products.previous)}
+          >
+            Previous
+          </Button>
         </Box>
 
         <span className='pages-info'>
           Page {products.number} of {products.num_pages}
         </span>
 
-        <Box className='next-pages' visibility={(products.next) ? 'visible' : 'hidden'}>
-              <Button onClick={(e) => {handlePaginationClick(products.next)}}>Next</Button>
-              <Button onClick={(e) => {handlePaginationClick(products.last)}}>Last</Button>
+        <Box className='next-pages'>
+          <Button
+            onClick={(e) => {handlePaginationClick(products.next)}}
+            disabled={!Boolean(products.next)}
+          >
+            Next
+          </Button>
+
+          <Button
+            onClick={(e) => {handlePaginationClick(products.last)}}
+            disabled={!Boolean(products.next)}
+          >
+            Last
+          </Button>
         </Box>
         
       </Box>

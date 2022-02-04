@@ -6,10 +6,10 @@ import { categoryGetURL, productGetURL } from "../../urls";
 import { useParams } from "react-router";
 import { DeleteDialog } from "../dialog";
 import { ImageUpload } from "../imageUpload";
+import { productRoute } from "../../routes";
 import history from "../../history";
 
 import '../../../styles/product/add-edit.css';
-import { productRoute } from "../../routes";
 
 
 export default function AddEditProduct() {
@@ -22,7 +22,8 @@ export default function AddEditProduct() {
     category: "",
     title: "",
     description: "",
-    price: '',
+    price: "",
+    quantity: "",
     in_stock: true,
 	};
 
@@ -33,6 +34,7 @@ export default function AddEditProduct() {
 		description: '',
 		image: '',
 		price: '',
+    quantity: '',
     in_stock: '',
 	};
 
@@ -62,6 +64,7 @@ export default function AddEditProduct() {
           description: res.data.description,
           price: res.data.price,
           in_stock: res.data.in_stock,
+          quantity: res.data.quantity,
         });
 
         setImgUrl(res.data.image);
@@ -104,6 +107,10 @@ export default function AddEditProduct() {
     formData.append('category', postData.category);
     formData.append('title', postData.title);
     formData.append('description', postData.description);
+    formData.append('price', postData.price);
+    formData.append('quantity', postData.quantity);
+    formData.append('in_stock', postData.in_stock);
+    formData.append('is_active', true);
     
     if (postImage !== null) {
       if (postImage === '') {
@@ -112,16 +119,13 @@ export default function AddEditProduct() {
         formData.append('image', postImage);
       }
     }
-    formData.append('price', postData.price);
-    formData.append('in_stock', postData.in_stock);
-    formData.append('is_active', true);
 
     let method = 'post';
     let url = productGetURL;
     // For editing
     if (params.id) {
-      method = 'put';
-      // From DRF: PUT method needs id in the end of url
+      method = 'patch';
+      // From DRF: PATCH method needs id in the end of url
       url += params.id + '/';
     }
     // Config for axiosInstance
@@ -154,6 +158,7 @@ export default function AddEditProduct() {
       console.log('Product created!');
     }).catch((err) => {
       console.log('Product creation error.');
+      console.log(err.response.data);
       // This check is needed to prevent memory leak (the problem wasn't useSelector despite the text in console)
       if (err.response.status !== 401) {
         setErrors({
@@ -193,7 +198,7 @@ export default function AddEditProduct() {
             name="category"
             fullWidth
             required
-            value={postData.category}
+            value={postData.category || ""}
             onChange={handleChange}
             error={Boolean(errors.category)}
             helperText={Boolean(errors.category) ? 'This field is required.' : ''}
@@ -219,7 +224,7 @@ export default function AddEditProduct() {
             label="Title"
             name="title"
             fullWidth
-            value={postData.title}
+            value={postData.title || ""}
             onChange={handleChange}
             error={Boolean(errors.title)}
             helperText={errors.title}
@@ -238,9 +243,28 @@ export default function AddEditProduct() {
             label="Price"
             name="price"
             fullWidth
-            value={postData.price}
+            value={postData.price || ''}
             error={Boolean(errors.price)}
             helperText={errors.price}
+            onChange={handleChange}
+          />
+        </Box>
+
+        <Box className="field-block">
+          <p className="field-label">Enter quantity:</p>
+          <TextField
+            className="form-field"
+            type='number'
+            variant="outlined"
+            margin="normal"
+            required
+            id="quantity"
+            label="Quantity"
+            name="quantity"
+            fullWidth
+            value={postData.quantity || 1}
+            error={Boolean(errors.quantity)}
+            helperText={errors.quantity}
             onChange={handleChange}
           />
         </Box>
@@ -256,7 +280,7 @@ export default function AddEditProduct() {
             name="description"
             autoComplete="Some description..."
             fullWidth
-            value={postData.description}
+            value={postData.description || ""}
             error={Boolean(errors.description)}
             helperText={errors.description}
             onChange={handleChange}

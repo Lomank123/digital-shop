@@ -106,7 +106,7 @@ class UserViewSet(ModelViewSet):
             queryset = CustomUser.objects.filter(pk=self.request.user.pk)
         return queryset
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         # We need to change EmailAdress model instance before updating user instance
         # So here we serialize data first
         # Here we passing self.get_object(), because we need our existing object that is going to be changed
@@ -122,7 +122,7 @@ class UserViewSet(ModelViewSet):
             address.change(request, new_email)  # This does all the magic (sends email message and change EmailAdress instance)
             print("Confirmation message sent")
         # Performing update of user instance
-        return super().update(request, *args, **kwargs)
+        return super().partial_update(request, *args, **kwargs)
 
 
 class CartViewSet(ModelViewSet):

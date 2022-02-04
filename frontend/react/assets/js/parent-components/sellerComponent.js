@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import { Redirect } from "react-router";
 import { useSelector } from "react-redux";
 import { loginURL } from "../urls";
-import { addNextParam } from "../utils";
 import history from "../history";
 
 
 export default function SellerComponent(props) {
   const userData = useSelector(state => state.user);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   if (userData === 1) {
     return <Redirect to={loginURL + '?next=' + history.location.pathname} />

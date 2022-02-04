@@ -67,7 +67,10 @@ class CartService:
 
 	# For deleting user_cart_id cookie upon log out
 	def user_cart_id_delete_execute(self):
-		response = Response(data={"detail": "Cookie successfully deleted."}, status=status.HTTP_200_OK)
+		response = Response(
+			data={"detail": "Cookie successfully deleted."},
+			status=status.HTTP_200_OK
+		)
 		self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)
 		return response
 
@@ -101,7 +104,10 @@ class CartItemService:
 		if page is not None:
 			serializer = viewset_instance.get_serializer(page, many=True)
 			return viewset_instance.get_paginated_response(serializer.data)
-		response = Response(data={"detail": "Cannot serialize cart items because there is none."}, status=status.HTTP_400_BAD_REQUEST)
+		response = Response(
+			data={"detail": "Cannot serialize cart items because there is none."},
+			status=status.HTTP_400_BAD_REQUEST
+		)
 		return response
 
 	@staticmethod

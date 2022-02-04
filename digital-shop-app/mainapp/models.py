@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
@@ -48,6 +49,7 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         verbose_name = 'Category'
+        ordering=['-id']
 
 
 # Product, some good selling in the shop
@@ -102,10 +104,11 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=1, verbose_name="Quantity")
 
     @property
-    def total_price(self):
+    def total_price(self) -> Decimal:
         "Returns total price for amount of product"
         return self.quantity * self.product.price
 
     class Meta:
         verbose_name_plural = 'Cart items'
         verbose_name = 'Cart item'
+        ordering=['-id']

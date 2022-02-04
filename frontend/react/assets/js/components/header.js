@@ -123,7 +123,7 @@ export default function Header() {
 
   if (userCart !== null) {
     cartBox = (
-      <Box className='cart-block'>
+      <Box className='cart-btn-block'>
         <Button
           className='cart-page-btn'
           onClick={e => handleClickRedirect(e, cartRoute + '/')}

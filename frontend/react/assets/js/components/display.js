@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { productRoute, editProductRoute } from '../../routes';
-import { cartItemAddURL, noImageURL } from "../../urls";
+import { productRoute, editProductRoute } from '../routes';
+import { cartItemAddURL, noImageURL } from "../urls";
 import { Box, Button, IconButton } from "@material-ui/core";
-import { blankAxiosInstance } from "../../axios";
-import history from "../../history";
-import { DeleteDialog } from "../dialog";
+import { blankAxiosInstance } from "../axios";
+import history from "../history";
+import { DeleteDialog } from "./dialog";
 import { useSelector } from "react-redux";
+
+import '../../styles/components/display.css';
 
 
 export function DisplayProducts(props) {
@@ -187,4 +189,88 @@ export function get_products(url, setter) {
   }).catch((err) => {
     console.log("get_products error.");
   });
+}
+
+
+export function DisplayCartItems(props) {
+  const cartItems = props.cartItems;
+
+  const handleQuantityChange = (e, itemId, value, productQuantity) => {
+    e.preventDefault();
+    if (value < 1) {
+      console.log('Minimum quantity for this product is: 1');
+    } else if (value > productQuantity) {
+      console.log(`Maximum quantity for this product is: ${productQuantity}`);
+    } else {
+      props.changeQuantity(itemId, value);
+    }
+  }
+
+  return (
+    <Box className='display-cart-items'>
+      {
+        Object.entries(cartItems.results).map(([key, cartItem]) => {
+          const imageBox = (
+            <Box className={'cart-item-image-block'}>
+              <img
+                src={(cartItem.product.image !== null && cartItem.product.image !== "")
+                  ? cartItem.product.image 
+                  : noImageURL}
+                alt='cart item image'
+                className={'cart-item-image'} />
+            </Box>
+          );
+
+          const infoBox = (
+            <Box className='cart-item-info-block'>
+              <Link
+                className={'cart-item-info-link'}
+                to={'/' + productRoute + '/' + cartItem.product.id + '/'}
+              >
+                <span className='cart-item-title'>{cartItem.product.title}</span>
+              </Link>
+
+              <Button className='delete-cart-item-btn'>Delete</Button>
+            </Box>
+          );
+
+          const priceBox = (
+            <Box className='cart-item-purchase-block'>
+
+              <Box className='quantity-block'>
+                <Button
+                  className='minus1-btn change-quantity-btn'
+                  onClick={(e) => {handleQuantityChange(e, cartItem.id, cartItem.quantity - 1, cartItem.product.quantity)}}
+                  variant="outlined"
+                >
+                  -
+                </Button>
+                <span className='cart-item-quantity'>{cartItem.quantity}</span>
+                <Button
+                  className='plus1-btn change-quantity-btn'
+                  onClick={(e) => {handleQuantityChange(e, cartItem.id, cartItem.quantity + 1, cartItem.product.quantity)}}
+                  variant="outlined"
+                >
+                  +
+                </Button>
+              </Box>
+
+              <Box className="cart-item-price-block">
+                <span className='cart-item-price'>{cartItem.total_price}$</span>
+              </Box>
+            </Box>
+          );
+
+
+          return(
+            <Box key={key} className='default-block cart-items-block'>
+              {imageBox}
+              {infoBox}
+              {priceBox}
+            </Box>
+          );
+        })
+      }
+    </Box>
+  );
 }

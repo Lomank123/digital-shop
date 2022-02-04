@@ -5,7 +5,7 @@ import { blankAxiosInstance } from '../../axios';
 import { noImageURL, userGetURL, userProductsGetURL } from '../../urls';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { DisplayPagination, DisplayProducts, get_products } from '../product/display';
+import { DisplayPagination, DisplayProducts, get_products } from '../display';
 import history from '../../history';
 
 import '../../../styles/user/profile.css';

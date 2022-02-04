@@ -2,82 +2,73 @@ import { Box } from "@material-ui/core";
 import React, { useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blankAxiosInstance } from "../axios";
-import { userCartItemGetURL, nonUserCartItemGetURL } from "../urls";
+import { userCartItemGetURL, nonUserCartItemGetURL, cartItemURL } from "../urls";
+import { DisplayCartItems } from "./display";
+import '../../styles/components/cart.css';
 
 
 export default function Cart() {
   const userCart = useSelector(state => state.cart);
   const [cartItems, setCartItems] = useState(null);
   const [secondCartItems, setSecondCartItems] = useState(null);
+  const [quantityChanged, setQuantityChanged] = useState(false);
 
-  // Here we will get all cart related items
-  // An api call will be here to get items by using userCart.id
-  // And don't forget about displaying anonymous cart items
+  const changeQuantity = (itemId, value) => {
+    // Here we use PATCH method to partially update CartItem instance
+    blankAxiosInstance.patch(cartItemURL + itemId + '/', { quantity: value }).then((res) => {
+      setQuantityChanged(!quantityChanged);
+    }).catch((err) => {
+      console.log("Quantity change error.");
+    })
+  }
 
+  // Cart items api call
   useLayoutEffect(() => {
+    // User cart items
     blankAxiosInstance.get(userCartItemGetURL).then((res) => {
       setCartItems(res.data);
-      //console.log(res);
       console.log("Cart items get done!");
     }).catch((err) => {
       setCartItems({});
-      console.log(err);
-      console.log("Cart items get error.");
-    })
-
+      //console.log("Cart items get error.");
+    });
+    // Non-user cart items
     blankAxiosInstance.get(nonUserCartItemGetURL).then((res) => {
       setSecondCartItems(res.data);
-      //console.log(res);
       console.log("Cart items non-user get done!");
     }).catch((err) => {
       setSecondCartItems({});
-      console.log(err);
-      console.log("Cart items non-user get error.");
-    })
-  }, [])
+      //console.log("Cart items non-user get error.");
+    });
+  }, [quantityChanged])
 
   if (userCart === null || cartItems === null || secondCartItems === null) {
     return null;
   }
 
   return(
-    <Box>
-      <p>Cart page!</p>
-      <p>{userCart.id}</p>
-      <p>{userCart.user}</p>
-      <p>{userCart.creation_date}</p>
-      <p>{userCart.is_deleted}</p>
+    <Box className="cart-block">
+      {
+        (cartItems.results.length > 0) 
+        ? (
+            <Box className="user-cart-block cart">
+              {(cartItems.results.length > 0) ? (<h3 className="cart-label">User cart</h3>) : null}
+              <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} />
+            </Box>
+          )
+        : null
+      }
 
-      <Box>
-        <hr />
-        <h3>User cart</h3>
-        {
-          Object.entries(cartItems.results).map(([key, cartItem]) => {
-            return(
-              <Box key={key}>
-                <p>{cartItem.product.title}</p>
-                <p>{cartItem.product.price}$</p>
-              </Box>
-            );
-          })
-        }
-      </Box>
-
-      <Box>
-        <hr />
-        <h3>Non User cart</h3>
-        {
-          Object.entries(secondCartItems.results).map(([key, cartItem]) => {
-            return(
-              <Box key={key}>
-                <p>{cartItem.product.title}</p>
-                <p>{cartItem.product.price}$</p>
-              </Box>
-            );
-          })
-        }
-      </Box>
-
+      {
+        (secondCartItems.results.length > 0) 
+        ? (
+            <Box className="non-user-cart-block cart">
+              {(secondCartItems.results.length > 0) ? (<h3 className="cart-label">Non user cart</h3>) : null}
+              <DisplayCartItems cartItems={secondCartItems} />
+            </Box>
+          )
+        : null
+      }
 
     </Box>
   )

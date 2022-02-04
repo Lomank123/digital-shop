@@ -3,7 +3,7 @@ import { categoryGetURL, productGetURL } from '../urls';
 import { blankAxiosInstance } from '../axios';
 import { Box, Button } from '@material-ui/core';
 import history from '../history';
-import { DisplayPagination, DisplayProducts, get_products } from './product/display';
+import { DisplayPagination, DisplayProducts, get_products } from './display';
 
 import '../../styles/main/home.css';
 

@@ -45,14 +45,14 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'price', 'created_by', 'in_stock', 'is_active', 'published', 'updated',)
     list_filter = ('category', 'is_active', 'in_stock',)
     fieldsets = (
-        ('Information', {'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
+        ('Information', {'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('title', 'category', 'price', 'image', 'created_by', 'description', 'in_stock', 'is_active',)
+                'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'in_stock', 'is_active',)
             }
         ),
     )
@@ -79,12 +79,6 @@ class CategoryAdmin(admin.ModelAdmin):
     )
     search_fields = ('name', 'verbose',)
     ordering = ('name', 'verbose',)
-
-
-#@admin.register(CartItem)
-#class CartItemAdmin(admin.ModelAdmin):
-#    model = CartItem
-#    list_display = ('cart', 'product', 'quantity')
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

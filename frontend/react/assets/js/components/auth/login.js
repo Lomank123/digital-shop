@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import { tokenGetURL, userGetCartURL } from '../../urls';
 import history from '../../history';
-import { getCart, getUser } from '../../utils';
+import { getCart, getCartProductIds, getUser } from '../../utils';
 import { useLocation } from 'react-router';
 import { forgotRoute, signupRoute } from '../../routes';
 
@@ -61,6 +61,7 @@ export default function Login() {
 				// Without this dispatch when user logs in the state will be 1 in our case which means user not authenticated or no user.
 				// We need to wait for this api call otherwise user will be thrown to loggedIn page instead of next param route.
 				await getCart();
+				await getCartProductIds();
 				await getUser();
 
 				// Redirecting to "next" route or to home page if "next" wasn't specified

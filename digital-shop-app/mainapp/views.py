@@ -21,6 +21,7 @@ from mainapp.serializers import ProductSerializer, UserSerializer, CategorySeria
 from mainapp.pagination import ProductPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
 from mainapp.services import CartService, CartItemService
+import mainapp.consts as consts
 
 
 class ProductViewSet(ModelViewSet):
@@ -180,7 +181,13 @@ class CartItemViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
-        safe_actions = ['add_item_to_cart', 'get_non_user_cart_items', 'get_user_cart_items']
+        safe_actions = [
+            'add_item_to_cart',
+            'get_non_user_cart_items',
+            'get_user_cart_items',
+            'get_cart_product_ids',
+            'remove_item_from_cart'
+        ]
         if self.action in safe_actions:
             permission_classes = [AllowAny]
         else:
@@ -197,8 +204,29 @@ class CartItemViewSet(ModelViewSet):
         url_path='add_item_to_cart'
     )
     def add_item_to_cart(self, request):
-        # In request.data there should be id of a product
+        # In request.data there should be id of a product and cart id
         response = CartItemService(request).add_execute()
+        return response
+
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='remove_item_from_cart'
+    )
+    def remove_item_from_cart(self, request):
+        # In request.data there should be id of a product and cart id
+        response = CartItemService(request).remove_execute()
+        return response
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_cart_product_ids'
+    )
+    def get_cart_product_ids(self, request):
+        # In request.data there should be id of a product
+        cart_id = CartService(request)._get_either_cart_id_from_cookie()
+        response = CartItemService(request)._get_ids_execute(cart_id)
         return response
 
     @action(
@@ -220,3 +248,14 @@ class CartItemViewSet(ModelViewSet):
         user_cart_id = CartService(request)._get_user_cart_id_from_cookie()
         response = CartItemService(request).get_execute(user_cart_id, self)
         return response
+    
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='check_cart_products'
+    )
+    def check_cart_products(self, request):
+        if request.user.is_authenticated:
+            print("user")
+        else:
+            print("no user")

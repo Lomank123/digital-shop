@@ -30,9 +30,11 @@ export const userDeleteCartCookieURL = cartURL + 'delete_user_cart_id_cookie/';
 
 // CartItem
 export const cartItemURL = apiURL + 'cart-item/';
-export const cartItemAddURL = cartItemURL + 'add_item_to_cart/';
 export const userCartItemGetURL = cartItemURL + 'get_user_cart_items/';
 export const nonUserCartItemGetURL = cartItemURL + 'get_non_user_cart_items/';
+export const getCartProductIdsURL = cartItemURL + 'get_cart_product_ids/';
+export const cartItemAddURL = cartItemURL + 'add_item_to_cart/';
+export const cartItemRemoveURL = cartItemURL + 'remove_item_from_cart/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

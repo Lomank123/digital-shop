@@ -96,7 +96,7 @@ a.product-info-block {
 .product-price-block {
   display: flex;
   height: 100%;
-  min-width: 100px;
+  min-width: max-content;
   flex-direction: column;
   justify-content: space-between !important;
   align-self: flex-start;
@@ -107,23 +107,21 @@ a.product-info-block {
 }
 
 .product-price {
+  margin-bottom: 20px;
   font-weight: bold;
   font-size: 18px;
   color: green;
   text-align: end;
 }
 
-.out-of-stock-label {
-  font-size: 14px;
-  text-align: end;
-  color: rgba(206, 29, 29, 0.76);
+.display-cart-btn-block {
+  display: flex;
+  justify-content: end;
 }
 
 .cart-btn {
   width: 30px;
   height: 30px;
-
-  align-self: flex-end;
 }
 
 .menu-block {

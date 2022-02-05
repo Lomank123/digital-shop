@@ -80,3 +80,22 @@ a.cart-item-info-link {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.out-of-stock-label {
+  font-size: 16px;
+  text-align: end;
+  color: rgba(206, 29, 29, 0.76);
+}
+
+.in-cart-block {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  width: 95px;
+  padding: 3px !important;
+}
+
+.go-to-cart-page-btn {
+  padding: 3px !important;
+  margin-bottom: 10px !important;
+}

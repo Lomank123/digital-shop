@@ -51,6 +51,12 @@ class CartItemRepository:
 		return None
 
 	@staticmethod
+	def delete_cart_item(product, cart):
+		item = CartItem.objects.filter(product=product, cart=cart).first()
+		if item is not None:
+			item.delete()
+
+	@staticmethod
 	def get_cart_related_items(cart):
 		cart_items = CartItem.objects.filter(cart=cart)
 		return cart_items

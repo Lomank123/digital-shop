@@ -39,6 +39,7 @@ import '../styles/main/main.css';
 const defaultState = {
   user: null,
   cart: null,
+  cartProductIds: null,
 };
 
 // E.g.:
@@ -49,6 +50,8 @@ const reducer = (state = defaultState, action) => {
       return {...state, user: action.payload};
     case 'get_cart':
       return {...state, cart: action.payload};
+    case 'get_cart_product_ids':
+      return {...state, cartProductIds: action.payload};
     default:
       return state;
   }

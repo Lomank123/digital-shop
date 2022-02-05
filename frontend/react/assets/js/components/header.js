@@ -6,7 +6,7 @@ import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, ca
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { Menu, MenuItem } from '@material-ui/core';
-import { getCart, getUser } from '../utils';
+import { getCart, getUser, getCartProductIds } from '../utils';
 import { noImageURL } from '../urls';
 
 import '../../styles/main/header.css';
@@ -28,6 +28,12 @@ export default function Header() {
       console.log("Get cart header done!");
     }).catch((err) => {
       console.log("Header get cart error.");
+    });
+
+    getCartProductIds().then((res) => {
+      console.log("Get product ids header done!");
+    }).catch((err) => {
+      console.log("Product ids error.");
     });
   }, [])
 

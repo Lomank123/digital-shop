@@ -7,7 +7,7 @@ import history from '../../history';
 import { axiosInstance, blankAxiosInstance } from '../../axios';
 
 import '../../../styles/auth/auth.css';
-import { getCart } from '../../utils';
+import { getCart, getCartProductIds } from '../../utils';
 
 
 export default function Logout() {
@@ -22,6 +22,7 @@ export default function Logout() {
         await blankAxiosInstance.post(userDeleteCartCookieURL, {});
         // Creating new cart if previous one attaches to user
         await getCart();
+        await getCartProductIds();
 				// Dispatching with user logged out
         // Order is important, that's why dispatching data should be the last operation
 				dispatch({

@@ -1,5 +1,5 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
-import { cartGetURL, userGetURL } from "./urls";
+import { cartGetURL, userGetURL, getCartProductIdsURL } from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -51,6 +51,17 @@ export async function getCart() {
     })
     // Here we need to return our data to use it in further .then()
     return cartData;
+  });
+}
+
+export async function getCartProductIds() {
+  return blankAxiosInstance.get(getCartProductIdsURL).then((res) => {
+    const productIds = res.data.data;
+    store.dispatch({
+      type: 'get_cart_product_ids',
+      payload: productIds,
+    })
+    return productIds;
   });
 }
 

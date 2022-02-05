@@ -97,6 +97,12 @@ class CartItemService:
 		cart_item = CartItemRepository.set_cart_item_or_none(product, cart)
 		response = self._build_add_response(cart_item)
 		return response
+	
+	def remove_execute(self):
+		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		CartItemRepository.delete_cart_item(product, cart)
+		return Response(data={"detail": "CartItem was deleted."}, status=status.HTTP_200_OK)
 
 	@staticmethod
 	def _build_response(cart_items, viewset_instance):
@@ -119,4 +125,20 @@ class CartItemService:
 	def get_execute(self, cart_id, viewset_instance):
 		cart_items = self._get_cart_related_items(cart_id)
 		response = self._build_response(cart_items, viewset_instance)
+		return response
+
+	@staticmethod
+	def _build_ids_response(cart_items):
+		productIds = {}
+		data = []
+		for item in cart_items:
+			product_id = item.product.id
+			data.append(product_id)
+		productIds["data"] = data
+		response = Response(data=productIds, status=status.HTTP_200_OK)
+		return response
+
+	def _get_ids_execute(self, cart_id):
+		cart_items = self._get_cart_related_items(cart_id)
+		response = self._build_ids_response(cart_items)
 		return response

@@ -262,7 +262,7 @@ export default function AddEditProduct() {
             label="Quantity"
             name="quantity"
             fullWidth
-            value={postData.quantity || 1}
+            value={postData.quantity || ''}
             error={Boolean(errors.quantity)}
             helperText={errors.quantity}
             onChange={handleChange}

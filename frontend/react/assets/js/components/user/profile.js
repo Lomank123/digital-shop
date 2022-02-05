@@ -85,7 +85,6 @@ export default function UserProfile() {
               <DisplayProducts
                 products={products.results}
                 size={'small'}
-                mode={'edit'}
                 isOwner={isOwner}
               />
               <DisplayPagination products={products} setter={setProducts} />

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { productRoute, editProductRoute } from '../routes';
-import { cartItemAddURL, noImageURL } from "../urls";
-import { Box, Button, IconButton } from "@material-ui/core";
+import { productRoute, editProductRoute, cartRoute } from '../routes';
+import { cartItemAddURL, cartItemRemoveURL, noImageURL } from "../urls";
+import { Box, Button, createTheme, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../axios";
 import history from "../history";
 import { DeleteDialog } from "./dialog";
 import { useSelector } from "react-redux";
+import { store } from "..";
 
 import '../../styles/components/display.css';
 
@@ -15,10 +16,10 @@ import '../../styles/components/display.css';
 export function DisplayProducts(props) {
   const products = props.products;    // dict with products info
   const size = props.size;            // normal, small
-  const mode = props.mode;            // default, edit
   const isOwner = props.isOwner;      // For edit mode
 
   const cartData = useSelector(state => state.cart);
+  const cartProductIds = useSelector(state => state.cartProductIds);
   const [open, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
 
@@ -37,8 +38,8 @@ export function DisplayProducts(props) {
     setOpen(true);
   }
 
-  const handleEdit = (id) => {
-    history.push(`/${editProductRoute}/${id}/`);
+  function handleRedirect(route) {
+    history.push(`/${route}/`);
   }
 
   const handleAddToCart = (product_id) => {
@@ -48,7 +49,13 @@ export function DisplayProducts(props) {
         cart_id: cartData.id,
       }
     ).then((res) => {
-      console.log(res);
+      let productIds = [...cartProductIds];
+      productIds.push(product_id);
+
+      store.dispatch({
+        type: 'get_cart_product_ids',
+        payload: productIds,
+      });
       console.log("Product has been added to cart!");
     }).catch((err) => {
       console.log(err);
@@ -56,7 +63,32 @@ export function DisplayProducts(props) {
     })
   }
 
-  if (cartData === null) {
+  const handleRemoveFromCart = (product_id) => {
+    blankAxiosInstance.post(cartItemRemoveURL,
+      { 
+        product_id: product_id,
+        cart_id: cartData.id,
+      }
+    ).then((res) => {
+      // Removing product id from ids array
+      let productIds = [...cartProductIds];
+      const index = productIds.indexOf(product_id);
+      if (index > -1) {
+        productIds.splice(index, 1);  // 2nd parameter means remove one item only
+      }
+      // Dispatching new data to cause re-render
+      store.dispatch({
+        type: 'get_cart_product_ids',
+        payload: productIds,
+      });
+      console.log("Product has been removed from cart!");
+    }).catch((err) => {
+      console.log(err);
+      console.log("Procuct remove from cart error.")
+    })
+  }
+
+  if (cartData === null || cartProductIds === null) {
     return null;
   }
 
@@ -103,7 +135,13 @@ export function DisplayProducts(props) {
                 ? (
                     <Box display={'flex'} justifyContent={'flex-end'}>
                       <IconButton className="display-delete-btn" onClick={() => {handleOpen(product.id)}}><Delete /></IconButton>
-                      <IconButton className="display-edit-btn" onClick={() => {handleEdit(product.id)}}><Edit /></IconButton>
+                      <IconButton
+                        className="display-edit-btn"
+                        onClick={() => {handleRedirect(`${editProductRoute}/${product.id}`)}}
+                      >
+                        <Edit />
+                      </IconButton>
+
                       <DeleteDialog
                         productId={currentId}
                         open={open}
@@ -114,8 +152,35 @@ export function DisplayProducts(props) {
                   )
                 : (
                     (product.in_stock)
-                    ? (<IconButton className='cart-btn' onClick={() => {handleAddToCart(product.id)}}><ShoppingCart /></IconButton>)
-                    : (<span className="out-of-stock-label" >Out of stock</span>)
+                    ? (
+                        (cartProductIds.includes(product.id))
+                        ? (
+                            <Box className="in-cart-block">
+                              <Button
+                                className='go-to-cart-page-btn'
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => {handleRedirect(cartRoute)}}
+                              >
+                                In cart
+                              </Button>
+                              <Button
+                                className='remove-cart-item-btn'
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {handleRemoveFromCart(product.id)}}
+                              >
+                                Remove
+                              </Button>
+                            </Box>
+                          )
+                        : (
+                            <Box className="display-cart-btn-block">
+                              <IconButton className='cart-btn' onClick={() => {handleAddToCart(product.id)}}><ShoppingCart /></IconButton>
+                            </Box>
+                          )
+                      )
+                    : (<span className="out-of-stock-label" ><b>Out of stock</b></span>)
                   )
               }
             </Box>
@@ -204,9 +269,7 @@ export function DisplayPagination(props) {
 // Func for getting products using api call (setter is setProducts currently from profile and home pages)
 export function get_products(url, setter) {
   blankAxiosInstance.get(url).then((res) => {
-    //console.log(res.data);
     setter(res.data);
-    //console.log("get_products done!");
     window.scrollTo(0, 0);  // After successful request scrolling to the top
   }).catch((err) => {
     console.log("get_products error.");

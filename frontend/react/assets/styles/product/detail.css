@@ -65,6 +65,10 @@
   font-size: 22px;
 }
 
+.purchase-btn {
+  width: 131px;
+}
+
 .price {
   font-weight: bold;
   color: green;

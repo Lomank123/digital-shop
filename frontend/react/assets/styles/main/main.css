@@ -65,3 +65,8 @@ button:focus {
   min-width: 100px !important;
   margin-top: 10px !important;
 }
+
+.disabled-block {
+  pointer-events: none;
+  opacity: 0.4;
+}

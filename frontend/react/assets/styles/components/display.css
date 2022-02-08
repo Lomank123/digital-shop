@@ -99,3 +99,9 @@ a.cart-item-info-link {
   padding: 3px !important;
   margin-bottom: 10px !important;
 }
+
+.disabled-text {
+  position: relative;
+  bottom: -50%;
+  right: -40%;
+}

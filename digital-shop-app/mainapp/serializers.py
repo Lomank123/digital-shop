@@ -30,8 +30,24 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = '__all__'
-        #fields = ('id', 'title', 'description', 'price', 'category')
+        #fields = '__all__'
+        # All fields were declared explicitly because in_stock is a function with @property decorator
+        fields = (
+            'id',
+            'category',
+            'category_name',
+            'created_by',
+            'creator_name',
+            'title',
+            'description',
+            'price',
+            'quantity',
+            'image',
+            'is_active',
+            'in_stock',
+            'published',
+            'updated',
+        )
 
 
 class CategorySerializer(serializers.ModelSerializer):

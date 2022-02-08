@@ -43,16 +43,16 @@ class CustomUserAdmin(UserAdmin):
 class ProductAdmin(admin.ModelAdmin):
     model = Product
     list_display = ('id', 'title', 'category', 'price', 'created_by', 'in_stock', 'is_active', 'published', 'updated',)
-    list_filter = ('category', 'is_active', 'in_stock',)
+    list_filter = ('category', 'is_active',)
     fieldsets = (
-        ('Information', {'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'in_stock', 'is_active',)}),
+        ('Information', {'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'is_active',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'in_stock', 'is_active',)
+                'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'is_active',)
             }
         ),
     )

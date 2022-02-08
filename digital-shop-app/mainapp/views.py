@@ -31,7 +31,13 @@ class ProductViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
-        safe_actions = ['list', 'retrieve', 'get_category_products', 'get_user_products']
+        safe_actions = [
+            'list',
+            'retrieve',
+            'get_category_products',
+            'get_user_products',
+            'get_active_products'
+        ]
         if self.action in safe_actions:
             permission_classes = [AllowAny]
         else:
@@ -40,6 +46,10 @@ class ProductViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Product.objects.all()
+        full_queryset_actions = ['retrieve', 'partial_update', 'update', 'destroy']
+        if self.action not in full_queryset_actions:
+            # We want to display only active items on home and category related pages
+            queryset = Product.objects.filter(is_active=True)
         return queryset
 
     @action(
@@ -48,7 +58,7 @@ class ProductViewSet(ModelViewSet):
         url_path=r'category/(?P<category_verbose>[^/.]+)')
     def get_category_products(self, request, category_verbose):
         category = Category.objects.get(verbose=category_verbose)
-        products = Product.objects.filter(category=category)
+        products = self.get_queryset().filter(category=category)
         # Creating pagination
         page = self.paginate_queryset(products)   # Paginating queryset (products)
         if page is not None:
@@ -94,7 +104,6 @@ class UserViewSet(ModelViewSet):
             permission_classes = [IsAuthenticated]
         elif self.action in ['retrieve']:
             # AllowAny because we'll need to retrieve user data in product detail page
-            # And as for get_user_products, for example, when accessing another user's page we want to see their products
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
@@ -181,12 +190,14 @@ class CartItemViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
+        # Allowing partial update to any user can cause security issues
         safe_actions = [
             'add_item_to_cart',
             'get_non_user_cart_items',
             'get_user_cart_items',
             'get_cart_product_ids',
-            'remove_item_from_cart'
+            'remove_item_from_cart',
+            'partial_update',
         ]
         if self.action in safe_actions:
             permission_classes = [AllowAny]
@@ -248,14 +259,3 @@ class CartItemViewSet(ModelViewSet):
         user_cart_id = CartService(request)._get_user_cart_id_from_cookie()
         response = CartItemService(request).get_execute(user_cart_id, self)
         return response
-    
-    @action(
-        methods=['post'],
-        detail=False,
-        url_path='check_cart_products'
-    )
-    def check_cart_products(self, request):
-        if request.user.is_authenticated:
-            print("user")
-        else:
-            print("no user")

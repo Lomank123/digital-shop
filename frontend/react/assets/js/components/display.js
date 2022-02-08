@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { productRoute, editProductRoute, cartRoute } from '../routes';
-import { cartItemAddURL, cartItemRemoveURL, noImageURL } from "../urls";
-import { Box, Button, createTheme, IconButton } from "@material-ui/core";
+import { noImageURL } from "../urls";
+import { Box, Button, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../axios";
 import history from "../history";
 import { DeleteDialog } from "./dialog";
 import { useSelector } from "react-redux";
-import { store } from "..";
+import { handleAddToCart, handleRemoveFromCart } from "../utils";
 
 import '../../styles/components/display.css';
 
@@ -42,52 +42,6 @@ export function DisplayProducts(props) {
     history.push(`/${route}/`);
   }
 
-  const handleAddToCart = (product_id) => {
-    blankAxiosInstance.post(cartItemAddURL,
-      { 
-        product_id: product_id,
-        cart_id: cartData.id,
-      }
-    ).then((res) => {
-      let productIds = [...cartProductIds];
-      productIds.push(product_id);
-
-      store.dispatch({
-        type: 'get_cart_product_ids',
-        payload: productIds,
-      });
-      console.log("Product has been added to cart!");
-    }).catch((err) => {
-      console.log(err);
-      console.log("Procuct add to cart error.")
-    })
-  }
-
-  const handleRemoveFromCart = (product_id) => {
-    blankAxiosInstance.post(cartItemRemoveURL,
-      { 
-        product_id: product_id,
-        cart_id: cartData.id,
-      }
-    ).then((res) => {
-      // Removing product id from ids array
-      let productIds = [...cartProductIds];
-      const index = productIds.indexOf(product_id);
-      if (index > -1) {
-        productIds.splice(index, 1);  // 2nd parameter means remove one item only
-      }
-      // Dispatching new data to cause re-render
-      store.dispatch({
-        type: 'get_cart_product_ids',
-        payload: productIds,
-      });
-      console.log("Product has been removed from cart!");
-    }).catch((err) => {
-      console.log(err);
-      console.log("Procuct remove from cart error.")
-    })
-  }
-
   if (cartData === null || cartProductIds === null) {
     return null;
   }
@@ -115,13 +69,9 @@ export function DisplayProducts(props) {
               <span className='product-title'>{product.title}</span>
               <span className='product-description'>
                 {
-                  (product.description)
-                  ? (
-                      (product.description.length <= 100)
-                      ? product.description
-                      : (product.description.substring(0, 100).trim() + '...')
-                    )
-                  : null
+                  (product.description.length <= 100)
+                  ? product.description
+                  : (product.description.substring(0, 100).trim() + '...')
                 }
               </span>
             </Link>
@@ -168,7 +118,7 @@ export function DisplayProducts(props) {
                                 className='remove-cart-item-btn'
                                 variant="contained"
                                 color="primary"
-                                onClick={() => {handleRemoveFromCart(product.id)}}
+                                onClick={() => {handleRemoveFromCart(product.id, cartData.id, cartProductIds)}}
                               >
                                 Remove
                               </Button>
@@ -176,18 +126,29 @@ export function DisplayProducts(props) {
                           )
                         : (
                             <Box className="display-cart-btn-block">
-                              <IconButton className='cart-btn' onClick={() => {handleAddToCart(product.id)}}><ShoppingCart /></IconButton>
+                              {
+                                (!product.is_active)
+                                ? (<span className="out-of-stock-label"><b>Not available</b></span>)
+                                : (
+                                    <IconButton
+                                      className='cart-btn'
+                                      onClick={() => {handleAddToCart(product.id, cartData.id, cartProductIds)}}
+                                    >
+                                      <ShoppingCart />
+                                    </IconButton>
+                                  )
+                              }
                             </Box>
                           )
                       )
-                    : (<span className="out-of-stock-label" ><b>Out of stock</b></span>)
+                    : (<span className="out-of-stock-label" ><b>{(product.is_active) ? "Not available" : "Out of stock"}</b></span>)
                   )
               }
             </Box>
           );
 
           return(
-            <Box key={key} className='default-block product-card'>
+            <Box key={key} className={'default-block product-card' + ((!product.is_active && !isOwner) ? (' ' + 'disabled-block') : '')}>
               {imageBox}
               {infoBox}
               {priceBox}
@@ -278,23 +239,26 @@ export function get_products(url, setter) {
 
 
 export function DisplayCartItems(props) {
-  const cartItems = props.cartItems;
 
-  const handleQuantityChange = (e, itemId, value, productQuantity) => {
+  const handleQuantityChange = (e, cartItem, value, productQuantity) => {
     e.preventDefault();
-    if (value < 1) {
-      console.log('Minimum quantity for this product is: 1');
-    } else if (value > productQuantity) {
+
+    if (value > productQuantity) {
       console.log(`Maximum quantity for this product is: ${productQuantity}`);
     } else {
-      props.changeQuantity(itemId, value);
+      props.changeQuantity(cartItem, value);
     }
   }
 
   return (
     <Box className='display-cart-items'>
       {
-        Object.entries(cartItems.results).map(([key, cartItem]) => {
+        Object.entries(props.cartItems.results).map(([key, cartItem]) => {
+          // Deleting cart item if it's quantity is equal or less than 0
+          //if (cartItem.quantity <= 0) {
+          //  return props.handleDelete(cartItem.product.id, cartItem.cart.id);
+          //}
+
           const imageBox = (
             <Box className={'cart-item-image-block'}>
               <img
@@ -315,7 +279,12 @@ export function DisplayCartItems(props) {
                 <span className='cart-item-title'>{cartItem.product.title}</span>
               </Link>
 
-              <Button className='delete-cart-item-btn'>Delete</Button>
+              <Button
+                className='delete-cart-item-btn'
+                onClick={() => props.handleDelete(cartItem)}
+              >
+                Delete
+              </Button>
             </Box>
           );
 
@@ -325,7 +294,7 @@ export function DisplayCartItems(props) {
               <Box className='quantity-block'>
                 <Button
                   className='minus1-btn change-quantity-btn'
-                  onClick={(e) => {handleQuantityChange(e, cartItem.id, cartItem.quantity - 1, cartItem.product.quantity)}}
+                  onClick={(e) => {handleQuantityChange(e, cartItem, cartItem.quantity - 1, cartItem.product.quantity)}}
                   variant="outlined"
                 >
                   -
@@ -333,7 +302,7 @@ export function DisplayCartItems(props) {
                 <span className='cart-item-quantity'>{cartItem.quantity}</span>
                 <Button
                   className='plus1-btn change-quantity-btn'
-                  onClick={(e) => {handleQuantityChange(e, cartItem.id, cartItem.quantity + 1, cartItem.product.quantity)}}
+                  onClick={(e) => {handleQuantityChange(e, cartItem, cartItem.quantity + 1, cartItem.product.quantity)}}
                   variant="outlined"
                 >
                   +
@@ -345,7 +314,6 @@ export function DisplayCartItems(props) {
               </Box>
             </Box>
           );
-
 
           return(
             <Box key={key} className='default-block cart-items-block'>

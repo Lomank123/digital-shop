@@ -1,5 +1,5 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
-import { cartGetURL, userGetURL, getCartProductIdsURL } from "./urls";
+import { cartGetURL, userGetURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL } from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -109,4 +109,48 @@ export function getTimestamp(filename='') {
   }
 
   return `${dateString}_${filename}`;
+}
+
+export function handleAddToCart(product_id, cart_id, cartProductIds) {
+  blankAxiosInstance.post(cartItemAddURL,
+    { 
+      product_id: product_id,
+      cart_id: cart_id,
+    }
+  ).then((res) => {
+    let productIds = [...cartProductIds];
+    productIds.push(product_id);
+
+    store.dispatch({
+      type: 'get_cart_product_ids',
+      payload: productIds,
+    });
+    console.log("Product has been added to cart!");
+  }).catch((err) => {
+    console.log(err);
+    console.log("Procuct add to cart error.")
+  })
+}
+
+export async function handleRemoveFromCart(product_id, cart_id, cartProductIds) {
+  return blankAxiosInstance.post(cartItemRemoveURL,
+    { 
+      product_id: product_id,
+      cart_id: cart_id,
+    }
+  ).then((res) => {
+    // Removing product id from ids array
+    let productIds = [...cartProductIds];
+    const index = productIds.indexOf(product_id);
+    if (index > -1) {
+      productIds.splice(index, 1);  // 2nd parameter means remove one item only
+    }
+    // Dispatching new data to cause re-render
+    store.dispatch({
+      type: 'get_cart_product_ids',
+      payload: productIds,
+    });
+    console.log("Product has been removed from cart!");
+    return res;
+  });
 }

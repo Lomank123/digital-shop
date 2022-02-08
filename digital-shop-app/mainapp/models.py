@@ -58,7 +58,7 @@ class Product(models.Model):
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_by', verbose_name='Created by')
 
     title = models.CharField(max_length=60, verbose_name='Title')
-    description = models.CharField(max_length=600, blank=True, null=True, verbose_name='Description')
+    description = models.CharField(max_length=600, default="", blank=True, verbose_name='Description')
     image = models.FileField(
         null=True,
         blank=True,
@@ -72,11 +72,15 @@ class Product(models.Model):
         verbose_name='Price',
         validators=[validators.MinValueValidator(0.01)]
     )
-    in_stock = models.BooleanField(default=True, verbose_name='In stock')
+    quantity = models.IntegerField(default=0, verbose_name='Quantity')
     is_active = models.BooleanField(default=True, verbose_name='Is active')
     published = models.DateTimeField(auto_now_add=True, verbose_name='Published in')
     updated = models.DateTimeField(auto_now=True, verbose_name='Updated in')
-    quantity = models.IntegerField(default=1, verbose_name='Quantity')
+
+    @property
+    def in_stock(self) -> bool:
+        "Returns True if quantity of a product is more than 0"
+        return self.quantity > 0
 
     def __str__(self):
         return self.title

@@ -24,7 +24,7 @@ export default function AddEditProduct() {
     description: "",
     price: "",
     quantity: "",
-    in_stock: true,
+    is_active: true,
 	};
 
     // Field error messages
@@ -35,7 +35,7 @@ export default function AddEditProduct() {
 		image: '',
 		price: '',
     quantity: '',
-    in_stock: '',
+    is_active: '',
 	};
 
 	const [errors, setErrors] = useState(errorsInitialState);
@@ -63,10 +63,9 @@ export default function AddEditProduct() {
           title: res.data.title,
           description: res.data.description,
           price: res.data.price,
-          in_stock: res.data.in_stock,
+          is_active: res.data.is_active,
           quantity: res.data.quantity,
         });
-
         setImgUrl(res.data.image);
 
         console.log("Edit product get done!");
@@ -85,7 +84,7 @@ export default function AddEditProduct() {
         ...postData,
         [e.target.name]: e.target.value
       });
-    } else if (e.target.name === 'in_stock') {
+    } else if (e.target.name === 'is_active') {
       setPostData({
         ...postData,
         [e.target.name]: e.target.checked
@@ -109,8 +108,7 @@ export default function AddEditProduct() {
     formData.append('description', postData.description);
     formData.append('price', postData.price);
     formData.append('quantity', postData.quantity);
-    formData.append('in_stock', postData.in_stock);
-    formData.append('is_active', true);
+    formData.append('is_active', postData.is_active);
     
     if (postImage !== null) {
       if (postImage === '') {
@@ -167,7 +165,7 @@ export default function AddEditProduct() {
           description: err.response.data.description,
           image: err.response.data.image,
           price: err.response.data.price,
-          in_stock: err.response.data.in_stock,
+          is_active: err.response.data.is_active,
         });
       }
     });
@@ -262,7 +260,7 @@ export default function AddEditProduct() {
             label="Quantity"
             name="quantity"
             fullWidth
-            value={postData.quantity || ''}
+            value={postData.quantity}
             error={Boolean(errors.quantity)}
             helperText={errors.quantity}
             onChange={handleChange}
@@ -272,6 +270,8 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Describe your product:</p>
           <TextField
+            multiline
+            maxRows={8}
             className="form-field"
             variant="outlined"
             margin="normal"
@@ -297,14 +297,14 @@ export default function AddEditProduct() {
         <Box className="field-block">
           <p className="field-label">Product availability:</p>
           <FormControlLabel
-            label='In stock'
+            label='Is active'
             control={
               <Checkbox
-                checked={postData.in_stock}
-                id="instock"
+                checked={postData.is_active}
+                id="is-active"
                 color="primary"
-                label="In stock"
-                name="in_stock"
+                label="Is active"
+                name="is_active"
                 onChange={handleChange}
               />
             }

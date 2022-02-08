@@ -5,21 +5,36 @@ import { blankAxiosInstance } from "../axios";
 import { userCartItemGetURL, nonUserCartItemGetURL, cartItemURL } from "../urls";
 import { DisplayCartItems } from "./display";
 import '../../styles/components/cart.css';
+import { handleRemoveFromCart } from "../utils";
 
 
 export default function Cart() {
   const userCart = useSelector(state => state.cart);
+  const cartProductIds = useSelector(state => state.cartProductIds);
   const [cartItems, setCartItems] = useState(null);
   const [secondCartItems, setSecondCartItems] = useState(null);
   const [quantityChanged, setQuantityChanged] = useState(false);
 
-  const changeQuantity = (itemId, value) => {
+  const changeQuantity = (cartItem, value) => {
+    if (value <= 0) {
+      handleDelete(cartItem);
+      return;
+    }
     // Here we use PATCH method to partially update CartItem instance
-    blankAxiosInstance.patch(cartItemURL + itemId + '/', { quantity: value }).then((res) => {
+    blankAxiosInstance.patch(cartItemURL + cartItem.id + '/', { quantity: value }).then((res) => {
       setQuantityChanged(!quantityChanged);
     }).catch((err) => {
       console.log("Quantity change error.");
-    })
+    });
+  }
+
+  const handleDelete = (cartItem) => {
+    handleRemoveFromCart(cartItem.product.id, cartItem.cart.id, cartProductIds).then((res) => {
+      setQuantityChanged(!quantityChanged);
+    }).catch((err) => {
+      console.log(err);
+      console.log("Procuct remove from cart error.");
+    });
   }
 
   // Cart items api call
@@ -30,7 +45,6 @@ export default function Cart() {
       console.log("Cart items get done!");
     }).catch((err) => {
       setCartItems({});
-      //console.log("Cart items get error.");
     });
     // Non-user cart items
     blankAxiosInstance.get(nonUserCartItemGetURL).then((res) => {
@@ -38,7 +52,6 @@ export default function Cart() {
       console.log("Cart items non-user get done!");
     }).catch((err) => {
       setSecondCartItems({});
-      //console.log("Cart items non-user get error.");
     });
   }, [quantityChanged])
 
@@ -53,7 +66,7 @@ export default function Cart() {
         ? (
             <Box className="user-cart-block cart">
               {(cartItems.results.length > 0) ? (<h3 className="cart-label">User cart</h3>) : null}
-              <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} />
+              <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
             </Box>
           )
         : null
@@ -64,7 +77,7 @@ export default function Cart() {
         ? (
             <Box className="non-user-cart-block cart">
               {(secondCartItems.results.length > 0) ? (<h3 className="cart-label">Non user cart</h3>) : null}
-              <DisplayCartItems cartItems={secondCartItems} />
+              <DisplayCartItems cartItems={secondCartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
             </Box>
           )
         : null

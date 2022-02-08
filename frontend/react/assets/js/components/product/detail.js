@@ -5,10 +5,11 @@ import { blankAxiosInstance } from "../../axios";
 import { categoryGetURL, noImageURL, productGetURL, userGetURL, cartItemAddURL } from "../../urls";
 import { Link } from "react-router-dom";
 import history from "../../history";
-import { editProductRoute, profileRoute } from "../../routes";
+import { cartRoute, editProductRoute, profileRoute } from "../../routes";
 import { useSelector } from "react-redux";
 import { Delete, Edit } from '@material-ui/icons';
 import { DeleteDialog } from "../dialog";
+import { handleAddToCart } from "../../utils";
 
 import '../../../styles/product/detail.css';
 import '../../../styles/user/profile.css';
@@ -18,6 +19,7 @@ export default function DetailProduct() {
   const params = useParams();
   const cartData = useSelector(state => state.cart);
   const userData = useSelector(state => state.user);
+  const cartProductIds = useSelector(state => state.cartProductIds);
   const [author, setAuthor] = useState(null);
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
@@ -35,19 +37,13 @@ export default function DetailProduct() {
     history.push(`/${editProductRoute}/${id}/`);
   }
 
-  const handleAddToCart = (product_id) => {
-    blankAxiosInstance.post(cartItemAddURL,
-      { 
-        product_id: product_id,
-        cart_id: cartData.id,
-      }
-    ).then((res) => {
-      console.log(res);
-      console.log("Product has been added to cart!");
-    }).catch((err) => {
-      console.log(err);
-      console.log("Procuct add to cart error.")
-    })
+  const handleAddToCartOrRedirect = (product_id, cart_id, cartProductIds) => {
+    if (cartProductIds.includes(product_id)) {
+      console.log("Already in the cart! Redirecting...");
+      history.push(`/${cartRoute}`);
+      return;
+    }
+    handleAddToCart(product_id, cart_id, cartProductIds);
   }
 
   useEffect(() => {
@@ -140,10 +136,12 @@ export default function DetailProduct() {
               className="purchase-btn"
               variant="contained"
               color="primary"
-              onClick={() => {handleAddToCart(params.id)}}
-              disabled={!product.in_stock}
+              onClick={() => {handleAddToCartOrRedirect(product.id, cartData.id, cartProductIds)}}
+              disabled={!product.in_stock && !product.is_active}
             >
-              Add to cart
+              {
+                (cartProductIds.includes(product.id)) ? ('In cart') : ('Add to cart')
+              }
             </Button>
             <span className="price">{product.price}$</span>
           </Box>
@@ -154,9 +152,9 @@ export default function DetailProduct() {
           ? (
               <Box className="detail-links-block">
                 <IconButton className="display-delete-btn" onClick={handleOpen}><Delete /></IconButton>
-                <IconButton className="display-edit-btn" onClick={() => {handleEdit(params.id)}}><Edit /></IconButton>
+                <IconButton className="display-edit-btn" onClick={() => {handleEdit(product.id)}}><Edit /></IconButton>
                 <DeleteDialog
-                  productId={params.id}
+                  productId={product.id}
                   open={open}
                   handleClose={handleClose}
                   reload={'home'}

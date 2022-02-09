@@ -35,6 +35,7 @@ export const nonUserCartItemGetURL = cartItemURL + 'get_non_user_cart_items/';
 export const getCartProductIdsURL = cartItemURL + 'get_cart_product_ids/';
 export const cartItemAddURL = cartItemURL + 'add_item_to_cart/';
 export const cartItemRemoveURL = cartItemURL + 'remove_item_from_cart/';
+export const cartItemDeleteInactiveURL = cartItemURL + 'delete_inactive/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

@@ -18,11 +18,11 @@ export function DisplayProducts(props) {
   const size = props.size;            // normal, small
   const isOwner = props.isOwner;      // For edit mode
 
+  const userData = useSelector(state => state.user);
   const cartData = useSelector(state => state.cart);
   const cartProductIds = useSelector(state => state.cartProductIds);
   const [open, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-
   // normal + default => for home page
   // small + edit + isOwner => profile page
   // - prop: products - dict with products info to display
@@ -42,7 +42,7 @@ export function DisplayProducts(props) {
     history.push(`/${route}/`);
   }
 
-  if (cartData === null || cartProductIds === null) {
+  if (cartData === null || cartProductIds === null || userData === null) {
     return null;
   }
 
@@ -127,21 +127,35 @@ export function DisplayProducts(props) {
                         : (
                             <Box className="display-cart-btn-block">
                               {
-                                (!product.is_active)
-                                ? (<span className="out-of-stock-label"><b>Not available</b></span>)
+                                (product.created_by === userData.id)
+                                ? <span className="out-of-stock-label"><b>It is your product</b></span>
                                 : (
-                                    <IconButton
-                                      className='cart-btn'
-                                      onClick={() => {handleAddToCart(product.id, cartData.id, cartProductIds)}}
-                                    >
-                                      <ShoppingCart />
-                                    </IconButton>
+                                    (!product.is_active)
+                                    ? (<span className="out-of-stock-label"><b>Not available</b></span>)
+                                    : (
+                                        <IconButton
+                                          className='cart-btn'
+                                          onClick={() => {handleAddToCart(product.id, cartData.id, cartProductIds)}}
+                                        >
+                                          <ShoppingCart />
+                                        </IconButton>
+                                      )
                                   )
                               }
                             </Box>
                           )
                       )
-                    : (<span className="out-of-stock-label" ><b>{(product.is_active) ? "Not available" : "Out of stock"}</b></span>)
+                    : (
+                        <span className="out-of-stock-label">
+                          <b>
+                            {
+                              (product.created_by === userData.id)
+                              ? "It is your product"
+                              : ((!product.is_active) ? "Not available" : "Out of stock")
+                            }
+                          </b>
+                        </span>
+                      )
                   )
               }
             </Box>
@@ -161,56 +175,61 @@ export function DisplayProducts(props) {
 }
 
 export function DisplayPagination(props) {
-  const products = props.products;
+  const items = props.items;
   let paginationBlock = null;
 
   const handlePaginationClick = (url) => {
     const newUrl = new URL(url);
     const params = new URLSearchParams(history.location.search);
 
-    params.set('page', newUrl.searchParams.get('page')); 
-    if (JSON.parse(params.get('page')) === null) {
-      params.delete('page');
+    let paramName = 'page';
+    if (props.pageParamName) {
+      paramName = props.pageParamName;
+    }
+
+    params.set(paramName, newUrl.searchParams.get('page')); 
+    if (JSON.parse(params.get(paramName)) === null) {
+      params.delete(paramName);
     }
     history.replace({ search: params.toString() })
-    get_products(newUrl.href, props.setter);
+    get_items(newUrl.href, props.setter);
   }
 
-  if (products !== null) {
+  if (items !== null) {
     paginationBlock = (
       <Box className='pagination-block'>
 
         <Box className='previous-pages'>
           <Button 
-            onClick={(e) => {handlePaginationClick(products.first)}}
-            disabled={!Boolean(products.previous)}
+            onClick={(e) => {handlePaginationClick(items.first)}}
+            disabled={!Boolean(items.previous)}
           >
             First
           </Button>
 
           <Button
-            onClick={(e) => {handlePaginationClick(products.previous)}}
-            disabled={!Boolean(products.previous)}
+            onClick={(e) => {handlePaginationClick(items.previous)}}
+            disabled={!Boolean(items.previous)}
           >
             Previous
           </Button>
         </Box>
 
         <span className='pages-info'>
-          Page {products.number} of {products.num_pages}
+          Page {items.number} of {items.num_pages}
         </span>
 
         <Box className='next-pages'>
           <Button
-            onClick={(e) => {handlePaginationClick(products.next)}}
-            disabled={!Boolean(products.next)}
+            onClick={(e) => {handlePaginationClick(items.next)}}
+            disabled={!Boolean(items.next)}
           >
             Next
           </Button>
 
           <Button
-            onClick={(e) => {handlePaginationClick(products.last)}}
-            disabled={!Boolean(products.next)}
+            onClick={(e) => {handlePaginationClick(items.last)}}
+            disabled={!Boolean(items.next)}
           >
             Last
           </Button>
@@ -227,13 +246,13 @@ export function DisplayPagination(props) {
   ); 
 }
 
-// Func for getting products using api call (setter is setProducts currently from profile and home pages)
-export function get_products(url, setter) {
+// Func for getting items using api call (setter is setProducts currently from profile and home pages)
+export function get_items(url, setter) {
   blankAxiosInstance.get(url).then((res) => {
     setter(res.data);
     window.scrollTo(0, 0);  // After successful request scrolling to the top
   }).catch((err) => {
-    console.log("get_products error.");
+    console.log("get_items error.");
   });
 }
 

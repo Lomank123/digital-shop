@@ -3,10 +3,13 @@ import React, { useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blankAxiosInstance } from "../axios";
 import { userCartItemGetURL, nonUserCartItemGetURL, cartItemURL } from "../urls";
-import { DisplayCartItems } from "./display";
+import { DisplayCartItems, DisplayPagination, get_items } from "./display";
 import '../../styles/components/cart.css';
 import { handleRemoveFromCart } from "../utils";
+import history from "../history";
 
+
+const pageParamName = "non-user-cart-page";
 
 export default function Cart() {
   const userCart = useSelector(state => state.cart);
@@ -40,19 +43,24 @@ export default function Cart() {
   // Cart items api call
   useLayoutEffect(() => {
     // User cart items
-    blankAxiosInstance.get(userCartItemGetURL).then((res) => {
-      setCartItems(res.data);
-      console.log("Cart items get done!");
-    }).catch((err) => {
-      setCartItems({});
-    });
-    // Non-user cart items
-    blankAxiosInstance.get(nonUserCartItemGetURL).then((res) => {
-      setSecondCartItems(res.data);
-      console.log("Cart items non-user get done!");
-    }).catch((err) => {
-      setSecondCartItems({});
-    });
+    const searchParams = new URLSearchParams(history.location.search);
+    const page = searchParams.get("page");
+    const nonUserPage = searchParams.get(pageParamName);
+
+    // Setting user cart items
+    let url = new URL(userCartItemGetURL);
+    if (page !== null) {
+      url.searchParams.set('page', page);
+    }
+    get_items(url, setCartItems);
+
+    // Setting non-user cart items
+    url = new URL(nonUserCartItemGetURL);
+    if (nonUserPage !== null) {
+      url.searchParams.set('page', nonUserPage);
+    }
+    get_items(url, setSecondCartItems);
+
   }, [quantityChanged])
 
   if (userCart === null || cartItems === null || secondCartItems === null) {
@@ -66,7 +74,9 @@ export default function Cart() {
         ? (
             <Box className="user-cart-block cart">
               {(cartItems.results.length > 0) ? (<h3 className="cart-label">User cart</h3>) : null}
+              <DisplayPagination items={cartItems} setter={setCartItems} />
               <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+              <DisplayPagination items={cartItems} setter={setCartItems} />
             </Box>
           )
         : null
@@ -77,7 +87,9 @@ export default function Cart() {
         ? (
             <Box className="non-user-cart-block cart">
               {(secondCartItems.results.length > 0) ? (<h3 className="cart-label">Non user cart</h3>) : null}
+              <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
               <DisplayCartItems cartItems={secondCartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+              <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
             </Box>
           )
         : null

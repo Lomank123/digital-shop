@@ -60,3 +60,7 @@ class CartItemRepository:
 	def get_cart_related_items(cart):
 		cart_items = CartItem.objects.filter(cart=cart)
 		return cart_items
+
+	@staticmethod
+	def delete_by_product(product):
+		CartItem.objects.filter(product=product).delete()

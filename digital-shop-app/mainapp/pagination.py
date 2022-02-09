@@ -42,3 +42,7 @@ class ProductPagination(PageNumberPagination):
 		url = self.request.build_absolute_uri()
 		page_number = self.page.paginator.num_pages
 		return replace_query_param(url, self.page_query_param, page_number)
+
+
+class CartItemPagination(ProductPagination):
+	page_size = 5

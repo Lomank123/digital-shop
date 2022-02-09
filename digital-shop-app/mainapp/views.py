@@ -18,7 +18,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer
-from mainapp.pagination import ProductPagination
+from mainapp.pagination import ProductPagination, CartItemPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
 from mainapp.services import CartService, CartItemService
 import mainapp.consts as consts
@@ -49,6 +49,7 @@ class ProductViewSet(ModelViewSet):
         full_queryset_actions = ['retrieve', 'partial_update', 'update', 'destroy']
         if self.action not in full_queryset_actions:
             # We want to display only active items on home and category related pages
+            # Also we don't wont to show owner's products
             queryset = Product.objects.filter(is_active=True)
         return queryset
 
@@ -187,7 +188,7 @@ class CartViewSet(ModelViewSet):
 class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
-    pagination_class = ProductPagination
+    pagination_class = CartItemPagination
 
     def get_permissions(self):
         # Allowing partial update to any user can cause security issues
@@ -215,7 +216,6 @@ class CartItemViewSet(ModelViewSet):
         url_path='add_item_to_cart'
     )
     def add_item_to_cart(self, request):
-        # In request.data there should be id of a product and cart id
         response = CartItemService(request).add_execute()
         return response
 
@@ -225,7 +225,6 @@ class CartItemViewSet(ModelViewSet):
         url_path='remove_item_from_cart'
     )
     def remove_item_from_cart(self, request):
-        # In request.data there should be id of a product and cart id
         response = CartItemService(request).remove_execute()
         return response
 
@@ -235,11 +234,21 @@ class CartItemViewSet(ModelViewSet):
         url_path='get_cart_product_ids'
     )
     def get_cart_product_ids(self, request):
-        # In request.data there should be id of a product
         cart_id = CartService(request)._get_either_cart_id_from_cookie()
         response = CartItemService(request)._get_ids_execute(cart_id)
         return response
 
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='delete_inactive'
+    )
+    def delete_inactive(self, request):
+        # In request.data there should be id of a product
+        response = CartItemService(request)._delete_inactive_execute()
+        return response
+
+    # Unused
     @action(
         methods=['get'],
         detail=False,
@@ -250,6 +259,7 @@ class CartItemViewSet(ModelViewSet):
         response = CartItemService(request).get_execute(non_user_cart_id, self)
         return response
 
+    # Unused
     @action(
         methods=['get'],
         detail=False,

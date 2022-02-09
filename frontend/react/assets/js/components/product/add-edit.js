@@ -4,7 +4,7 @@ import { MenuItem, TextField, Box, Button, Checkbox, FormControlLabel } from "@m
 import { axiosInstance, blankAxiosInstance } from "../../axios";
 import { categoryGetURL, productGetURL } from "../../urls";
 import { useParams } from "react-router";
-import { DeleteDialog } from "../dialog";
+import { DeleteDialog, IsActiveDialog } from "../dialog";
 import { ImageUpload } from "../imageUpload";
 import { productRoute } from "../../routes";
 import history from "../../history";
@@ -17,6 +17,7 @@ export default function AddEditProduct() {
   const [categoriesData, setCategoriesData] = useState([]);
   const params = useParams();   // Here we expect to get id of a product (edit product)
   const [open, setOpen] = useState(false);
+  const [activeDialog, setActiveDialog] = useState(false);
 
   const initialFormData = {
     category: "",
@@ -42,6 +43,22 @@ export default function AddEditProduct() {
   const [postData, setPostData] = useState(initialFormData);
   const [postImage, setPostImage] = useState(null);   // For storing image
   const [imgUrl, setImgUrl] = useState(null);
+
+  const handleOpen = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
+  const handleIsActiveDialogOpen = () => {
+    setActiveDialog(true);
+  }
+
+  const handleIsActiveDialogClose = () => {
+    setActiveDialog(false);
+  }
 
   // params.id is the indicator that we're trying to edit product
   // Categories get
@@ -75,8 +92,6 @@ export default function AddEditProduct() {
     }
   }, [])
 
-
-
   // Handles all changes in different fields
   const handleChange = (e) => {
     if (e.target.name === 'category') {
@@ -99,8 +114,9 @@ export default function AddEditProduct() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
+    if (e) {
+      e.preventDefault();
+    }
     let formData = new FormData();
     formData.append('created_by', userData.id);
     formData.append('category', postData.category);
@@ -109,7 +125,7 @@ export default function AddEditProduct() {
     formData.append('price', postData.price);
     formData.append('quantity', postData.quantity);
     formData.append('is_active', postData.is_active);
-    
+
     if (postImage !== null) {
       if (postImage === '') {
         formData.append('image', '');
@@ -122,6 +138,7 @@ export default function AddEditProduct() {
     let url = productGetURL;
     // For editing
     if (params.id) {
+
       method = 'patch';
       // From DRF: PATCH method needs id in the end of url
       url += params.id + '/';
@@ -169,14 +186,6 @@ export default function AddEditProduct() {
         });
       }
     });
-  }
-
-  const handleOpen = () => {
-    setOpen(true);
-  }
-
-  const handleClose = () => {
-    setOpen(false);
   }
 
   return (
@@ -318,10 +327,22 @@ export default function AddEditProduct() {
           className="create-product-btn"
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
+          onClick={(e) => {
+            if (params.id && !postData.is_active) {
+              handleIsActiveDialogOpen();
+            } else {
+              handleSubmit(e);
+            }
+          }}
         >
           { (params.id) ? 'Save' : 'Add' }
         </Button>
+        <IsActiveDialog
+          productId={params.id}
+          open={activeDialog}
+          handleClose={handleIsActiveDialogClose}
+          handleSubmit={handleSubmit}
+        />
         {
           (params.id) ? (
             <Box>

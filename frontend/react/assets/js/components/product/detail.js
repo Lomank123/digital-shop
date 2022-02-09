@@ -137,7 +137,7 @@ export default function DetailProduct() {
               variant="contained"
               color="primary"
               onClick={() => {handleAddToCartOrRedirect(product.id, cartData.id, cartProductIds)}}
-              disabled={!product.in_stock && !product.is_active}
+              disabled={!product.in_stock || !product.is_active || product.created_by == userData.id}
             >
               {
                 (cartProductIds.includes(product.id)) ? ('In cart') : ('Add to cart')

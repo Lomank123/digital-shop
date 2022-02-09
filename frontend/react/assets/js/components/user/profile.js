@@ -5,7 +5,7 @@ import { blankAxiosInstance } from '../../axios';
 import { noImageURL, userGetURL, userProductsGetURL } from '../../urls';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { DisplayPagination, DisplayProducts, get_products } from '../display';
+import { DisplayPagination, DisplayProducts, get_items } from '../display';
 import history from '../../history';
 
 import '../../../styles/user/profile.css';
@@ -50,7 +50,7 @@ export default function UserProfile() {
     if (page !== null) {
       url.searchParams.set('page', page);
     }
-    get_products(url, setProducts);
+    get_items(url, setProducts);
   }, [params.id])
 
   if (user === null || products === null) {
@@ -81,13 +81,13 @@ export default function UserProfile() {
           )
         : (
             <Box>
-              <DisplayPagination products={products} setter={setProducts} />
+              <DisplayPagination items={products} setter={setProducts} />
               <DisplayProducts
                 products={products.results}
                 size={'small'}
                 isOwner={isOwner}
               />
-              <DisplayPagination products={products} setter={setProducts} />
+              <DisplayPagination items={products} setter={setProducts} />
             </Box>
           )
       }

@@ -5,16 +5,18 @@ import Box from '@material-ui/core/Box';
 import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, cartRoute } from '../routes';
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
-import { Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { getCart, getUser, getCartProductIds } from '../utils';
 import { noImageURL } from '../urls';
 
 import '../../styles/main/header.css';
+import { ShoppingCart } from '@material-ui/icons';
 
 
 export default function Header() {
   const userData = useSelector(state => state.user, shallowEqual);
   const userCart = useSelector(state => state.cart, shallowEqual);
+  const cartProductIds = useSelector(state => state.cartProductIds, shallowEqual);
   
   // Getting (and setting) user data
   useLayoutEffect(() => {
@@ -68,6 +70,10 @@ export default function Header() {
       <Link className='link' to="/">Shop</Link>
     </Box>
   )
+
+  if (cartProductIds === null) {
+    return null;
+  }
 
   // If tokens were expired this will prevent from rendering loggedIn buttons
   let loggedIn = null;
@@ -130,12 +136,13 @@ export default function Header() {
   if (userCart !== null) {
     cartBox = (
       <Box className='cart-btn-block'>
-        <Button
+        <IconButton
           className='cart-page-btn'
           onClick={e => handleClickRedirect(e, cartRoute + '/')}
         >
-          Cart
-        </Button>
+          <ShoppingCart />
+          <span className='cart-products-number'>{cartProductIds.length}</span>
+        </IconButton>
       </Box>
     );
   }

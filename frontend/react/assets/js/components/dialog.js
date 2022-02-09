@@ -1,6 +1,6 @@
 import React from "react";
 import { axiosInstance } from "../axios";
-import { productGetURL } from "../urls";
+import { cartItemDeleteInactiveURL, productGetURL } from "../urls";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import history from "../history";
 
@@ -64,6 +64,50 @@ export function DeleteDialog(props) {
       <DialogActions>
         <Button onClick={props.handleClose} autoFocus>Cancel</Button>
         <Button onClick={handleDialogConfirm}>Delete</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+
+export function IsActiveDialog(props) {
+  const open = props.open;
+
+  const handleDialogConfirm = () => {
+    const id = props.productId;
+    axiosInstance.post(cartItemDeleteInactiveURL, { product_id: id }, { params: { redirect: true } }).then((res) => {
+      console.log('Cart items deleted!');
+      props.handleSubmit();
+    }).catch((err) => {
+      console.log(err);
+      console.log('Cart items delete error.');
+    })
+  }
+
+  return (
+    <Dialog
+      PaperProps={
+        {style: {
+          boxShadow: 'none',
+        }}
+      }
+      BackdropProps={{ style: { backgroundColor: "rgba(20, 19, 19, 0.8)" } }}
+      open={open}
+      onClose={props.handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        {"Do you want to set this to inactive? This will delete product from all active carts."}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          You can't undo this action.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleClose} autoFocus>Cancel</Button>
+        <Button onClick={handleDialogConfirm}>Confirm</Button>
       </DialogActions>
     </Dialog>
   );

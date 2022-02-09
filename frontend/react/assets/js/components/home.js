@@ -3,7 +3,7 @@ import { categoryGetURL, productGetURL } from '../urls';
 import { blankAxiosInstance } from '../axios';
 import { Box, Button } from '@material-ui/core';
 import history from '../history';
-import { DisplayPagination, DisplayProducts, get_products } from './display';
+import { DisplayPagination, DisplayProducts, get_items } from './display';
 
 import '../../styles/main/home.css';
 
@@ -34,7 +34,7 @@ export default function Home() {
         url.searchParams.set('page', page);
       }
       // Getting products
-      get_products(url, setProducts);
+      get_items(url, setProducts);
     }).catch((err) => {
       console.log("Categories data error. Home page.");
     });
@@ -59,9 +59,9 @@ export default function Home() {
             )
           : (
             <Box className='products-block'>
-              <DisplayPagination products={products} setter={setProducts} />
+              <DisplayPagination items={products} setter={setProducts} />
               <DisplayProducts products={products.results} />
-              <DisplayPagination products={products} setter={setProducts} />
+              <DisplayPagination items={products} setter={setProducts} />
             </Box>
           )
         }
@@ -90,7 +90,7 @@ function DisplayCategories(props) {
     } else {
       history.replace({ search: '' })
     }
-    get_products(url, props.setter);
+    get_items(url, props.setter);
   }
 
   return (

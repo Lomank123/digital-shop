@@ -142,3 +142,8 @@ class CartItemService:
 		cart_items = self._get_cart_related_items(cart_id)
 		response = self._build_ids_response(cart_items)
 		return response
+
+	def _delete_inactive_execute(self):
+		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
+		CartItemRepository.delete_by_product(product)
+		return Response(data={"detail": "CartItem instances were deleted."}, status=status.HTTP_200_OK)

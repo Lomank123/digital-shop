@@ -13,7 +13,6 @@ const pageParamName = "non-user-cart-page";
 
 export default function Cart() {
   const userCart = useSelector(state => state.cart);
-  const cartProductIds = useSelector(state => state.cartProductIds);
   const [cartItems, setCartItems] = useState(null);
   const [secondCartItems, setSecondCartItems] = useState(null);
   const [quantityChanged, setQuantityChanged] = useState(false);
@@ -32,7 +31,7 @@ export default function Cart() {
   }
 
   const handleDelete = (cartItem) => {
-    handleRemoveFromCart(cartItem.product.id, cartItem.cart.id, cartProductIds).then((res) => {
+    handleRemoveFromCart(cartItem.product.id, cartItem.cart.id).then((res) => {
       setQuantityChanged(!quantityChanged);
     }).catch((err) => {
       console.log(err);
@@ -59,7 +58,7 @@ export default function Cart() {
     if (nonUserPage !== null) {
       url.searchParams.set('page', nonUserPage);
     }
-    get_items(url, setSecondCartItems);
+    get_items(url, setSecondCartItems, pageParamName);
 
   }, [quantityChanged])
 

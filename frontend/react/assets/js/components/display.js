@@ -118,7 +118,7 @@ export function DisplayProducts(props) {
                                 className='remove-cart-item-btn'
                                 variant="contained"
                                 color="primary"
-                                onClick={() => {handleRemoveFromCart(product.id, cartData.id, cartProductIds)}}
+                                onClick={() => {handleRemoveFromCart(product.id, cartData.id)}}
                               >
                                 Remove
                               </Button>
@@ -247,12 +247,44 @@ export function DisplayPagination(props) {
 }
 
 // Func for getting items using api call (setter is setProducts currently from profile and home pages)
-export function get_items(url, setter) {
+export function get_items(url, setter, pageParamName=null) {
   blankAxiosInstance.get(url).then((res) => {
     setter(res.data);
-    window.scrollTo(0, 0);  // After successful request scrolling to the top
+    //window.scrollTo(0, 0);  // After successful request scrolling to the top
   }).catch((err) => {
     console.log("get_items error.");
+
+    if (err.response.data.detail === "Invalid page." && err.response.status === 404) {
+      const newUrl = new URL(err.response.request.responseURL);
+      if (parseInt(newUrl.searchParams.get("page")) - 1 <= 1) {
+        newUrl.searchParams.delete("page");
+      } else {
+        newUrl.searchParams.set("page", newUrl.searchParams.get("page") - 1);
+      }
+      //console.log(newUrl.searchParams.get("page"));
+
+      blankAxiosInstance.get(newUrl).then((res) => {
+        setter(res.data);
+        const params = new URLSearchParams(window.location.search);
+        let paramName = "page";
+        if (pageParamName) {
+          paramName = pageParamName;
+        }
+        if (params.get(paramName)) {
+          if (res.data.num_pages <= 1) {
+            params.delete(paramName);
+          } else if (parseInt(params.get(paramName)) > res.data.num_pages) {
+            params.set(paramName, parseInt(params.get(paramName)) - 1);
+          }
+          history.replace({ search: params.toString() })
+        }
+        console.log("Again and done!");
+      }).catch((err) => {
+        console.log(err);
+        console.log("Again and error!");
+      });
+    }
+    //blankAxiosInstance.get()
   });
 }
 

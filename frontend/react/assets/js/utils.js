@@ -132,24 +132,14 @@ export function handleAddToCart(product_id, cart_id, cartProductIds) {
   })
 }
 
-export async function handleRemoveFromCart(product_id, cart_id, cartProductIds) {
+export async function handleRemoveFromCart(product_id, cart_id) {
   return blankAxiosInstance.post(cartItemRemoveURL,
     { 
       product_id: product_id,
       cart_id: cart_id,
     }
   ).then((res) => {
-    // Removing product id from ids array
-    let productIds = [...cartProductIds];
-    const index = productIds.indexOf(product_id);
-    if (index > -1) {
-      productIds.splice(index, 1);  // 2nd parameter means remove one item only
-    }
-    // Dispatching new data to cause re-render
-    store.dispatch({
-      type: 'get_cart_product_ids',
-      payload: productIds,
-    });
+    getCartProductIds();
     console.log("Product has been removed from cart!");
     return res;
   });

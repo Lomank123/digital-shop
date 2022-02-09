@@ -16,7 +16,7 @@ import { ShoppingCart } from '@material-ui/icons';
 export default function Header() {
   const userData = useSelector(state => state.user, shallowEqual);
   const userCart = useSelector(state => state.cart, shallowEqual);
-  const cartProductIds = useSelector(state => state.cartProductIds, shallowEqual);
+  const cartProductIds = useSelector(state => state.cartProductIds);
   
   // Getting (and setting) user data
   useLayoutEffect(() => {

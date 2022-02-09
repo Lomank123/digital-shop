@@ -47,7 +47,7 @@ export default function EditProfile() {
   const handleChange = (e) => {
     setPostData({
       ...postData,
-      [e.target.name]: e.target.value.trim()
+      [e.target.name]: e.target.value
     });
   }
 
@@ -55,8 +55,8 @@ export default function EditProfile() {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append('username', postData.username);
-    formData.append('email', postData.email);
+    formData.append('username', postData.username.trim());
+    formData.append('email', postData.email.trim());
 
     if (postImage !== null) {
       if (postImage === '') {

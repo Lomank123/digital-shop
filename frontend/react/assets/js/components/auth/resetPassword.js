@@ -32,7 +32,7 @@ export default function ResetPassword() {
 	const handleChange = (e) => {
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value.trim()
+			[e.target.name]: e.target.value
 		});
 	};
 
@@ -41,8 +41,8 @@ export default function ResetPassword() {
 
     blankAxiosInstance.post(
       passwordResetConfirmURL, {
-        new_password1: formData.password1,
-        new_password2: formData.password2,
+        new_password1: formData.password1.trim(),
+        new_password2: formData.password2.trim(),
         uid: params.uid,
         token: params.token,
       }).then((res) => {

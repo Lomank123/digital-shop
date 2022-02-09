@@ -40,7 +40,7 @@ export default function Login() {
 	const handleChange = (e) => {
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value.trim()
+			[e.target.name]: e.target.value
 		});
 	};
 	
@@ -50,8 +50,8 @@ export default function Login() {
 
     blankAxiosInstance.post(
       tokenGetURL, {
-        username: formData.email,
-        password: formData.password,
+        username: formData.email.trim(),
+        password: formData.password.trim(),
       }, { withCredentials: true }).then(async (res) => {
 				// To avoid flickering this api call should go first
 				// Setting user cart id to cookie

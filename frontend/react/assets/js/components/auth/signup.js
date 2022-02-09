@@ -33,7 +33,7 @@ export default function Signup() {
 	const handleChange = (e) => {
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value.trim()
+			[e.target.name]: e.target.value
 		});
 	};
 	
@@ -42,10 +42,10 @@ export default function Signup() {
 
     blankAxiosInstance.post(
       signupURL, {
-        email: formData.email,
-        username: formData.username,
-        password1: formData.password1,
-        password2: formData.password2,
+        email: formData.email.trim(),
+        username: formData.username.trim(),
+        password1: formData.password1.trim(),
+        password2: formData.password2.trim(),
         errors: '',
       }).then((res) => {
 				console.log('Signup successful!');

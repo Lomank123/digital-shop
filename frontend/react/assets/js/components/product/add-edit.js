@@ -108,7 +108,7 @@ export default function AddEditProduct() {
       // All other text fields
       setPostData({
         ...postData,
-        [e.target.name]: e.target.value.trim()
+        [e.target.name]: e.target.value
       });
     }
   }
@@ -120,8 +120,8 @@ export default function AddEditProduct() {
     let formData = new FormData();
     formData.append('created_by', userData.id);
     formData.append('category', postData.category);
-    formData.append('title', postData.title);
-    formData.append('description', postData.description);
+    formData.append('title', postData.title.trim());
+    formData.append('description', postData.description.trim());
     formData.append('price', postData.price);
     formData.append('quantity', postData.quantity);
     formData.append('is_active', postData.is_active);
@@ -269,7 +269,7 @@ export default function AddEditProduct() {
             label="Quantity"
             name="quantity"
             fullWidth
-            value={postData.quantity}
+            value={postData.quantity || ''}
             error={Boolean(errors.quantity)}
             helperText={errors.quantity}
             onChange={handleChange}

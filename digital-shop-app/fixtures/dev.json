@@ -1,0 +1,438 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderator",
+    "permissions": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ]
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=",
+    "last_login": "2022-02-09T18:34:31.218Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T11:55:30.048Z",
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$eeoLHK40EmdBNtViBibUgy$aPuWFU9WfDA8D78I3p2zNMVkUnXUO2jqzCcfGlj/3JQ=",
+    "last_login": "2022-02-09T18:26:09.619Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:33.586Z",
+    "username": "test1",
+    "email": "test1@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:58.857Z",
+    "username": "test2",
+    "email": "test2@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$E2t5hORXgMEd876UWcy72y$LHmZl+jCn/+tSIijk0g6hZ1voZ/rqGCOkN9EgqMF2EA=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-02-09T17:53:26.410Z",
+    "username": "test3",
+    "email": "test3@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 1,
+  "fields": {
+    "name": "R",
+    "verbose": "r"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 2,
+  "fields": {
+    "name": "Clothes",
+    "verbose": "clothes"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 3,
+  "fields": {
+    "name": "New category with tons of useful products and magnificent vi",
+    "verbose": "new-category-with-tons-of-useful-products-and-magnificent-vi"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 4,
+  "fields": {
+    "category": 3,
+    "created_by": 1,
+    "title": "Admin's product 1",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "image": "",
+    "price": "123.00",
+    "quantity": 4,
+    "is_active": true,
+    "published": "2022-02-09T18:20:26.549Z",
+    "updated": "2022-02-09T18:20:26.549Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 5,
+  "fields": {
+    "category": 3,
+    "created_by": 1,
+    "title": "Admin's product 2",
+    "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
+    "image": "",
+    "price": "412.00",
+    "quantity": 52,
+    "is_active": true,
+    "published": "2022-02-09T18:21:07.551Z",
+    "updated": "2022-02-09T18:21:07.551Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 6,
+  "fields": {
+    "category": 2,
+    "created_by": 1,
+    "title": "Admin's product 3",
+    "description": "Description.",
+    "image": "",
+    "price": "5.00",
+    "quantity": 15,
+    "is_active": true,
+    "published": "2022-02-09T18:23:35.890Z",
+    "updated": "2022-02-09T18:23:35.890Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "created_by": 1,
+    "title": "Admin's product 4",
+    "description": "",
+    "image": "",
+    "price": "645.00",
+    "quantity": 65,
+    "is_active": true,
+    "published": "2022-02-09T18:23:56.367Z",
+    "updated": "2022-02-09T18:23:56.367Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 8,
+  "fields": {
+    "category": 1,
+    "created_by": 1,
+    "title": "Admin's product 5",
+    "description": "Simple description...",
+    "image": "",
+    "price": "412.00",
+    "quantity": 55,
+    "is_active": true,
+    "published": "2022-02-09T18:24:40.606Z",
+    "updated": "2022-02-09T18:24:40.606Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 9,
+  "fields": {
+    "category": 1,
+    "created_by": 1,
+    "title": "Admin's product 6",
+    "description": "",
+    "image": "",
+    "price": "1.00",
+    "quantity": 1,
+    "is_active": false,
+    "published": "2022-02-09T18:24:57.307Z",
+    "updated": "2022-02-09T18:24:57.307Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 10,
+  "fields": {
+    "category": 3,
+    "created_by": 2,
+    "title": "Test1's product 1",
+    "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage",
+    "image": "",
+    "price": "77777.00",
+    "quantity": 55,
+    "is_active": true,
+    "published": "2022-02-09T18:29:14.351Z",
+    "updated": "2022-02-09T18:29:14.351Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 11,
+  "fields": {
+    "category": 3,
+    "created_by": 2,
+    "title": "Test1's product 2",
+    "description": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.",
+    "image": "",
+    "price": "645.00",
+    "quantity": 5125,
+    "is_active": true,
+    "published": "2022-02-09T18:29:46.501Z",
+    "updated": "2022-02-09T18:29:46.501Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 12,
+  "fields": {
+    "category": 2,
+    "created_by": 2,
+    "title": "Test1's product 3",
+    "description": "",
+    "image": "",
+    "price": "86788.00",
+    "quantity": 5110,
+    "is_active": true,
+    "published": "2022-02-09T18:31:34.640Z",
+    "updated": "2022-02-09T18:31:34.640Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 13,
+  "fields": {
+    "category": 2,
+    "created_by": 2,
+    "title": "Test1's product 4",
+    "description": "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+    "image": "",
+    "price": "41.00",
+    "quantity": 41,
+    "is_active": true,
+    "published": "2022-02-09T18:31:53.738Z",
+    "updated": "2022-02-09T18:31:53.738Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 14,
+  "fields": {
+    "category": 2,
+    "created_by": 2,
+    "title": "Test1's product 5",
+    "description": "52352",
+    "image": "",
+    "price": "53.00",
+    "quantity": 35,
+    "is_active": true,
+    "published": "2022-02-09T18:33:32.579Z",
+    "updated": "2022-02-09T18:33:32.579Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 15,
+  "fields": {
+    "category": 2,
+    "created_by": 2,
+    "title": "Test1's product 6",
+    "description": "",
+    "image": "",
+    "price": "4856.00",
+    "quantity": 514,
+    "is_active": true,
+    "published": "2022-02-09T18:34:08.840Z",
+    "updated": "2022-02-09T18:34:08.840Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "is_deleted": false,
+    "creation_date": "2022-02-09T17:54:03.277Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "is_deleted": false,
+    "creation_date": "2022-02-09T18:15:10.656Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 3,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "creation_date": "2022-02-09T18:34:17.559Z"
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 4,
+  "fields": {
+    "cart": 2,
+    "product": 7,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 5,
+  "fields": {
+    "cart": 2,
+    "product": 6,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 6,
+  "fields": {
+    "cart": 2,
+    "product": 8,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 7,
+  "fields": {
+    "cart": 3,
+    "product": 14,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 8,
+  "fields": {
+    "cart": 3,
+    "product": 13,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 9,
+  "fields": {
+    "cart": 1,
+    "product": 15,
+    "quantity": 1
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "email": "admin@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "email": "test1@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "email": "test2@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "email": "test3@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+}
+]

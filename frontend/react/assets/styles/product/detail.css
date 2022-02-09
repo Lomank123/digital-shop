@@ -65,8 +65,13 @@
   font-size: 22px;
 }
 
-.purchase-btn {
+.detail-purchase-btn {
   width: 131px;
+}
+
+.detail-remove-btn {
+  width: 100px;
+  margin-left: 10px !important;
 }
 
 .price {

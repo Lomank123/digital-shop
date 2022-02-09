@@ -9,7 +9,7 @@ import { cartRoute, editProductRoute, profileRoute } from "../../routes";
 import { useSelector } from "react-redux";
 import { Delete, Edit } from '@material-ui/icons';
 import { DeleteDialog } from "../dialog";
-import { handleAddToCart } from "../../utils";
+import { handleAddToCart, handleRemoveFromCart } from "../../utils";
 
 import '../../../styles/product/detail.css';
 import '../../../styles/user/profile.css';
@@ -133,7 +133,7 @@ export default function DetailProduct() {
 
           <Box className="purchase-block">
             <Button
-              className="purchase-btn"
+              className="detail-purchase-btn"
               variant="contained"
               color="primary"
               onClick={() => {handleAddToCartOrRedirect(product.id, cartData.id, cartProductIds)}}
@@ -143,6 +143,20 @@ export default function DetailProduct() {
                 (cartProductIds.includes(product.id)) ? ('In cart') : ('Add to cart')
               }
             </Button>
+            {
+              (cartProductIds.includes(product.id))
+              ? (
+                  <Button
+                    className="detail-remove-btn"
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {handleRemoveFromCart(product.id, cartData.id)}}
+                  >
+                    Remove
+                  </Button>
+                )
+              : null
+            }
             <span className="price">{product.price}$</span>
           </Box>
         </Box>

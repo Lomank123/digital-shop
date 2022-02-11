@@ -1,5 +1,5 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
-import { cartGetURL, userGetURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL, getIsVerifiedAddressURL } from "./urls";
+import { cartGetURL, moveToUseCartURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL, getIsVerifiedAddressURL, removeAllFromCartURL, getAuthenticatedUserURL } from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -17,8 +17,8 @@ export function addNextParam(redirectUrl, nextUrl) {
 // Checks whether user data is available and dispatches the result
 // if redirect = true and user not logged in then user will be redirected to login page
 export async function getUser(redirect = false) {
-  return axiosInstance.get(userGetURL, { params: { redirect: redirect } }).then((res) => {
-    const rawData = res.data[0];
+  return axiosInstance.get(getAuthenticatedUserURL, { params: { redirect: redirect } }).then((res) => {
+    const rawData = res.data;
     const userData = {
       email: rawData.email,
       username: rawData.username,
@@ -151,6 +151,26 @@ export async function handleRemoveFromCart(product_id, cart_id) {
   ).then((res) => {
     getCartProductIds();
     console.log("Product has been removed from cart!");
+    return res;
+  });
+}
+
+export async function handleRemoveAllFromCart(cart_id) {
+  return blankAxiosInstance.post(removeAllFromCartURL,
+    { 
+      cart_id: cart_id,
+    }
+  ).then((res) => {
+    getCartProductIds();
+    console.log("Cart has been cleaned!");
+    return res;
+  });
+}
+
+export async function handleMoveToUserCart() {
+  return blankAxiosInstance.get(moveToUseCartURL).then((res) => {
+    getCartProductIds();
+    console.log("Cart has been cleaned!");
     return res;
   });
 }

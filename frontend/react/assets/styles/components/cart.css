@@ -13,3 +13,13 @@
 .cart-label {
   margin-left: 20px;
 }
+
+.non-user-cart-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.remove-all-from-cart-btn {
+  height: 40px !important;
+  align-self: center;
+}

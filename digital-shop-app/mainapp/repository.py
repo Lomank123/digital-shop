@@ -74,6 +74,12 @@ class CartItemRepository:
 			item.delete()
 
 	@staticmethod
+	def delete_all_from_cart(cart):
+		items = CartItem.objects.filter(cart=cart)
+		if items is not None:
+			items.delete()
+
+	@staticmethod
 	def get_cart_related_items(cart):
 		cart_items = CartItem.objects.filter(cart=cart)
 		return cart_items
@@ -81,3 +87,11 @@ class CartItemRepository:
 	@staticmethod
 	def delete_by_product(product):
 		CartItem.objects.filter(product=product).delete()
+
+	@staticmethod
+	def change_items_owner(non_user_cart_items, user_cart_items, new_cart):
+		products = user_cart_items.values('product__id')
+		items = non_user_cart_items.exclude(product__id__in=products)
+		for item in items:
+			item.cart = new_cart
+			item.save()

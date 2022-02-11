@@ -104,6 +104,11 @@ class CartItemService:
 		CartItemRepository.delete_cart_item(product, cart)
 		return Response(data={"detail": "CartItem was deleted."}, status=status.HTTP_200_OK)
 
+	def remove_all_execute(self):
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		CartItemRepository.delete_all_from_cart(cart)
+		return Response(data={"detail": "Cart was cleaned. All CartItems were deleted."}, status=status.HTTP_200_OK)
+
 	@staticmethod
 	def _build_response(cart_items, viewset_instance):
 		page = viewset_instance.paginate_queryset(cart_items)
@@ -147,6 +152,17 @@ class CartItemService:
 		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
 		CartItemRepository.delete_by_product(product)
 		return Response(data={"detail": "CartItem instances were deleted."}, status=status.HTTP_200_OK)
+
+	def _change_items_owner_execute(self):
+		service = CartService(self.request)
+		non_user_cart_id = service._get_non_user_cart_id_from_cookie()
+		user_cart_id = service._get_user_cart_id_from_cookie()
+		user_cart = CartRepository.get_or_create_cart_by_id(user_cart_id, create=False)
+		non_user_cart_items = self._get_cart_related_items(non_user_cart_id)
+		user_cart_items = self._get_cart_related_items(user_cart_id)
+		CartItemRepository.change_items_owner(non_user_cart_items, user_cart_items, user_cart)
+		response = Response(data={"detail": "Successfully moved cart items."}, status=status.HTTP_200_OK)
+		return response
 
 
 class ProductService:

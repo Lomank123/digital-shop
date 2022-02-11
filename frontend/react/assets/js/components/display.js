@@ -261,7 +261,6 @@ export function get_items(url, setter, pageParamName=null) {
       } else {
         newUrl.searchParams.set("page", newUrl.searchParams.get("page") - 1);
       }
-      //console.log(newUrl.searchParams.get("page"));
 
       blankAxiosInstance.get(newUrl).then((res) => {
         setter(res.data);
@@ -284,7 +283,6 @@ export function get_items(url, setter, pageParamName=null) {
         console.log("Again and error!");
       });
     }
-    //blankAxiosInstance.get()
   });
 }
 

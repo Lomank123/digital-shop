@@ -135,6 +135,15 @@ class UserViewSet(ModelViewSet):
         # Performing update of user instance
         return super().partial_update(request, *args, **kwargs)
 
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_authenticated_user'
+    )
+    def get_authenticated_user(self, request):
+        data = UserSerializer(request.user).data
+        return Response(data=data, status=status.HTTP_200_OK)
+
 
 class CartViewSet(ModelViewSet):
     serializer_class = CartSerializer
@@ -191,16 +200,16 @@ class CartItemViewSet(ModelViewSet):
     pagination_class = CartItemPagination
 
     def get_permissions(self):
-        # Allowing partial update to any user can cause security issues
-        safe_actions = [
-            'add_item_to_cart',
-            'get_non_user_cart_items',
-            'get_user_cart_items',
-            'get_cart_product_ids',
-            'remove_item_from_cart',
-            'partial_update',
+        unsafe_actions = [
+            'update',
+            'create',
+            'destroy',
+            'list',
+            'retrieve'
         ]
-        if self.action in safe_actions:
+        # Allowing partial update to any user can cause security issues
+        # TODO: Add permission like isOwner
+        if self.action not in unsafe_actions:
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdminUser]
@@ -226,6 +235,15 @@ class CartItemViewSet(ModelViewSet):
     )
     def remove_item_from_cart(self, request):
         response = CartItemService(request).remove_execute()
+        return response
+    
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='remove_all_from_cart'
+    )
+    def remove_all_from_cart(self, request):
+        response = CartItemService(request).remove_all_execute()
         return response
 
     @action(
@@ -266,6 +284,15 @@ class CartItemViewSet(ModelViewSet):
     def get_user_cart_items(self, request):
         user_cart_id = CartService(request)._get_user_cart_id_from_cookie()
         response = CartItemService(request).get_execute(user_cart_id, self)
+        return response
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='move_to_user_cart'
+    )
+    def move_to_user_cart(self, request):
+        response = CartItemService(request)._change_items_owner_execute()
         return response
 
 

@@ -4,7 +4,7 @@ from rest_framework.exceptions import NotAuthenticated
 
 
 class IsVerifiedEmail(permissions.BasePermission):
-	
+
 	def has_permission(self, request, view):
 		if request.method in permissions.SAFE_METHODS or request.user.is_superuser:
 			return True

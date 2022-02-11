@@ -14,6 +14,7 @@ export const apiRestAuthURL = apiURL + 'dj-rest-auth/';
 
 // User
 export const userGetURL = apiURL + 'user-info/';
+export const getAuthenticatedUserURL = userGetURL + 'get_authenticated_user/';
 
 // Product
 export const productGetURL = apiURL + 'product/';
@@ -36,6 +37,8 @@ export const getCartProductIdsURL = cartItemURL + 'get_cart_product_ids/';
 export const cartItemAddURL = cartItemURL + 'add_item_to_cart/';
 export const cartItemRemoveURL = cartItemURL + 'remove_item_from_cart/';
 export const cartItemDeleteInactiveURL = cartItemURL + 'delete_inactive/';
+export const removeAllFromCartURL = cartItemURL + 'remove_all_from_cart/';
+export const moveToUseCartURL = cartItemURL + 'move_to_user_cart/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

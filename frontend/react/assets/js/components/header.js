@@ -6,7 +6,7 @@ import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, ca
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import { getCart, getUser, getCartProductIds } from '../utils';
+import { getCart, getUser, getCartProductIds, getEmailAddress } from '../utils';
 import { noImageURL } from '../urls';
 
 import '../../styles/main/header.css';
@@ -17,10 +17,11 @@ export default function Header() {
   const userData = useSelector(state => state.user, shallowEqual);
   const userCart = useSelector(state => state.cart, shallowEqual);
   const cartProductIds = useSelector(state => state.cartProductIds);
+  // Use it to display different messages connected with unverified email
+  const emailAddress = useSelector(state => state.emailAddress);
   
-  // Getting (and setting) user data
-  useLayoutEffect(() => {
-    getUser(false).then((res) => {
+  async function getData() {
+    await getUser(false).then((res) => {
       console.log("Header done!");
     }).catch((err) => {
       console.log("Header error.");
@@ -37,6 +38,17 @@ export default function Header() {
     }).catch((err) => {
       console.log("Product ids error.");
     });
+
+    await getEmailAddress().then((res) => {
+      console.log("EmailAddress get done!");
+    }).catch((err) => {
+      console.log("EmailAddress get error.");
+    })
+  }
+
+  // Getting (and setting) user data
+  useLayoutEffect(() => {
+    getData();
   }, [])
 
   // Menu stuff

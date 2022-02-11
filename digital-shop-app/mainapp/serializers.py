@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from rest_framework import serializers
 from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer
@@ -70,6 +71,13 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['id', 'cart', 'product', 'quantity', 'total_price',]
+
+
+class EmailAddressSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EmailAddress
+        fields = '__all__'
 
 
 # Customized because original one doesn't work properly

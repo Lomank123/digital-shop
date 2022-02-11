@@ -17,10 +17,10 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem
-from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer
+from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer, EmailAddressSerializer
 from mainapp.pagination import ProductPagination, CartItemPagination
-from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly
-from mainapp.services import CartService, CartItemService
+from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
+from mainapp.services import CartService, CartItemService, ProductService
 import mainapp.consts as consts
 
 
@@ -31,52 +31,50 @@ class ProductViewSet(ModelViewSet):
     pagination_class = ProductPagination
 
     def get_permissions(self):
-        safe_actions = [
-            'list',
-            'retrieve',
-            'get_category_products',
-            'get_user_products',
-            'get_active_products'
+        unsafe_actions = [
+            'destroy',
+            'update',
+            'partial_update',
+            'create',
         ]
-        if self.action in safe_actions:
-            permission_classes = [AllowAny]
+        if self.action in unsafe_actions:
+            print("YES")
+            permission_classes = [IsVerifiedEmail, IsSellerOrReadOnly, IsOwnerOrReadOnly]
         else:
-            permission_classes = [IsSellerOrReadOnly, IsOwnerOrReadOnly]
+            permission_classes = [AllowAny,]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        full_queryset_actions = ['retrieve', 'partial_update', 'update', 'destroy']
+        full_queryset_actions = [
+            'retrieve',
+            'partial_update',
+            'update',
+            'destroy',
+        ]
         if self.action not in full_queryset_actions:
             # We want to display only active items on home and category related pages
-            # Also we don't wont to show owner's products
             queryset = Product.objects.filter(is_active=True)
         return queryset
 
     @action(
         methods=['get'],
         detail=False,
-        url_path=r'category/(?P<category_verbose>[^/.]+)')
+        url_path=r'category/(?P<category_verbose>[^/.]+)'
+    )
     def get_category_products(self, request, category_verbose):
-        category = Category.objects.get(verbose=category_verbose)
-        products = self.get_queryset().filter(category=category)
-        # Creating pagination
-        page = self.paginate_queryset(products)   # Paginating queryset (products)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)       # Serializing paginated queryset
-            return self.get_paginated_response(serializer.data)     # Returning serialized data
-        # Error case
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        response = ProductService(request)._get_category_products_execute(category_verbose, self)
+        return response
     
     # Method for getting user related products (used in profile page)
-    @action(methods=['get'], detail=False, url_path=r'get_user_products/(?P<user_id>[0-9])')
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path=r'get_user_products/(?P<user_id>[0-9])'
+    )
     def get_user_products(self, request, user_id):
-        products = Product.objects.filter(created_by=user_id)
-        page = self.paginate_queryset(products)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)       # Serializing paginated queryset
-            return self.get_paginated_response(serializer.data)     # Returning serialized data
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        response = ProductService(request)._get_user_products_execute(user_id, self)
+        return response
 
 
 class CategoryViewSet(ModelViewSet):
@@ -106,12 +104,14 @@ class UserViewSet(ModelViewSet):
         elif self.action in ['retrieve']:
             # AllowAny because we'll need to retrieve user data in product detail page
             permission_classes = [AllowAny]
+        elif self.action in ['destroy', 'update', 'partial_update']:
+            permission_classes = [IsAuthenticated, IsSameUser]
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        if self.action in ['retrieve']:
+        if self.action in ['retrieve'] or self.request.user.is_superuser:
             queryset = CustomUser.objects.all()
         else:
             queryset = CustomUser.objects.filter(pk=self.request.user.pk)
@@ -248,7 +248,6 @@ class CartItemViewSet(ModelViewSet):
         response = CartItemService(request)._delete_inactive_execute()
         return response
 
-    # Unused
     @action(
         methods=['get'],
         detail=False,
@@ -259,7 +258,6 @@ class CartItemViewSet(ModelViewSet):
         response = CartItemService(request).get_execute(non_user_cart_id, self)
         return response
 
-    # Unused
     @action(
         methods=['get'],
         detail=False,
@@ -268,4 +266,34 @@ class CartItemViewSet(ModelViewSet):
     def get_user_cart_items(self, request):
         user_cart_id = CartService(request)._get_user_cart_id_from_cookie()
         response = CartItemService(request).get_execute(user_cart_id, self)
+        return response
+
+
+class EmailAddressViewSet(ModelViewSet):
+    serializer_class = EmailAddressSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_permissions(self):
+        safe_actions = [
+            'get_email_verified',
+        ]
+        if self.action in safe_actions:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_email_verified'
+    )
+    def get_email_verified(self, request):
+        email = EmailAddress.objects.filter(user=request.user).first()
+        response = Response(status=status.HTTP_200_OK)
+        if email is not None:
+            serializer = EmailAddressSerializer(email)
+            response.data = serializer.data
+        else:
+            response.status_code = status.HTTP_400_BAD_REQUEST
         return response

@@ -56,3 +56,7 @@ export const passwordChangeURL = passwordURL + 'change/';
 // Auth urls
 export const loginURL = '/login/';
 export const loggedinURL = '/loggedin/';
+
+// EmailAdress
+export const emailAddressURL = 'email-address/';
+export const getIsVerifiedAddressURL = emailAddressURL + 'get_email_verified/';

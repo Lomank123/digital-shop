@@ -1,5 +1,5 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
-import { cartGetURL, userGetURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL } from "./urls";
+import { cartGetURL, userGetURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL, getIsVerifiedAddressURL } from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -62,6 +62,16 @@ export async function getCartProductIds() {
       payload: productIds,
     })
     return productIds;
+  });
+}
+
+export async function getEmailAddress() {
+  return blankAxiosInstance.get(getIsVerifiedAddressURL).then((res) => {
+    store.dispatch({
+      type: 'get_is_verified_email',
+      payload: res.data,
+    })
+    return res.data;
   });
 }
 

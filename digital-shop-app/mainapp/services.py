@@ -1,6 +1,6 @@
 import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
-from mainapp.repository import CartRepository, ProductRepository, CartItemRepository
+from mainapp.repository import CartRepository, ProductRepository, CartItemRepository, CategoryRepository
 from mainapp.serializers import CartSerializer, CartItemSerializer, ProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -147,3 +147,35 @@ class CartItemService:
 		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
 		CartItemRepository.delete_by_product(product)
 		return Response(data={"detail": "CartItem instances were deleted."}, status=status.HTTP_200_OK)
+
+
+class ProductService:
+
+	__slots__ = 'request'
+
+
+	def __init__(self, request):
+		self.request = request
+
+	def _get_category_products_execute(self, category_verbose, viewset_instance):
+		category = CategoryRepository.get_category_by_verbose(category_verbose)
+		products = ProductRepository.get_products_by_category(category, viewset_instance)
+		response = self._build_get_by_response(products, viewset_instance)
+		return response
+
+	def _get_user_products_execute(self, user_id, viewset_instance):
+		products = ProductRepository.get_products_by_user_id(user_id, viewset_instance)
+		response = self._build_get_by_response(products, viewset_instance)
+		return response
+
+	@staticmethod
+	def _build_get_by_response(items, viewset_instance):
+		page = viewset_instance.paginate_queryset(items)
+		if page is not None:
+			serializer = viewset_instance.get_serializer(page, many=True)
+			return viewset_instance.get_paginated_response(serializer.data)
+		response = Response(
+			data={"detail": "Cannot serialize because there is no objects."},
+			status=status.HTTP_400_BAD_REQUEST
+		)
+		return response

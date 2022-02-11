@@ -1,4 +1,4 @@
-from mainapp.models import Cart, Product, CartItem
+from mainapp.models import Cart, Product, CartItem, Category
 
 
 class CartRepository:
@@ -36,6 +36,23 @@ class ProductRepository:
 	def get_product_by_id(product_id) -> Product:
 		product = Product.objects.filter(id=product_id).first()
 		return product
+	
+	@staticmethod
+	def get_products_by_category(category, viewset_instance):
+		products = viewset_instance.get_queryset().filter(category=category)
+		return products
+
+	@staticmethod
+	def get_products_by_user_id(user_id, viewset_instance):
+		products = viewset_instance.get_queryset().filter(created_by=user_id)
+		return products
+
+class CategoryRepository:
+	
+	@staticmethod
+	def get_category_by_verbose(verbose) -> Category:
+		category = Category.objects.filter(verbose=verbose).first()
+		return category
 
 
 class CartItemRepository:

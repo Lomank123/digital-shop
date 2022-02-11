@@ -40,6 +40,7 @@ const defaultState = {
   user: null,
   cart: null,
   cartProductIds: null,
+  emailAddress: null,
 };
 
 // E.g.:
@@ -52,6 +53,8 @@ const reducer = (state = defaultState, action) => {
       return {...state, cart: action.payload};
     case 'get_cart_product_ids':
       return {...state, cartProductIds: action.payload};
+    case 'get_is_verified_email':
+      return {...state, emailAddress: action.payload};
     default:
       return state;
   }

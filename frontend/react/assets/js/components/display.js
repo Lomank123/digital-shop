@@ -247,10 +247,11 @@ export function DisplayPagination(props) {
 }
 
 // Func for getting items using api call (setter is setProducts currently from profile and home pages)
-export function get_items(url, setter, pageParamName=null) {
-  blankAxiosInstance.get(url).then((res) => {
+export async function get_items(url, setter, pageParamName=null) {
+  return blankAxiosInstance.get(url).then((res) => {
     setter(res.data);
     //window.scrollTo(0, 0);  // After successful request scrolling to the top
+    return res.data;
   }).catch((err) => {
     console.log("get_items error.");
 

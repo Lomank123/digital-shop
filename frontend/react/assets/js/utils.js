@@ -1,5 +1,6 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
-import { cartGetURL, moveToUseCartURL, getCartProductIdsURL, cartItemAddURL, cartItemRemoveURL, getIsVerifiedAddressURL, removeAllFromCartURL, getAuthenticatedUserURL } from "./urls";
+import {cartGetURL, moveToUseCartURL, getCartProductIdsURL, getTotalPriceURL, cartItemAddURL,
+  cartItemRemoveURL, getIsVerifiedAddressURL, removeAllFromCartURL, getAuthenticatedUserURL} from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -171,6 +172,13 @@ export async function handleMoveToUserCart() {
   return blankAxiosInstance.get(moveToUseCartURL).then((res) => {
     getCartProductIds();
     console.log("Cart has been cleaned!");
+    return res;
+  });
+}
+
+export async function getTotalPrice(cart_id) {
+  return blankAxiosInstance.post(getTotalPriceURL, { cart_id: cart_id }).then((res) => {
+    console.log("Get total price done!");
     return res;
   });
 }

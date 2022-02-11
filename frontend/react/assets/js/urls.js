@@ -39,6 +39,7 @@ export const cartItemRemoveURL = cartItemURL + 'remove_item_from_cart/';
 export const cartItemDeleteInactiveURL = cartItemURL + 'delete_inactive/';
 export const removeAllFromCartURL = cartItemURL + 'remove_all_from_cart/';
 export const moveToUseCartURL = cartItemURL + 'move_to_user_cart/';
+export const getTotalPriceURL = cartItemURL + 'get_total_price/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

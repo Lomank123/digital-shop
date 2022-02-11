@@ -1,11 +1,11 @@
 import { Box, Button } from "@material-ui/core";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blankAxiosInstance } from "../axios";
 import { userCartItemGetURL, nonUserCartItemGetURL, cartItemURL } from "../urls";
 import { DisplayCartItems, DisplayPagination, get_items } from "./display";
 import '../../styles/components/cart.css';
-import { handleRemoveFromCart, handleRemoveAllFromCart, handleMoveToUserCart } from "../utils";
+import { handleRemoveFromCart, handleRemoveAllFromCart, handleMoveToUserCart, getTotalPrice } from "../utils";
 import history from "../history";
 
 
@@ -14,7 +14,9 @@ const pageParamName = "anon-cart-page";
 export default function Cart() {
   const userData = useSelector(state => state.user);
   const [cartItems, setCartItems] = useState(null);
+  const [userTotal, setUserTotal] = useState(null);
   const [secondCartItems, setSecondCartItems] = useState(null);
+  const [nonUserTotal, setNonUserTotal] = useState(null);
   const [quantityChanged, setQuantityChanged] = useState(false);
 
   const changeQuantity = (cartItem, value) => {
@@ -71,16 +73,41 @@ export default function Cart() {
     if (page !== null) {
       url.searchParams.set('page', page);
     }
-    get_items(url, setCartItems);
-
+    get_items(url, setCartItems)
+    
     // Setting non-user cart items
     url = new URL(nonUserCartItemGetURL);
     if (nonUserPage !== null) {
       url.searchParams.set('page', nonUserPage);
     }
     get_items(url, setSecondCartItems, pageParamName);
-
   }, [quantityChanged])
+
+  useEffect(() => {
+    if (cartItems !== null) {
+      if (cartItems.results.length > 0) {
+        getTotalPrice(cartItems.results[0].cart.id).then((result) => {
+          setUserTotal(result.data.total_price);
+        }).catch((err) => {
+          console.log(err);
+          console.log("Total price error.");
+        });
+      }
+    }
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (secondCartItems !== null) {
+      if (secondCartItems.results.length > 0) {
+        getTotalPrice(secondCartItems.results[0].cart.id).then((result) => {
+          setNonUserTotal(result.data.total_price);
+        }).catch((err) => {
+          console.log(err);
+          console.log("Total price error.");
+        });
+      }
+    }
+  }, [secondCartItems]);
 
   if (userData === null || cartItems === null || secondCartItems === null) {
     return null;
@@ -101,14 +128,23 @@ export default function Cart() {
                 </Box>
                 <Button className="remove-all-from-cart-btn" onClick={() => {handleDeleteAll(cartItems.results[0])}}>Clean cart</Button>
               </Box>
-              
+
+              <hr />
               <DisplayPagination items={cartItems} setter={setCartItems} />
+              <hr />
               <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+              <hr />
               <DisplayPagination items={cartItems} setter={setCartItems} />
+              <hr />
+              <h4 className="total-price-label">Total price: {userTotal}$</h4>
             </Box>
           )
         : null
       }
+
+      <p></p>
+      <p></p>
+      <p></p>
 
       {
         (secondCartItems.results.length > 0) 
@@ -134,9 +170,14 @@ export default function Cart() {
                 }
               </Box>
 
+              <hr />
               <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
+              <hr />
               <DisplayCartItems cartItems={secondCartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+              <hr />
               <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
+              <hr />
+              <h4 className="total-price-label">Total price: {nonUserTotal}$</h4>
             </Box>
           )
         : null

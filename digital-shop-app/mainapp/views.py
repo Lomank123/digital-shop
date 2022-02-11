@@ -99,7 +99,7 @@ class UserViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     def get_permissions(self):
-        if self.action in ['list']:
+        if self.action in ['list', 'get_authenticated_user']:
             permission_classes = [IsAuthenticated]
         elif self.action in ['retrieve']:
             # AllowAny because we'll need to retrieve user data in product detail page
@@ -293,6 +293,15 @@ class CartItemViewSet(ModelViewSet):
     )
     def move_to_user_cart(self, request):
         response = CartItemService(request)._change_items_owner_execute()
+        return response
+
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='get_total_price'
+    )
+    def get_total_price(self, request):
+        response = CartItemService(request)._calculate_total_price_execute()
         return response
 
 

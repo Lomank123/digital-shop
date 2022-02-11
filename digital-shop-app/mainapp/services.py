@@ -161,8 +161,12 @@ class CartItemService:
 		non_user_cart_items = self._get_cart_related_items(non_user_cart_id)
 		user_cart_items = self._get_cart_related_items(user_cart_id)
 		CartItemRepository.change_items_owner(non_user_cart_items, user_cart_items, user_cart)
-		response = Response(data={"detail": "Successfully moved cart items."}, status=status.HTTP_200_OK)
-		return response
+		return Response(data={"detail": "Successfully moved cart items."}, status=status.HTTP_200_OK)
+
+	def _calculate_total_price_execute(self):
+		cart_items = self._get_cart_related_items(self.request.data["cart_id"])
+		total_price = CartItemRepository.calculate_total_price(cart_items)
+		return Response(data={"total_price": total_price}, status=status.HTTP_200_OK)
 
 
 class ProductService:

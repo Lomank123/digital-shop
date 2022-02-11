@@ -23,3 +23,8 @@
   height: 40px !important;
   align-self: center;
 }
+
+.total-price-label {
+  text-align: end;
+  margin-right: 20px;
+}

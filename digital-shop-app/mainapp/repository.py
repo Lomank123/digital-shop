@@ -1,3 +1,4 @@
+from django.db.models import F, Sum
 from mainapp.models import Cart, Product, CartItem, Category
 
 
@@ -95,3 +96,8 @@ class CartItemRepository:
 		for item in items:
 			item.cart = new_cart
 			item.save()
+
+	@staticmethod
+	def calculate_total_price(cart_items):
+		result = cart_items.values('quantity', 'product__price').aggregate(total_price=Sum(F('quantity') * F('product__price')))
+		return result["total_price"]

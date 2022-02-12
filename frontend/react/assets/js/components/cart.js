@@ -118,71 +118,113 @@ export default function Cart() {
       {
         (cartItems.results.length === 0 && secondCartItems.results.length === 0) ? (<h3>Cart is empty.</h3>) : null
       }
-      {
-        (cartItems.results.length > 0) 
-        ? (
-            <Box className="user-cart-block cart">
-              <Box className="non-user-cart-header">
-                <Box>
-                  <h3 className="cart-label">User cart</h3>
-                </Box>
-                <Button className="remove-all-from-cart-btn" onClick={() => {handleDeleteAll(cartItems.results[0])}}>Clean cart</Button>
-              </Box>
-
-              <hr />
-              <DisplayPagination items={cartItems} setter={setCartItems} />
-              <hr />
-              <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
-              <hr />
-              <DisplayPagination items={cartItems} setter={setCartItems} />
-              <hr />
-              <h4 className="total-price-label">Total price: {userTotal}$</h4>
-            </Box>
-          )
-        : null
-      }
-
-      <p></p>
-      <p></p>
-      <p></p>
 
       {
-        (secondCartItems.results.length > 0) 
-        ? (
-            <Box className="non-user-cart-block cart">
-              <Box className="non-user-cart-header">
-                <Box>
-                  <h3 className="cart-label">Non-user cart</h3>
-                  <p className="cart-label">Non-user cart products will be kept for 30 days. After that they will be discarded.</p>
+          (cartItems.results.length > 0) 
+          ? (
+              <Box className="user-cart-block cart">
+                <Box className="non-user-cart-header">
+                  <Box>
+                    <h3 className="cart-label">User cart</h3>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className="remove-all-from-cart-btn"
+                    onClick={() => {handleDeleteAll(cartItems.results[0])}}
+                  >
+                    Clean cart
+                  </Button>
                 </Box>
-                <Button className="remove-all-from-cart-btn" onClick={() => {handleDeleteAll(secondCartItems.results[0])}}>Clean cart</Button>
-                {
-                  (userData !== 1)
-                  ? (
-                      <Button
-                        className="remove-all-from-cart-btn"
-                        onClick={handleMoveToCart}
-                      >
-                        Move to user cart
-                      </Button>
-                    )
-                  : null
-                }
+                <hr />
+                <DisplayPagination items={cartItems} setter={setCartItems} />
+                <hr />
+                <DisplayCartItems cartItems={cartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+                <hr />
+                <DisplayPagination items={cartItems} setter={setCartItems} />
+                <hr />
               </Box>
+            )
+          : null
+        }
 
-              <hr />
-              <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
-              <hr />
-              <DisplayCartItems cartItems={secondCartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
-              <hr />
-              <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
-              <hr />
-              <h4 className="total-price-label">Total price: {nonUserTotal}$</h4>
-            </Box>
-          )
-        : null
-      }
+        {
+          (cartItems.results.length > 0)
+          ? (
+              <Box>
+                <Box className="default-block cart-purchase-block">
+                  <h4 className="purchase-block-label">User cart</h4>
+                  <h4 className="total-price-label">Total price: {userTotal}$</h4>
+                  <Button variant="contained" color="primary" className="cart-purchase-btn">Purchase</Button>
+                </Box>
+              </Box>
+            )
+          : null
+        }
 
+        {
+          (secondCartItems.results.length > 0)
+          ? (
+              <Box className="non-user-cart-block cart">
+                <Box className="non-user-cart-header">
+                  <Box>
+                    <h3 className="cart-label">Non-user cart</h3>
+                    <p className="cart-label">Non-user cart products will be kept for 30 days. After that they will be discarded.</p>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className="remove-all-from-cart-btn"
+                    onClick={() => {handleDeleteAll(secondCartItems.results[0])}}
+                  >
+                    Clean cart
+                  </Button>
+                </Box>
+                <hr />
+                <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
+                <hr />
+                <DisplayCartItems cartItems={secondCartItems} changeQuantity={changeQuantity} handleDelete={handleDelete} />
+                <hr />
+                <DisplayPagination items={secondCartItems} setter={setSecondCartItems} pageParamName={pageParamName} />
+                <hr />
+              </Box>
+            )
+          : null
+        }
+
+        {
+          (secondCartItems.results.length > 0)
+          ? (
+              <Box>
+                <Box className="default-block cart-purchase-block">
+                  <h4 className="purchase-block-label">Non-user cart</h4>
+                  <h4 className="total-price-label">Total price: {nonUserTotal}$</h4>
+                  {
+                    (userData !== 1)
+                    ? (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={handleMoveToCart}
+                        >
+                          Move to user cart
+                        </Button>
+                      )
+                    : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                        >
+                          Purchase
+                        </Button>
+                      )
+                  }
+                  
+                </Box>
+              </Box>
+            )
+          : null
+        }
     </Box>
   )
 }

@@ -330,6 +330,8 @@ export function DisplayCartItems(props) {
               </Link>
 
               <Button
+                variant="outlined"
+                color="primary"
                 className='delete-cart-item-btn'
                 onClick={() => props.handleDelete(cartItem)}
               >

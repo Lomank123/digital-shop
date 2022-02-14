@@ -20,6 +20,12 @@ class CartCookieManager:
 		if user_cart_id is not None:
 			return user_cart_id
 		return self.request.COOKIES.get(consts.NON_USER_CART_ID_COOKIE_NAME, None)
+
+	def get_either_cookie_name(self):
+		user_cart_id = self.request.COOKIES.get(consts.USER_CART_ID_COOKIE_NAME, None)
+		if user_cart_id is not None:
+			return consts.USER_CART_ID_COOKIE_NAME
+		return consts.NON_USER_CART_ID_COOKIE_NAME
 	
 	def get_user_cart_id(self):
 		"""

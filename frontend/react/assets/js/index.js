@@ -81,7 +81,7 @@ const routing = (
             <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
 
             <Route path={`/${routes.cartRoute}`} component={() => <PageComponent component={Cart} />} />
-            <Route path={`/${routes.purchaseRoute}`} component={() => <LoginRequiredComponent component={Purchase} />} />
+            <Route path={`/${routes.purchaseRoute}`} component={() => <PageComponent component={Purchase} />} />
 
             <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
 

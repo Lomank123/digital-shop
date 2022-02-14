@@ -94,6 +94,7 @@ class Product(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name="User", related_name='user')
     is_deleted = models.BooleanField(default=False, verbose_name='Deleted')
+    is_archived = models.BooleanField(default=False, verbose_name='Archived')
     creation_date = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Creation date')
 
     class Meta:

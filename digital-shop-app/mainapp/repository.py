@@ -19,6 +19,13 @@ class CartRepository:
 		return cart
 
 	@staticmethod
+	def create_and_attach_cart(user):
+		cart = Cart.objects.create()
+		cart.user = user
+		cart.save()
+		return cart
+
+	@staticmethod
 	def get_or_create_cart_by_id(cart_id=None, create=True) -> Cart:
 		cart = Cart.objects.filter(id=cart_id).first()
 		if cart is None and create:
@@ -29,6 +36,11 @@ class CartRepository:
 	def get_user_cart_by_id(user) -> Cart:
 		cart = Cart.objects.filter(user=user, is_deleted=False).first()
 		return cart
+
+	@staticmethod
+	def set_cart_archived(cart):
+		cart.is_archived = True
+		cart.save()
 
 
 class ProductRepository:
@@ -101,3 +113,13 @@ class CartItemRepository:
 	def calculate_total_price(cart_items):
 		result = cart_items.values('quantity', 'product__price').aggregate(total_price=Sum(F('quantity') * F('product__price')))
 		return result["total_price"]
+
+	@staticmethod
+	def change_quantity(cart):
+		# Here we need to create ArchiveCart or change cart is_active to false
+		# Then create new cart to user or non user
+		cart_items = CartItem.objects.filter(cart=cart).select_related()
+		for item in cart_items:
+			item.product.quantity -= item.quantity
+			print(item.product.quantity)
+			item.product.save()

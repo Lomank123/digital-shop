@@ -18,6 +18,9 @@ class CartService:
 	def _get_either_cart_id_from_cookie(self):
 		return self.cookie_manager.get_either_cart_id()
 
+	def _get_either_cookie_name(self):
+		return self.cookie_manager.get_either_cookie_name()
+
 	def _get_non_user_cart_id_from_cookie(self):
 		return self.cookie_manager.get_cart_id()
 
@@ -35,6 +38,11 @@ class CartService:
 		cart_id = self._get_non_user_cart_id_from_cookie()
 		cart = CartRepository.set_user_to_cart_or_create(cart_id, self.request.user)
 		return cart
+	
+	def _create_and_attach_cart(self):
+		cart = CartRepository.create_and_attach_cart(self.request.user)
+		return cart
+
 
 	@staticmethod
 	def _build_response(cart):
@@ -167,6 +175,21 @@ class CartItemService:
 		cart_items = self._get_cart_related_items(self.request.data["cart_id"])
 		total_price = CartItemRepository.calculate_total_price(cart_items)
 		return Response(data={"total_price": total_price}, status=status.HTTP_200_OK)
+
+	def _post_purchase_execute(self):
+		response = Response(data={"detail": "Post purchase done"}, status=status.HTTP_200_OK)
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"])
+		CartItemRepository.change_quantity(cart)
+		CartRepository.set_cart_archived(cart)
+		service = CartService(self.request)
+		cookie_name = service._get_either_cookie_name()
+		service._delete_cart_id_from_cookie(response, cookie_name)
+		if self.request.user.is_authenticated:
+			new_cart = service._create_and_attach_cart()
+		else:
+			new_cart = CartRepository.get_or_create_cart_by_id()
+		service._set_cart_id_to_cookie(response, new_cart.id, cookie_name, forced=True)
+		return response
 
 
 class ProductService:

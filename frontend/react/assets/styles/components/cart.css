@@ -1,7 +1,9 @@
 .cart-block {
   width: 100%;
   display: grid;
-  grid-template-columns: 900px 360px;
+  column-gap: 30px;
+  row-gap: 70px;
+  grid-template-columns: 800px 260px;
   justify-content: center;
 }
 
@@ -25,12 +27,10 @@
 .cart-purchase-block {
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
   max-width: 300px;
   width: 100%;
   max-height: fit-content;
   height: fit-content;
-  margin-left: 40px;
   position: sticky;
   top: 2%;
   bottom: 10%;

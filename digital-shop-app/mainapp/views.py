@@ -289,6 +289,16 @@ class CartItemViewSet(ModelViewSet):
     @action(
         methods=['get'],
         detail=False,
+        url_path='get_either_cart_items'
+    )
+    def get_either_cart_items(self, request):
+        cart_id = CartService(request)._get_either_cart_id_from_cookie()
+        response = CartItemService(request).get_execute(cart_id, self)
+        return response
+
+    @action(
+        methods=['get'],
+        detail=False,
         url_path='move_to_user_cart'
     )
     def move_to_user_cart(self, request):
@@ -302,6 +312,15 @@ class CartItemViewSet(ModelViewSet):
     )
     def get_total_price(self, request):
         response = CartItemService(request)._calculate_total_price_execute()
+        return response
+
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='post_purchase'
+    )
+    def post_purchase(self, request):
+        response = CartItemService(request)._post_purchase_execute()
         return response
 
 

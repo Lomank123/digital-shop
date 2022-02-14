@@ -7,6 +7,7 @@ import { DisplayCartItems, DisplayPagination, get_items } from "./display";
 import '../../styles/components/cart.css';
 import { handleRemoveFromCart, handleRemoveAllFromCart, handleMoveToUserCart, getTotalPrice } from "../utils";
 import history from "../history";
+import { purchaseRoute } from "../routes";
 
 
 const pageParamName = "anon-cart-page";
@@ -59,6 +60,10 @@ export default function Cart() {
       console.log(err);
       console.log("Procuct remove from cart error.");
     });
+  }
+
+  const handleRedirect = (route) => {
+    history.push(`/${route}/`);
   }
 
   // Cart items api call
@@ -155,7 +160,14 @@ export default function Cart() {
                 <Box className="default-block cart-purchase-block">
                   <h4 className="purchase-block-label">User cart</h4>
                   <h4 className="total-price-label">Total price: {userTotal}$</h4>
-                  <Button variant="contained" color="primary" className="cart-purchase-btn">Purchase</Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="cart-purchase-btn"
+                    onClick={() => {handleRedirect(purchaseRoute)}}
+                  >
+                    Purchase
+                  </Button>
                 </Box>
               </Box>
             )
@@ -214,6 +226,7 @@ export default function Cart() {
                         <Button
                           variant="contained"
                           color="primary"
+                          onClick={() => {handleRedirect(purchaseRoute)}}
                         >
                           Purchase
                         </Button>

@@ -116,10 +116,7 @@ class CartItemRepository:
 
 	@staticmethod
 	def change_quantity(cart):
-		# Here we need to create ArchiveCart or change cart is_active to false
-		# Then create new cart to user or non user
 		cart_items = CartItem.objects.filter(cart=cart).select_related()
 		for item in cart_items:
 			item.product.quantity -= item.quantity
-			print(item.product.quantity)
 			item.product.save()

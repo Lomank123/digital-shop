@@ -18,7 +18,7 @@ export const getAuthenticatedUserURL = userGetURL + 'get_authenticated_user/';
 
 // Product
 export const productGetURL = apiURL + 'product/';
-export const userProductsGetURL = productGetURL + 'get_user_products/';
+//export const userProductsGetURL = productGetURL + 'get_user_products/';
 
 // Category
 export const categoryGetURL = apiURL + 'category/';

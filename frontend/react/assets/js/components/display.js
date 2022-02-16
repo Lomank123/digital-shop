@@ -187,7 +187,7 @@ export function DisplayPagination(props) {
       paramName = props.pageParamName;
     }
 
-    params.set(paramName, newUrl.searchParams.get('page')); 
+    params.set(paramName, newUrl.searchParams.get('page'));
     if (JSON.parse(params.get(paramName)) === null) {
       params.delete(paramName);
     }
@@ -304,11 +304,6 @@ export function DisplayCartItems(props) {
     <Box className='display-cart-items'>
       {
         Object.entries(props.cartItems.results).map(([key, cartItem]) => {
-          // Deleting cart item if it's quantity is equal or less than 0
-          //if (cartItem.quantity <= 0) {
-          //  return props.handleDelete(cartItem.product.id, cartItem.cart.id);
-          //}
-
           const imageBox = (
             <Box className={'cart-item-image-block'}>
               <img
@@ -342,23 +337,18 @@ export function DisplayCartItems(props) {
 
           const priceBox = (
             <Box className='cart-item-purchase-block'>
-
               <Box className='quantity-block'>
                 <Button
                   className='minus1-btn change-quantity-btn'
                   onClick={(e) => {handleQuantityChange(e, cartItem, cartItem.quantity - 1, cartItem.product.quantity)}}
                   variant="outlined"
-                >
-                  -
-                </Button>
+                >-</Button>
                 <span className='cart-item-quantity'>{cartItem.quantity}</span>
                 <Button
                   className='plus1-btn change-quantity-btn'
                   onClick={(e) => {handleQuantityChange(e, cartItem, cartItem.quantity + 1, cartItem.product.quantity)}}
                   variant="outlined"
-                >
-                  +
-                </Button>
+                >+</Button>
               </Box>
 
               <Box className="cart-item-price-block">

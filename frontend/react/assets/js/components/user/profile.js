@@ -2,7 +2,7 @@ import { Box } from '@material-ui/core';
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { blankAxiosInstance } from '../../axios';
-import { noImageURL, userGetURL, userProductsGetURL } from '../../urls';
+import { noImageURL, productGetURL, userGetURL } from '../../urls';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { DisplayPagination, DisplayProducts, get_items } from '../display';
@@ -44,9 +44,11 @@ export default function UserProfile() {
     });
 
     // Getting products data
+    let url = new URL(productGetURL);
+    url.searchParams.set('created_by__id', params.id);
+
     const searchParams = new URLSearchParams(history.location.search);
     const page = searchParams.get("page");
-    let url = new URL(userProductsGetURL + params.id);
     if (page !== null) {
       url.searchParams.set('page', page);
     }

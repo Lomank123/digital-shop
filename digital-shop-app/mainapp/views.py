@@ -1,10 +1,11 @@
+from allauth.account.models import EmailAddress
+from collections import OrderedDict
 import datetime
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from collections import OrderedDict
-from allauth.account.models import EmailAddress
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -21,6 +22,7 @@ from mainapp.serializers import ProductSerializer, UserSerializer, CategorySeria
 from mainapp.pagination import ProductPagination, CartItemPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
 from mainapp.services import CartService, CartItemService, ProductService
+from mainapp.filters import ProductFilter
 import mainapp.consts as consts
 
 
@@ -29,6 +31,7 @@ class ProductViewSet(ModelViewSet):
     permission_classes = (AllowAny, )
     parser_classes = [MultiPartParser, FormParser]
     pagination_class = ProductPagination
+    filterset_class = ProductFilter
 
     def get_permissions(self):
         unsafe_actions = [
@@ -38,7 +41,6 @@ class ProductViewSet(ModelViewSet):
             'create',
         ]
         if self.action in unsafe_actions:
-            print("YES")
             permission_classes = [IsVerifiedEmail, IsSellerOrReadOnly, IsOwnerOrReadOnly]
         else:
             permission_classes = [AllowAny,]
@@ -46,35 +48,7 @@ class ProductViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        full_queryset_actions = [
-            'retrieve',
-            'partial_update',
-            'update',
-            'destroy',
-        ]
-        if self.action not in full_queryset_actions:
-            # We want to display only active items on home and category related pages
-            queryset = Product.objects.filter(is_active=True)
         return queryset
-
-    @action(
-        methods=['get'],
-        detail=False,
-        url_path=r'category/(?P<category_verbose>[^/.]+)'
-    )
-    def get_category_products(self, request, category_verbose):
-        response = ProductService(request)._get_category_products_execute(category_verbose, self)
-        return response
-    
-    # Method for getting user related products (used in profile page)
-    @action(
-        methods=['get'],
-        detail=False,
-        url_path=r'get_user_products/(?P<user_id>[0-9])'
-    )
-    def get_user_products(self, request, user_id):
-        response = ProductService(request)._get_user_products_execute(user_id, self)
-        return response
 
 
 class CategoryViewSet(ModelViewSet):
@@ -324,6 +298,7 @@ class CartItemViewSet(ModelViewSet):
         return response
 
 
+# TODO: Remove if unused
 class EmailAddressViewSet(ModelViewSet):
     serializer_class = EmailAddressSerializer
     permission_classes = (IsAuthenticated, )

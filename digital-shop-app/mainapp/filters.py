@@ -3,10 +3,20 @@ from mainapp.models import Product
 
 
 class ProductFilter(filters.FilterSet):
-    min_price = filters.NumberFilter(field_name="price", lookup_expr="gte")
-    max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
+    price_from = filters.NumberFilter(field_name="price", lookup_expr="gte")
+    price_to = filters.NumberFilter(field_name="price", lookup_expr="lte")
+    published_date = filters.DateFromToRangeFilter(field_name="published")
+    in_stock = filters.NumberFilter(field_name="quantity", lookup_expr="gte")
 
     class Meta:
         model = Product
-        fields = ['category__verbose', 'created_by__id', 'quantity', 'is_active', 'min_price', 'max_price']
+        fields = [
+            'category__verbose',
+            'created_by__id',
+            'in_stock',
+            'is_active',
+            'price_from',
+            'price_to',
+            'published_date',
+        ]
 

@@ -31,7 +31,7 @@
   width: 100%;
   max-width: 900px;
   min-width: 466px;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .product-card {
@@ -125,8 +125,8 @@ a.product-info-block {
 }
 
 .menu-block {
-  display: grid;
-  grid-template-columns: repeat(3, 80px);
+  display: flex;
+  flex-direction: column;
   height: fit-content;
   max-width: 400px;
   width: fit-content;
@@ -176,4 +176,42 @@ a.product-info-block {
 .next-pages {
   display: flex;
   margin-left: 30px;
+}
+
+.filters-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters-btns-block {
+  display: flex;
+}
+
+.filters-btn {
+  width: 100% !important;
+}
+
+.filters-apply-btn {
+  margin-right: 10px !important;
+}
+
+.filters-label {
+  text-align: center;
+}
+
+.price-filter-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-field {
+  width: 170px !important;
+}
+
+.filter-name {
+  margin-bottom: 0px !important;
+}
+
+.price-from-field {
+  margin-right: 10px !important;
 }

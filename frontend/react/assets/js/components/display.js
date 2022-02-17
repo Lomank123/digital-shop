@@ -254,7 +254,7 @@ export async function get_items(url, setter, pageParamName=null) {
     return res.data;
   }).catch((err) => {
     console.log("get_items error.");
-
+    //console.log(err.response);
     if (err.response.data.detail === "Invalid page." && err.response.status === 404) {
       const newUrl = new URL(err.response.request.responseURL);
       if (parseInt(newUrl.searchParams.get("page")) - 1 <= 1) {

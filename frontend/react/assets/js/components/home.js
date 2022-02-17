@@ -1,9 +1,10 @@
 import React, { useState, useLayoutEffect } from "react";
 import { categoryGetURL, productGetURL } from "../urls";
 import { blankAxiosInstance } from "../axios";
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import history from "../history";
 import { DisplayPagination, DisplayProducts, get_items } from "./display";
+import { useDispatch, useSelector } from "react-redux";
 
 import "../../styles/main/home.css";
 
@@ -21,23 +22,9 @@ export default function Home() {
     blankAxiosInstance.get(categoryGetURL).then((res) => {
       setCategories(res.data);
       console.log("Categories data done! Home page!");
-      // Checking search params
-      const searchParams = new URLSearchParams(history.location.search);
-      let url = new URL(productGetURL);
-      // We want to get only active products
-      url.searchParams.set('is_active', true);
-
-      const category = searchParams.get("category");
-      const page = searchParams.get("page");
-      // Checking search params
-      if (category !== null) {
-        url.searchParams.set("category__verbose", category);
-      }
-      if (page !== null) {
-        url.searchParams.set("page", page);
-      }
+      let getUrl = getInitialUrl();
       // Getting products
-      get_items(url, setProducts);
+      get_items(getUrl, setProducts);
     }).catch((err) => {
       console.log("Categories data error. Home page.");
     });
@@ -69,7 +56,7 @@ export default function Home() {
           )
         }
 
-        <DisplayMenu />
+        <DisplayMenu setter={setProducts} />
 
       </Box>
     </Box>
@@ -134,20 +121,219 @@ function DisplayCategories(props) {
 
 }
 
+function getInitialUrl() {
+  // Checking search params
+  const searchParams = new URLSearchParams(history.location.search);
+  let url = new URL(productGetURL);
+  // We want to get only active products
+  url.searchParams.set('is_active', true)
+
+  const category = searchParams.get("category");
+  const page = searchParams.get("page");
+  // Checking search params
+  if (category !== null) {
+    url.searchParams.set("category__verbose", category);
+  }
+  if (page !== null) {
+    url.searchParams.set("page", page);
+  }
+  return url;
+}
 
 function DisplayMenu(props) {
+  const filterData = useSelector(state => state.filters);
+  const dispatch = useDispatch();
+
+  const filtersInitialState = {
+    price_from: '',
+    price_to: '',
+    published_date_after: '',
+    published_date_before: '',
+    in_stock: 1,
+    is_active: true,
+  };
+  const [filtersState, setFiltersState] = useState(filterData);
+
+  const handleChange = (e) => {
+    setFiltersState({
+      ...filtersState,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const handleCheckboxChange = (e) => {
+    let val;
+    if (!e.target.checked) {
+      val = 0
+    } else {
+      val = 1
+    }
+    setFiltersState({
+      ...filtersState,
+      [e.target.name]: val,
+    });
+  }
+
+  const handleIsActiveChange = (e) => {
+    setFiltersState({
+      ...filtersState,
+      [e.target.name]: e.target.checked,
+    });
+  }
+
+
+  const handleSubmitFilters = (e) => {
+    e.preventDefault();
+    let getUrl = getInitialUrl();
+    setSearchParams(getUrl, filtersState);
+    console.log(getUrl.searchParams.toString());
+    dispatch({
+      type: 'get_filters',
+      payload: filtersState,
+    });
+    get_items(getUrl, props.setter);
+    console.log("Filtered.");
+  }
+  
+  const handleDiscardFilters = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'get_filters',
+      payload: filtersInitialState,
+    });
+    setFiltersState(filtersInitialState);
+
+    let getUrl = getInitialUrl();
+    get_items(getUrl, props.setter);
+    console.log("Discarded.");
+  }
+
+  const setSearchParams = (url, dict) => {
+    for (const [key, value] of Object.entries(dict)) {
+      if (value !== null && value !== "") {
+        url.searchParams.set(key, value);
+      }
+    }
+  }
+
+  const filters = (
+    <Box className="filters-block">
+      <h5 className="filter-name">Price:</h5>
+      <Box className="price-filter-block">
+        <TextField
+          className="filter-field price-from-field"
+          type='number'
+          variant="outlined"
+          margin="normal"
+          id="price-from"
+          label="From"
+          name="price_from"
+          value={filtersState.price_from || ''}
+          onChange={handleChange}
+        />
+        <TextField
+          className="filter-field"
+          type='number'
+          variant="outlined"
+          margin="normal"
+          id="price-to"
+          label="To"
+          name="price_to"
+          value={filtersState.price_to || ''}
+          onChange={handleChange}
+        />
+      </Box>
+
+      <p></p>
+      <h5 className="filter-name">Published:</h5>
+      <Box className="published-filter-block">
+        <TextField
+          className="filter-field price-from-field"
+          type='date'
+          variant="outlined"
+          margin="normal"
+          id="published-after"
+          name="published_date_after"
+          value={filtersState.published_date_after || ''}
+          onChange={handleChange}
+        />
+        <TextField
+          className="filter-field"
+          type='date'
+          variant="outlined"
+          margin="normal"
+          id="published-before"
+          name="published_date_before"
+          value={filtersState.published_date_before || ''}
+          onChange={handleChange}
+        />
+      </Box>
+
+      <p></p>
+      <h5 className="filter-name">Is active:</h5>
+      <Box className="is-active-filter-block">
+        <FormControlLabel
+          label='Is active'
+          control={
+            <Checkbox
+              checked={filtersState.is_active}
+              id="filter-is-active"
+              color="primary"
+              label="Is active"
+              name="is_active"
+              onChange={handleIsActiveChange}
+            />
+          }
+        />
+      </Box>
+
+      <p></p>
+      <h5 className="filter-name">Quantity:</h5>
+      <Box className="quantity-filter-block">
+        <FormControlLabel
+          label='In stock'
+          control={
+            <Checkbox
+              checked={Boolean(filtersState.in_stock)}
+              id="filter-in-stock"
+              color="primary"
+              label="In stock"
+              name="in_stock"
+              onChange={handleCheckboxChange}
+            />
+          }
+        />
+      </Box>
+
+    </Box>
+  )
+
+  const buttons = (
+    <Box className="filters-btns-block">
+      <Button
+        className="filters-btn filters-apply-btn"
+        variant="contained"
+        color="primary"
+        onClick={handleSubmitFilters}
+      >
+        Apply
+      </Button>
+      <Button
+        className="filters-btn"
+        variant="contained"
+        color="primary"
+        onClick={handleDiscardFilters}
+      >
+        Discard
+      </Button>
+    </Box>
+  )
 
   return(
     <Box className="default-block menu-block">
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
-      <Button>Button</Button>
+      <h4 className="filters-label">Filters</h4>
+      {filters}
+      {buttons}
     </Box>
   );
 }

@@ -19,4 +19,3 @@ class ProductFilter(filters.FilterSet):
             'price_to',
             'published_date',
         ]
-

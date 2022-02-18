@@ -16,6 +16,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import filters
 
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer, EmailAddressSerializer
@@ -31,7 +32,9 @@ class ProductViewSet(ModelViewSet):
     permission_classes = (AllowAny, )
     parser_classes = [MultiPartParser, FormParser]
     pagination_class = ProductPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ProductFilter
+    search_fields = ['title', 'description']
 
     def get_permissions(self):
         unsafe_actions = [

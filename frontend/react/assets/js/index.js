@@ -49,6 +49,9 @@ const defaultState = {
     in_stock: 1,
     is_active: true,
   },
+  search: {
+    search: "",
+  },
 };
 
 // E.g.:
@@ -65,6 +68,8 @@ const reducer = (state = defaultState, action) => {
       return {...state, emailAddress: action.payload};
     case 'get_filters':
       return {...state, filters: action.payload};
+    case 'get_search':
+      return {...state, search: action.payload};
     default:
       return state;
   }

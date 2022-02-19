@@ -20,16 +20,20 @@ services:
     env_file: .env
     depends_on:
       - db
+      - redis
 
-  #frontend:
-  #  build:
-  #    context: ./frontend
-  #  command: >
-  #    sh -c "npm run dev"
-  #  volumes:
-  #    - ./frontend/react:/react
-  #    #- react:/react/assets/ready-build
-  #  env_file: .env
+  celery:
+    build: .
+    command: celery -A digitalshopapp worker -l INFO
+    volumes:
+      - ./digital-shop-app:/digital-shop-app
+    env_file: .env
+    depends_on:
+      - digital-shop-app
+      - redis
+  
+  redis:
+    image: "redis:alpine"
 
   nginx:
     build:
@@ -53,6 +57,16 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
+
+  #frontend:
+  #  build:
+  #    context: ./frontend
+  #  command: >
+  #    sh -c "npm run dev"
+  #  volumes:
+  #    - ./frontend/react:/react
+  #    #- react:/react/assets/ready-build
+  #  env_file: .env
 
 volumes:
   #react:

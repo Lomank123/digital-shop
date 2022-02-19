@@ -1,5 +1,7 @@
 Django>=3.2.3,<3.3
 djangorestframework==3.12.4
+celery==5.2.3
+redis==4.1.4
 django-filter==21.1
 drf-spectacular
 drf-spectacular-sidecar

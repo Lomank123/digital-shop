@@ -21,6 +21,11 @@
   margin-left: 50px;
 }
 
+a.logo-text {
+  text-decoration: none;
+  color: black;
+}
+
 .links-block {
   width: 70%;
   display: flex;
@@ -67,6 +72,8 @@
   display: flex;
   justify-content: center;
   margin-right: 20px;
+  justify-self: flex-end;
+  margin-left: auto;
 }
 
 .cart-page-btn {

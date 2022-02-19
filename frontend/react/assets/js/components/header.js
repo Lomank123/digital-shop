@@ -163,9 +163,8 @@ export default function Header() {
     <Box className='header-main'>
       <Box className='header-block'>
         <Box className='logo'>
-          <span className='logo-text'>Digital Shop</span>
+          <Link className='logo-text' to={'/'}>Digital Shop</Link>
         </Box>
-        {links}
         {cartBox}
         <Box className='header-auth-block'>
           {

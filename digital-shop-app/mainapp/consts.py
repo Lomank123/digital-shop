@@ -2,4 +2,3 @@ NON_USER_CART_ID_COOKIE_NAME = 'non_user_cart_id'
 USER_CART_ID_COOKIE_NAME = 'user_cart_id'
 
 CART_ID_COOKIE_EXPIRATION_DAYS = 30
-

@@ -81,6 +81,47 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ('name', 'verbose',)
 
 
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    model = Cart
+    list_display = ('id', 'user', 'is_deleted', 'is_archived', 'creation_date', )
+    list_filter = ('is_deleted', 'is_archived', )
+    fieldsets = (
+        ('Information', {'fields': ('user', 'is_deleted', 'is_archived',)}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('user', 'is_deleted', 'is_archived',)
+            }
+        ),
+    )
+    search_fields = ('id', 'user',)
+    ordering = ('creation_date', 'id')
+
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    model = CartItem
+    list_display = ('id', 'cart', 'product', 'quantity', )
+    fieldsets = (
+        ('Information', {'fields': ('cart', 'product', 'quantity',)}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('cart', 'product', 'quantity',)
+            }
+        ),
+    )
+    search_fields = ('id', 'cart', 'product',)
+    ordering = ('cart', 'product', 'id')
+
+
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
 
     # Need to return True here so we can delete user with these tokens via admin panel
@@ -91,6 +132,3 @@ class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
 # Unregistring and registring new outstanding token admin model
 admin.site.unregister(models.OutstandingToken)
 admin.site.register(models.OutstandingToken, CustomOutstandingTokenAdmin)
-
-admin.site.register(CartItem)
-admin.site.register(Cart)

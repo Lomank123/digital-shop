@@ -1,6 +1,8 @@
 Django>=3.2.3,<3.3
 djangorestframework==3.12.4
 celery==5.2.3
+django-celery-beat==2.2.1
+django-celery-results==2.2.0
 redis==4.1.4
 django-filter==21.1
 drf-spectacular

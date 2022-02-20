@@ -24,13 +24,19 @@ services:
 
   celery:
     build: .
-    command: celery -A digitalshopapp worker -l INFO
+    # For celery:
+    # -A <name> - project name
+    # --beat - for django-celery-beat
+    # worker - for django-celery-results (saving tasks in db)
+    # --scheduler django - for django-celery-beat
+    command: celery -A digitalshopapp worker --beat --loglevel=INFO
     volumes:
       - ./digital-shop-app:/digital-shop-app
     env_file: .env
     depends_on:
       - digital-shop-app
       - redis
+      - db
   
   redis:
     image: "redis:alpine"

@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  digital-shop-app:
+  django:
     build:
       context: .
     command: >
@@ -22,21 +22,26 @@ services:
       - db
       - redis
 
-  celery:
+  celery-worker:
     build: .
-    # For celery:
-    # -A <name> - project name
-    # --beat - for django-celery-beat
-    # worker - for django-celery-results (saving tasks in db)
-    # --scheduler django - for django-celery-beat
-    command: celery -A digitalshopapp worker --beat --loglevel=INFO
+    restart: always
+    command: ./../scripts/wait-for-it.sh django:8000 -s -t 10 -- celery -A digitalshopapp worker --loglevel=INFO --beat
     volumes:
       - ./digital-shop-app:/digital-shop-app
     env_file: .env
     depends_on:
-      - digital-shop-app
+      - django
       - redis
       - db
+
+  celery-flower:
+    image: mher/flower:latest
+    command: celery flower --port=5555
+    ports:
+      - 5557:5555
+    env_file: .env
+    depends_on:
+      - redis
   
   redis:
     image: "redis:alpine"
@@ -54,7 +59,7 @@ services:
       # This mount an existing folder to nginx (that's why only django volume exists)
       - ./frontend/react/assets/ready-build:/var/www/react
     depends_on:
-      - digital-shop-app
+      - django
       #- frontend
 
   db:

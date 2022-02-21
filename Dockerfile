@@ -15,6 +15,7 @@ WORKDIR /digital-shop-app
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --no-cache bash && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-deps \
         build-base jpeg-dev postgresql-dev musl-dev linux-headers \

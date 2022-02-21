@@ -10,6 +10,12 @@ app = Celery("digitalshopapp")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.conf.beat_schedule = {
+    # TODO: Delete after tests
+    #'add-every-20-seconds': {
+    #    'task': 'mainapp.tasks.add',
+    #    'schedule': 20.0,
+    #    'args': (2, 2),
+    #},
     'delete-expired-carts-daily': {
         'task': 'mainapp.tasks.delete_expired_carts',
         'schedule': crontab(minute=0, hour=0),

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
 from rest_framework_simplejwt.token_blacklist import models
 
-from mainapp.models import Product, Category, CustomUser, CartItem, Cart
+from mainapp.models import Product, Category, CustomUser, CartItem, Cart, Order
 from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
@@ -120,6 +120,26 @@ class CartItemAdmin(admin.ModelAdmin):
     )
     search_fields = ('id', 'cart', 'product',)
     ordering = ('cart', 'product', 'id')
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    model = Order
+    list_display = ('id', 'cart', 'total_price', 'creation_date',)
+    fieldsets = (
+        ('Information', {'fields': ('cart', 'total_price',)}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('cart', 'total_price',)
+            }
+        ),
+    )
+    search_fields = ('total_price', 'id')
+    ordering = ('creation_date', 'id', 'total_price')
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

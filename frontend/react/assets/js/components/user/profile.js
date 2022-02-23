@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { DisplayPagination, DisplayProducts, get_items } from '../display';
 import history from '../../history';
-
 import '../../../styles/user/profile.css';
 import { editProfileRoute } from '../../routes';
 

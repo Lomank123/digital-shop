@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, cartRoute } from '../routes';
+import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, cartRoute, ordersRoute } from '../routes';
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
@@ -136,7 +136,8 @@ export default function Header() {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
         >
-          <MenuItem onClick={e => handleClickRedirect(e, profileRoute + '/' + userData.id + '/')}>Profile</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, `${profileRoute}/${userData.id}/`)}>Profile</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, ordersRoute)}>My orders</MenuItem>
           <MenuItem onClick={e => handleClickRedirect(e, logoutRoute)}>Log out</MenuItem>
         </Menu>
       </Box>

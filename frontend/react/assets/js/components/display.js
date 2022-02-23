@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { productRoute, editProductRoute, cartRoute } from '../routes';
+import { productRoute, editProductRoute, cartRoute, ordersRoute } from '../routes';
 import { noImageURL } from "../urls";
 import { Box, Button, IconButton } from "@material-ui/core";
 import { blankAxiosInstance } from "../axios";
@@ -36,10 +36,6 @@ export function DisplayProducts(props) {
   const handleOpen = (id) => {
     setCurrentId(id);
     setOpen(true);
-  }
-
-  function handleRedirect(route) {
-    history.push(`/${route}/`);
   }
 
   if (cartData === null || cartProductIds === null || userData === null) {
@@ -368,4 +364,53 @@ export function DisplayCartItems(props) {
       }
     </Box>
   );
+}
+
+export function DisplayOrders(props) {
+  return(
+    <Box className="display-orders">
+      {
+        Object.entries(props.items.results).map(([key, item]) => {
+          const infoBox = (
+            <Box className="order-info">
+              <h4 className="order-id">Order id: {item.id}</h4>
+              <h5 className="order-price">Total price: {item.total_price}$</h5>
+            </Box>
+          );
+
+          const addInfoBox = (
+            <Box className="order-add-info-block">
+              <span className="order-date">Date: {setDate(item.creation_date)}</span>
+              <Button
+                className="order-view-btn"
+                variant="contained"
+                color="primary"
+                onClick={() => {handleRedirect(`${ordersRoute}/${item.id}`)}}
+              >
+                View order
+              </Button>
+            </Box>
+          );
+
+          return (
+            <Box key={key} className='default-block order-card'>
+              <Box className="order-info-block">
+                {infoBox}
+                {addInfoBox}
+              </Box>
+            </Box>
+          );
+        })
+      }
+    </Box>
+  );
+}
+
+export function setDate(date) {
+  const newDate = new Date(date);
+  return newDate.toISOString().split('T')[0];
+}
+
+export function handleRedirect(route) {
+  history.push(`/${route}/`);
 }

@@ -1,28 +1,20 @@
 from allauth.account.models import EmailAddress
-from collections import OrderedDict
-import datetime
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import filters
 
-from mainapp.models import Product, Category, CustomUser, Cart, CartItem
-from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, CartItemSerializer, EmailAddressSerializer
-from mainapp.pagination import ProductPagination, CartItemPagination
+from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
+from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, \
+CartItemSerializer, EmailAddressSerializer, OrderSerializer
+from mainapp.pagination import DefaultCustomPagination, SmallPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
-from mainapp.services import CartService, CartItemService, ProductService
+from mainapp.services import CartService, CartItemService, ProductService, OrderService
 from mainapp.filters import ProductFilter
 import mainapp.consts as consts
 
@@ -31,7 +23,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = (AllowAny, )
     parser_classes = [MultiPartParser, FormParser]
-    pagination_class = ProductPagination
+    pagination_class = DefaultCustomPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = ProductFilter
     search_fields = ['title', 'description']
@@ -174,7 +166,7 @@ class CartViewSet(ModelViewSet):
 class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
-    pagination_class = CartItemPagination
+    pagination_class = SmallPagination
 
     def get_permissions(self):
         unsafe_actions = [
@@ -298,6 +290,28 @@ class CartItemViewSet(ModelViewSet):
     )
     def post_purchase(self, request):
         response = CartItemService(request)._post_purchase_execute()
+        return response
+
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated, )
+    pagination_class = SmallPagination
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            queryset = Order.objects.all()
+        else:
+            queryset = Order.objects.filter(cart__user=self.request.user)
+        return queryset
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='get_user_orders'
+    )
+    def get_user_orders(self, request):
+        response = OrderService(request).get_user_orders_execute(self)
         return response
 
 

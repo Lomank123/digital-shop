@@ -18,9 +18,12 @@ export const resetRoute = 'reset';
 export const loggedInRoute = 'loggedin';
 export const testRoute = 'test';
 
-// Profile
+// User
 export const profileRoute = 'profile';
 export const editProfileRoute = `${profileRoute}/edit`;
+
+// Order
+export const ordersRoute = 'orders';
 
 // Product
 export const productRoute = 'product';

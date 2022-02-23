@@ -44,6 +44,10 @@ export const getEitherCartItemsURL = cartItemURL + 'get_either_cart_items/';
 
 export const postPurchaseURL = cartItemURL + 'post_purchase/';
 
+// TODO: Perhaps it should be related to user ViewSet
+export const ordersURL = 'orders/';
+export const getUserOrdersURL = ordersURL + 'get_user_orders/';
+
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';
 export const signupVerifyEmailURL = signupURL + 'verify-email/';

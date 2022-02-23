@@ -4,9 +4,9 @@ from rest_framework.utils.urls import replace_query_param, remove_query_param
 from collections import OrderedDict
 
 
-class ProductPagination(PageNumberPagination):
+class DefaultCustomPagination(PageNumberPagination):
 	"""
-	Custom pagination class. Used for products pagination.
+	Custom pagination class.
 	Has additional fields and some configured params.
 	
 	Additional fields:
@@ -14,7 +14,6 @@ class ProductPagination(PageNumberPagination):
 		- 'num_pages' - contains pages count number
 		- 'first' - url to the first page
 		- 'last' - url to the last page
-
 	"""
 	page_size = 10
 	page_query_param = 'page'
@@ -44,5 +43,5 @@ class ProductPagination(PageNumberPagination):
 		return replace_query_param(url, self.page_query_param, page_number)
 
 
-class CartItemPagination(ProductPagination):
+class SmallPagination(DefaultCustomPagination):
 	page_size = 5

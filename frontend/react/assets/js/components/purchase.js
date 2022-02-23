@@ -15,7 +15,7 @@ export default function Purchase() {
   const [items, setItems] = useState(null);
 
   const postPurchase = () => {
-    handlePostPurchase(cart.id).then((res) => {
+    handlePostPurchase(cart.id, totalPrice).then((res) => {
       history.push('/');
     }).catch((err) => {
       console.log(err);

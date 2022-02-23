@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from mainapp.views import ProductViewSet, CategoryViewSet, UserViewSet, CartViewSet, CartItemViewSet, EmailAddressViewSet
+from mainapp.views import ProductViewSet, CategoryViewSet, UserViewSet, \
+CartViewSet, CartItemViewSet, EmailAddressViewSet, OrderViewSet
 
 
 router = DefaultRouter()
@@ -13,6 +14,7 @@ router.register('user-info', UserViewSet, basename='user-info')
 router.register('cart', CartViewSet, basename='cart')
 router.register('cart-item', CartItemViewSet, basename='cart-item')
 router.register('email-address', EmailAddressViewSet, basename='email-address')
+router.register('orders', OrderViewSet, basename='orders')
 
 urlpatterns = [
     # API urls

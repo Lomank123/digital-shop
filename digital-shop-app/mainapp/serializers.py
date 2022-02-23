@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 
-from mainapp.models import Product, CustomUser, Category, Cart, CartItem
+from mainapp.models import Product, CustomUser, Category, Cart, CartItem, Order
 from django.contrib.auth.models import User
 
 
@@ -71,6 +71,14 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['id', 'cart', 'product', 'quantity', 'total_price',]
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    cart = CartSerializer()
+
+    class Meta:
+        model = Order
+        fields = '__all__'
 
 
 class EmailAddressSerializer(serializers.ModelSerializer):

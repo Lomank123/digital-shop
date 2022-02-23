@@ -1,5 +1,5 @@
 from django.db.models import F, Sum
-from mainapp.models import Cart, Product, CartItem, Category
+from mainapp.models import Cart, Product, CartItem, Category, Order
 
 
 class CartRepository:
@@ -41,6 +41,7 @@ class CartRepository:
 	def set_cart_archived(cart):
 		cart.is_archived = True
 		cart.save()
+		return cart
 
 
 class ProductRepository:
@@ -120,3 +121,17 @@ class CartItemRepository:
 		for item in cart_items:
 			item.product.quantity -= item.quantity
 			item.product.save()
+
+
+class OrderRepository:
+
+	@staticmethod
+	def create_order(cart, total_price):
+		new_order = Order.objects.create(cart=cart, total_price=total_price)
+		new_order.save()
+		return new_order
+
+	@staticmethod
+	def get_orders_by_user(user):
+		orders = Order.objects.filter(cart__user=user, cart__is_archived=True)
+		return orders

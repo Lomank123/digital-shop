@@ -1,7 +1,7 @@
 import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
-from mainapp.repository import CartRepository, ProductRepository, CartItemRepository, CategoryRepository
-from mainapp.serializers import CartSerializer, CartItemSerializer, ProductSerializer
+from mainapp.repository import CartRepository, ProductRepository, CartItemRepository, CategoryRepository, OrderRepository
+from mainapp.serializers import CartSerializer, CartItemSerializer, ProductSerializer, OrderSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -42,7 +42,6 @@ class CartService:
 	def _create_and_attach_cart(self):
 		cart = CartRepository.create_and_attach_cart(self.request.user)
 		return cart
-
 
 	@staticmethod
 	def _build_response(cart):
@@ -180,7 +179,7 @@ class CartItemService:
 		response = Response(data={"detail": "Post purchase done"}, status=status.HTTP_200_OK)
 		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"])
 		CartItemRepository.change_quantity(cart)
-		CartRepository.set_cart_archived(cart)
+		self._post_purchase_set_order_if_user(cart, self.request.data["total_price"])
 		service = CartService(self.request)
 		cookie_name = service._get_either_cookie_name()
 		service._delete_cart_id_from_cookie(response, cookie_name)
@@ -190,6 +189,11 @@ class CartItemService:
 			new_cart = CartRepository.get_or_create_cart_by_id()
 		service._set_cart_id_to_cookie(response, new_cart.id, cookie_name, forced=True)
 		return response
+
+	def _post_purchase_set_order_if_user(self, cart, total_price):
+		saved_cart = CartRepository.set_cart_archived(cart)
+		if self.request.user.is_authenticated:
+			OrderRepository.create_order(saved_cart, total_price)
 
 
 class ProductService:
@@ -214,6 +218,30 @@ class ProductService:
 	@staticmethod
 	def _build_get_by_response(items, viewset_instance):
 		page = viewset_instance.paginate_queryset(items)
+		if page is not None:
+			serializer = viewset_instance.get_serializer(page, many=True)
+			return viewset_instance.get_paginated_response(serializer.data)
+		response = Response(
+			data={"detail": "Cannot serialize because there is no objects."},
+			status=status.HTTP_400_BAD_REQUEST
+		)
+		return response
+
+
+class OrderService:
+
+	__slots__ = 'request'
+
+	def __init__(self, request):
+		self.request = request
+
+	def get_user_orders_execute(self, viewset_instance):
+		orders = OrderRepository.get_orders_by_user(self.request.user)
+		response = self._build_response(orders, viewset_instance)
+		return response
+
+	def _build_response(self, orders, viewset_instance):
+		page = viewset_instance.paginate_queryset(orders)
 		if page is not None:
 			serializer = viewset_instance.get_serializer(page, many=True)
 			return viewset_instance.get_paginated_response(serializer.data)

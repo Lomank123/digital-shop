@@ -24,8 +24,7 @@ services:
 
   celery-worker:
     build: .
-    restart: always
-    command: ./../scripts/wait-for-it.sh django:8000 -s -t 10 -- celery -A digitalshopapp worker --loglevel=INFO --beat
+    command: wait-for-it.sh django:8000 -s -t 120 -- celery -A digitalshopapp worker --loglevel=INFO --beat
     volumes:
       - ./digital-shop-app:/digital-shop-app
     env_file: .env

@@ -117,3 +117,14 @@ class CartItem(models.Model):
         verbose_name_plural = 'Cart items'
         verbose_name = 'Cart item'
         ordering=['-id']
+
+
+class Order(models.Model):
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name="Cart")
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Creation date')
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Total price')
+
+    class Meta:
+        verbose_name_plural = 'Orders'
+        verbose_name = 'Order'
+        ordering=['-id']

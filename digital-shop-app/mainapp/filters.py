@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from mainapp.models import Product
+from mainapp.models import Product, CartItem, Order
 
 
 class ProductFilter(filters.FilterSet):
@@ -18,4 +18,22 @@ class ProductFilter(filters.FilterSet):
             'price_from',
             'price_to',
             'published_date',
+        ]
+
+
+class CartItemFilter(filters.FilterSet):
+    class Meta:
+        model = CartItem
+        fields = [
+            'cart__id',
+            'product__id',
+        ]
+
+
+class OrderFilter(filters.FilterSet):
+    class Meta:
+        model = Order
+        fields = [
+            'cart__user__id',
+            'cart__is_archived',
         ]

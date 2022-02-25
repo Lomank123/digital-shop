@@ -1,6 +1,6 @@
 import { axiosInstance, blankAxiosInstance } from "./axios";
 import {cartGetURL, moveToUseCartURL, getCartProductIdsURL, getTotalPriceURL, cartItemAddURL,
-  cartItemRemoveURL, getIsVerifiedAddressURL, removeAllFromCartURL, getAuthenticatedUserURL, postPurchaseURL, getUserOrdersURL} from "./urls";
+  cartItemRemoveURL, getIsVerifiedAddressURL, removeAllFromCartURL, getAuthenticatedUserURL, postPurchaseURL} from "./urls";
 import { store } from './index';
 import history from "./history";
 
@@ -189,13 +189,6 @@ export async function handlePostPurchase(cart_id, total_price) {
     getCart();
     getCartProductIds();
     console.log("Purchase confirmed!");
-    return res;
-  });
-}
-
-export async function getOrders() {
-  return blankAxiosInstance.get(getUserOrdersURL).then((res) => {
-    console.log("Get orders done!");
     return res;
   });
 }

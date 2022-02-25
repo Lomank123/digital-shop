@@ -130,8 +130,3 @@ class OrderRepository:
 		new_order = Order.objects.create(cart=cart, total_price=total_price)
 		new_order.save()
 		return new_order
-
-	@staticmethod
-	def get_orders_by_user(user):
-		orders = Order.objects.filter(cart__user=user, cart__is_archived=True)
-		return orders

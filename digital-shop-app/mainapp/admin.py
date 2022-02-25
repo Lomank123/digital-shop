@@ -125,7 +125,7 @@ class CartItemAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     model = Order
-    list_display = ('id', 'cart', 'total_price', 'creation_date',)
+    list_display = ('cart', 'total_price', 'creation_date',)
     fieldsets = (
         ('Information', {'fields': ('cart', 'total_price',)}),
     )
@@ -138,8 +138,8 @@ class OrderAdmin(admin.ModelAdmin):
             }
         ),
     )
-    search_fields = ('total_price', 'id')
-    ordering = ('creation_date', 'id', 'total_price')
+    search_fields = ('total_price', 'cart',)
+    ordering = ('creation_date', 'total_price',)
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

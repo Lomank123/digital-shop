@@ -105,3 +105,30 @@ a.cart-item-info-link {
   bottom: -50%;
   right: -40%;
 }
+
+
+/* DisplayOrders */
+
+.order-item-block {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-item-image {
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: cover;
+}
+
+.order-item-info-block {
+  width: 100%;
+  align-self: center;
+  margin-left: 20px;
+}
+
+.order-item-price-block {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}

@@ -15,7 +15,7 @@ CartItemSerializer, EmailAddressSerializer, OrderSerializer
 from mainapp.pagination import DefaultCustomPagination, SmallPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
 from mainapp.services import CartService, CartItemService, ProductService, OrderService
-from mainapp.filters import ProductFilter
+from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
 import mainapp.consts as consts
 
 
@@ -167,6 +167,8 @@ class CartItemViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
     permission_classes = (IsAuthenticated, )
     pagination_class = SmallPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = CartItemFilter
 
     def get_permissions(self):
         unsafe_actions = [
@@ -297,6 +299,7 @@ class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated, )
     pagination_class = SmallPagination
+    filterset_class = OrderFilter
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -304,15 +307,6 @@ class OrderViewSet(ModelViewSet):
         else:
             queryset = Order.objects.filter(cart__user=self.request.user)
         return queryset
-
-    @action(
-        methods=['get'],
-        detail=False,
-        url_path='get_user_orders'
-    )
-    def get_user_orders(self, request):
-        response = OrderService(request).get_user_orders_execute(self)
-        return response
 
 
 # TODO: Remove if unused

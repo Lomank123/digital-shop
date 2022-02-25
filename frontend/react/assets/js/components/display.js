@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Delete, Edit, ShoppingCart } from '@material-ui/icons';
+import { Delete, Edit, ShoppingCart, ExpandLess, ExpandMore } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { productRoute, editProductRoute, cartRoute, ordersRoute } from '../routes';
+import { productRoute, editProductRoute, cartRoute, ordersDetailRoute } from '../routes';
 import { noImageURL } from "../urls";
-import { Box, Button, IconButton } from "@material-ui/core";
+import { Box, Button, IconButton, List, ListItem, ListItemText, Collapse } from "@material-ui/core";
 import { blankAxiosInstance } from "../axios";
 import history from "../history";
 import { DeleteDialog } from "./dialog";
@@ -176,6 +176,12 @@ export function DisplayPagination(props) {
 
   const handlePaginationClick = (url) => {
     const newUrl = new URL(url);
+
+    if (props.isPage === false) {
+      get_items(url, props.setter, null, props.itemKey);
+      return;
+    }
+
     const params = new URLSearchParams(history.location.search);
 
     let paramName = 'page';
@@ -187,7 +193,14 @@ export function DisplayPagination(props) {
     if (JSON.parse(params.get(paramName)) === null) {
       params.delete(paramName);
     }
-    history.replace({ search: params.toString() })
+    history.replace({ search: params.toString() });
+
+    if (props.setNestedList) {
+      console.log("Nested list reset");
+      props.setOrderItems({});
+      props.setNestedList({});
+    }
+    
     get_items(newUrl.href, props.setter);
   }
 
@@ -234,55 +247,12 @@ export function DisplayPagination(props) {
       </Box>
     );
   }
-
   return (
     <Box>
       {paginationBlock}
     </Box>
   ); 
 }
-
-// Func for getting items using api call (setter is setProducts currently from profile and home pages)
-export async function get_items(url, setter, pageParamName=null) {
-  return blankAxiosInstance.get(url).then((res) => {
-    setter(res.data);
-    //window.scrollTo(0, 0);  // After successful request scrolling to the top
-    return res.data;
-  }).catch((err) => {
-    console.log("get_items error.");
-    //console.log(err.response);
-    if (err.response.data.detail === "Invalid page." && err.response.status === 404) {
-      const newUrl = new URL(err.response.request.responseURL);
-      if (parseInt(newUrl.searchParams.get("page")) - 1 <= 1) {
-        newUrl.searchParams.delete("page");
-      } else {
-        newUrl.searchParams.set("page", newUrl.searchParams.get("page") - 1);
-      }
-
-      blankAxiosInstance.get(newUrl).then((res) => {
-        setter(res.data);
-        const params = new URLSearchParams(window.location.search);
-        let paramName = "page";
-        if (pageParamName) {
-          paramName = pageParamName;
-        }
-        if (params.get(paramName)) {
-          if (res.data.num_pages <= 1) {
-            params.delete(paramName);
-          } else if (parseInt(params.get(paramName)) > res.data.num_pages) {
-            params.set(paramName, parseInt(params.get(paramName)) - 1);
-          }
-          history.replace({ search: params.toString() })
-        }
-        console.log("Again and done!");
-      }).catch((err) => {
-        console.log(err);
-        console.log("Again and error!");
-      });
-    }
-  });
-}
-
 
 export function DisplayCartItems(props) {
 
@@ -373,7 +343,7 @@ export function DisplayOrders(props) {
         Object.entries(props.items.results).map(([key, item]) => {
           const infoBox = (
             <Box className="order-info">
-              <h4 className="order-id">Order id: {item.id}</h4>
+              <h4 className="order-id">Order id: {item.cart.id}</h4>
               <h5 className="order-price">Total price: {item.total_price}$</h5>
             </Box>
           );
@@ -381,15 +351,66 @@ export function DisplayOrders(props) {
           const addInfoBox = (
             <Box className="order-add-info-block">
               <span className="order-date">Date: {setDate(item.creation_date)}</span>
-              <Button
-                className="order-view-btn"
-                variant="contained"
-                color="primary"
-                onClick={() => {handleRedirect(`${ordersRoute}/${item.id}`)}}
-              >
-                View order
-              </Button>
             </Box>
+          );
+
+          const open = props.nestedList[key] || false;
+
+          const listItemsBox = (
+            <List component="nav">
+              <ListItem button onClick={() => {props.setNestedList(key, item.cart.id)}}>
+                <ListItemText primary="View order details" />
+                {open ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {
+                    (props.orderItems[key])
+                    ? (
+                      <Box>
+                        <DisplayPagination items={props.orderItems[key]} setter={props.setOrderItems} isPage={false} itemKey={key} />
+                        <hr />
+                        {
+                          Object.entries(props.orderItems[key].results).map(([childKey, childItem]) => {
+                            return (
+                              <ListItem key={childKey}>
+                                <Box className="order-item-block">
+                                  <Box className="order-item-image-block">
+                                    <img
+                                      src={
+                                        (childItem.product.image !== null && childItem.product.image !== "")
+                                        ? childItem.product.image
+                                        : noImageURL
+                                      }
+                                      alt='order item image'
+                                      className="order-item-image"
+                                    />
+                                  </Box>
+                                  <Box className="order-item-info-block">
+                                    <Link
+                                      className="cart-item-info-link"
+                                      to={`/${productRoute}/${childItem.product.id}`}
+                                    >
+                                      <h5 className='order-item-title'>{childItem.product.title}</h5>
+                                    </Link>
+                                  </Box>
+                                  <Box className='order-item-price-block'>
+                                    <h6 className='order-item-quantity'>Quantity: {childItem.quantity}</h6>
+                                    <h6 className='order-item-price'>Total price: {childItem.total_price}$</h6>
+                                  </Box>
+                                </Box>
+                              </ListItem>
+                            );
+                          })
+                        }
+                        <hr />
+                      </Box>
+                      )
+                    : null
+                  }
+                </List>
+              </Collapse>
+            </List>
           );
 
           return (
@@ -398,12 +419,59 @@ export function DisplayOrders(props) {
                 {infoBox}
                 {addInfoBox}
               </Box>
+              {listItemsBox}
             </Box>
           );
         })
       }
     </Box>
   );
+}
+
+// Func for getting items using api call (setter is setProducts currently from profile and home pages)
+export async function get_items(url, setter, pageParamName=null, key=null) {
+  return blankAxiosInstance.get(url).then((res) => {
+    if (key !== null) {
+      const newData = { [key]: res.data };
+      setter(newData);
+    } else {
+      setter(res.data);
+    }
+    //window.scrollTo(0, 0);  // After successful request scrolling to the top
+    return res.data;
+  }).catch((err) => {
+    console.log("get_items error.");
+    //console.log(err.response);
+    if (err.response.data.detail === "Invalid page." && err.response.status === 404) {
+      const newUrl = new URL(err.response.request.responseURL);
+      if (parseInt(newUrl.searchParams.get("page")) - 1 <= 1) {
+        newUrl.searchParams.delete("page");
+      } else {
+        newUrl.searchParams.set("page", newUrl.searchParams.get("page") - 1);
+      }
+
+      blankAxiosInstance.get(newUrl).then((res) => {
+        setter(res.data);
+        const params = new URLSearchParams(window.location.search);
+        let paramName = "page";
+        if (pageParamName) {
+          paramName = pageParamName;
+        }
+        if (params.get(paramName)) {
+          if (res.data.num_pages <= 1) {
+            params.delete(paramName);
+          } else if (parseInt(params.get(paramName)) > res.data.num_pages) {
+            params.set(paramName, parseInt(params.get(paramName)) - 1);
+          }
+          history.replace({ search: params.toString() })
+        }
+        console.log("Again and done!");
+      }).catch((err) => {
+        console.log(err);
+        console.log("Again and error!");
+      });
+    }
+  });
 }
 
 export function setDate(date) {

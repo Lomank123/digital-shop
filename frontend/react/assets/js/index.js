@@ -35,7 +35,6 @@ import Purchase from './components/purchase';
 import Cart from './components/cart';
 import '../styles/main/main.css';
 import UserOrders from './components/order/order';
-import OrderDetail from './components/order/detail';
 
 
 const defaultState = {
@@ -94,13 +93,7 @@ const routing = (
             <Route path={`/${routes.productRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
             <Route path={`/${routes.editProductRoute}/${routes.idValues}`} component={() => <SellerComponent component={AddEditProduct} />} />
 
-            <Route path={`/${routes.ordersRoute}`} render={ ({ match: { path } }) => (
-                <>
-                  <Route exact path={`${path}/`} component={() => <LoginRequiredComponent component={UserOrders} />} />
-                  <Route path={`${path}/${routes.idValues}`} component={() => <LoginRequiredComponent component={OrderDetail} />} />
-                </>
-              )}
-            />
+            <Route path={`/${routes.ordersRoute}`} component={() => <LoginRequiredComponent component={UserOrders} />} />
 
             <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
             <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />

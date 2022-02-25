@@ -232,13 +232,9 @@ class OrderService:
 
 	__slots__ = 'request'
 
+
 	def __init__(self, request):
 		self.request = request
-
-	def get_user_orders_execute(self, viewset_instance):
-		orders = OrderRepository.get_orders_by_user(self.request.user)
-		response = self._build_response(orders, viewset_instance)
-		return response
 
 	def _build_response(self, orders, viewset_instance):
 		page = viewset_instance.paginate_queryset(orders)

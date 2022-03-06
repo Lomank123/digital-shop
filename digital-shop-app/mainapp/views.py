@@ -14,9 +14,13 @@ from mainapp.serializers import ProductSerializer, UserSerializer, CategorySeria
 CartItemSerializer, EmailAddressSerializer, OrderSerializer
 from mainapp.pagination import DefaultCustomPagination, SmallPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
-from mainapp.services import CartService, CartItemService, ProductService, OrderService
+from mainapp.services import CartService, CartItemService
 from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
 import mainapp.consts as consts
+import logging
+
+
+logger = logging.getLogger('django')
 
 
 class ProductViewSet(ModelViewSet):
@@ -100,7 +104,7 @@ class UserViewSet(ModelViewSet):
             # If not, changing email address and sending confirmation message to new email
             address = EmailAddress.objects.filter(user=self.request.user).get()
             address.change(request, new_email)  # This does all the magic (sends email message and change EmailAdress instance)
-            print("Confirmation message sent")
+            logger.info("Confirmation message sent")
         # Performing update of user instance
         return super().partial_update(request, *args, **kwargs)
 

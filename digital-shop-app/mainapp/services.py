@@ -4,6 +4,10 @@ from mainapp.repository import CartRepository, ProductRepository, CartItemReposi
 from mainapp.serializers import CartSerializer, CartItemSerializer, ProductSerializer, OrderSerializer
 from rest_framework.response import Response
 from rest_framework import status
+import logging
+
+
+logger = logging.getLogger('django')
 
 
 class CartService:
@@ -96,6 +100,7 @@ class CartItemService:
 		if cart_item is None:
 			response.status_code = status.HTTP_400_BAD_REQUEST
 			response.data = {"detail": "Cannot add product to cart."}
+			logger.error("Cannot add product to cart")
 		return response
 
 	def add_execute(self):
@@ -117,18 +122,6 @@ class CartItemService:
 		return Response(data={"detail": "Cart was cleaned. All CartItems were deleted."}, status=status.HTTP_200_OK)
 
 	@staticmethod
-	def _build_response(cart_items, viewset_instance):
-		page = viewset_instance.paginate_queryset(cart_items)
-		if page is not None:
-			serializer = viewset_instance.get_serializer(page, many=True)
-			return viewset_instance.get_paginated_response(serializer.data)
-		response = Response(
-			data={"detail": "Cannot serialize cart items because there is none."},
-			status=status.HTTP_400_BAD_REQUEST
-		)
-		return response
-
-	@staticmethod
 	def _get_cart_related_items(cart_id):
 		cart = CartRepository.get_or_create_cart_by_id(cart_id, create=False)
 		cart_items = CartItemRepository.get_cart_related_items(cart)
@@ -136,7 +129,7 @@ class CartItemService:
 
 	def get_execute(self, cart_id, viewset_instance):
 		cart_items = self._get_cart_related_items(cart_id)
-		response = self._build_response(cart_items, viewset_instance)
+		response = build_paginated_response(cart_items, viewset_instance)
 		return response
 
 	@staticmethod
@@ -196,53 +189,14 @@ class CartItemService:
 			OrderRepository.create_order(saved_cart, total_price)
 
 
-class ProductService:
-
-	__slots__ = 'request'
-
-
-	def __init__(self, request):
-		self.request = request
-
-	def _get_category_products_execute(self, category_verbose, viewset_instance):
-		category = CategoryRepository.get_category_by_verbose(category_verbose)
-		products = ProductRepository.get_products_by_category(category, viewset_instance)
-		response = self._build_get_by_response(products, viewset_instance)
-		return response
-
-	def _get_user_products_execute(self, user_id, viewset_instance):
-		products = ProductRepository.get_products_by_user_id(user_id, viewset_instance)
-		response = self._build_get_by_response(products, viewset_instance)
-		return response
-
-	@staticmethod
-	def _build_get_by_response(items, viewset_instance):
-		page = viewset_instance.paginate_queryset(items)
-		if page is not None:
-			serializer = viewset_instance.get_serializer(page, many=True)
-			return viewset_instance.get_paginated_response(serializer.data)
-		response = Response(
-			data={"detail": "Cannot serialize because there is no objects."},
-			status=status.HTTP_400_BAD_REQUEST
-		)
-		return response
-
-
-class OrderService:
-
-	__slots__ = 'request'
-
-
-	def __init__(self, request):
-		self.request = request
-
-	def _build_response(self, orders, viewset_instance):
-		page = viewset_instance.paginate_queryset(orders)
-		if page is not None:
-			serializer = viewset_instance.get_serializer(page, many=True)
-			return viewset_instance.get_paginated_response(serializer.data)
-		response = Response(
-			data={"detail": "Cannot serialize because there is no objects."},
-			status=status.HTTP_400_BAD_REQUEST
-		)
-		return response
+def build_paginated_response(items, viewset_instance):
+	page = viewset_instance.paginate_queryset(items)
+	if page is not None:
+		serializer = viewset_instance.get_serializer(page, many=True)
+		return viewset_instance.get_paginated_response(serializer.data)
+	logger.error("Cannot serialize because there is no objects")
+	response = Response(
+		data={"detail": "Cannot serialize because there is no objects."},
+		status=status.HTTP_400_BAD_REQUEST
+	)
+	return response

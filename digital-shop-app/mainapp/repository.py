@@ -1,5 +1,9 @@
 from django.db.models import F, Sum
 from mainapp.models import Cart, Product, CartItem, Category, Order
+import logging
+
+
+logger = logging.getLogger('django')
 
 
 class CartRepository:
@@ -13,9 +17,11 @@ class CartRepository:
 		cart = Cart.objects.filter(id=cart_id).first()
 		# If new cart already has user then we create another
 		if cart.user:
+			logger.info("User already has cart. Creating new one.")
 			cart = Cart.objects.create()
 		cart.user = new_user
 		cart.save()
+		logger.info("Cart has been attached.")
 		return cart
 
 	@staticmethod
@@ -23,6 +29,7 @@ class CartRepository:
 		cart = Cart.objects.create()
 		cart.user = user
 		cart.save()
+		logger.info("Newly created cart has been attached.")
 		return cart
 
 	@staticmethod
@@ -30,6 +37,7 @@ class CartRepository:
 		cart = Cart.objects.filter(id=cart_id).first()
 		if cart is None and create:
 			cart = Cart.objects.create()
+			logger.info("New cart has been created.")
 		return cart
 	
 	@staticmethod
@@ -41,6 +49,7 @@ class CartRepository:
 	def set_cart_archived(cart):
 		cart.is_archived = True
 		cart.save()
+		logger.info("Cart is now archived.")
 		return cart
 
 
@@ -78,6 +87,7 @@ class CartItemRepository:
 		item = CartItem.objects.filter(product=product, cart=cart).first()
 		if item is None:
 			new_cart_item = CartItem.objects.create(quantity=1, cart=cart, product=product)
+			logger.info("Created new cart item and attached it to current cart.")
 			return new_cart_item
 		return None
 
@@ -86,12 +96,14 @@ class CartItemRepository:
 		item = CartItem.objects.filter(product=product, cart=cart).first()
 		if item is not None:
 			item.delete()
+			logger.info("CartItem removed.")
 
 	@staticmethod
 	def delete_all_from_cart(cart):
 		items = CartItem.objects.filter(cart=cart)
 		if items is not None:
 			items.delete()
+			logger.info("Cart has been cleaned.")
 
 	@staticmethod
 	def get_cart_related_items(cart):
@@ -101,6 +113,7 @@ class CartItemRepository:
 	@staticmethod
 	def delete_by_product(product):
 		CartItem.objects.filter(product=product).delete()
+		logger.info("CartItem removed.")
 
 	@staticmethod
 	def change_items_owner(non_user_cart_items, user_cart_items, new_cart):
@@ -109,6 +122,7 @@ class CartItemRepository:
 		for item in items:
 			item.cart = new_cart
 			item.save()
+			logger.info("Ownership of cart items has been changed.")
 
 	@staticmethod
 	def calculate_total_price(cart_items):
@@ -121,6 +135,7 @@ class CartItemRepository:
 		for item in cart_items:
 			item.product.quantity -= item.quantity
 			item.product.save()
+			logger.info("Quantity of product has been changed.")
 
 
 class OrderRepository:
@@ -129,4 +144,5 @@ class OrderRepository:
 	def create_order(cart, total_price):
 		new_order = Order.objects.create(cart=cart, total_price=total_price)
 		new_order.save()
+		logger.info("New order has been created.")
 		return new_order

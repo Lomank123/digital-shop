@@ -9,7 +9,7 @@ import history from "../../history";
 import { useSelector } from "react-redux";
 
 
-export default function UserOrders(props) {
+export default function UserOrders() {
   const userData = useSelector(state => state.user);
   const [orders, setOrders] = useState(null);
   const [isOpen, setIsOpen] = useState({});
@@ -62,16 +62,22 @@ export default function UserOrders(props) {
 
   return (
     <Box className="default-main-block orders-main-block">
-      <h3 className="orders-label">Your orders</h3>
-      <Box className="orders-block">
-        <hr />
-        <DisplayPagination setOrderItems={setOrderItems} setNestedList={setIsOpen} items={orders} setter={setOrders} />
-        <hr />
-        <DisplayOrders orderItems={orderItems} setOrderItems={setOrderItems} nestedList={isOpen} setNestedList={handleOpen} items={orders} />
-        <hr />
-        <DisplayPagination setOrderItems={setOrderItems} setNestedList={setIsOpen} items={orders} setter={setOrders} />
-        <hr />
-      </Box>
+      <h3 className="orders-label">{(orders.results.length > 0) ? "Your orders" : "No orders found"}</h3>
+      {
+        (orders.results.length > 0) 
+        ? (
+          <Box className="orders-block">
+            <hr />
+            <DisplayPagination setOrderItems={setOrderItems} setNestedList={setIsOpen} items={orders} setter={setOrders} />
+            <hr />
+            <DisplayOrders orderItems={orderItems} setOrderItems={setOrderItems} nestedList={isOpen} setNestedList={handleOpen} items={orders} />
+            <hr />
+            <DisplayPagination setOrderItems={setOrderItems} setNestedList={setIsOpen} items={orders} setter={setOrders} />
+            <hr />
+          </Box>
+        )
+        : null
+      }
     </Box>
   );
 }

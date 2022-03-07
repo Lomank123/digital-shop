@@ -21,6 +21,7 @@ services:
     depends_on:
       - db
       - redis
+    profiles: ["init"]
 
   celery-worker:
     build: .
@@ -32,6 +33,7 @@ services:
       - django
       - redis
       - db
+    profiles: ["init"]
 
   celery-flower:
     image: mher/flower:latest
@@ -41,9 +43,11 @@ services:
     env_file: .env
     depends_on:
       - redis
+    profiles: ["init"]
   
   redis:
     image: "redis:alpine"
+    profiles: ["init"]
 
   nginx:
     build:
@@ -60,6 +64,7 @@ services:
     depends_on:
       - django
       #- frontend
+    profiles: ["init"]
 
   db:
     image: postgres:13-alpine
@@ -67,6 +72,7 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
+    profiles: ["init"]
 
   #frontend:
   #  build:
@@ -77,6 +83,7 @@ services:
   #    - ./frontend/react:/react
   #    #- react:/react/assets/ready-build
   #  env_file: .env
+  #  profiles: ["init"]
 
 volumes:
   #react:

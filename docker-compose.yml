@@ -74,6 +74,10 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
     profiles: ["init"]
 
+volumes:
+  #react:
+  django:
+
   #frontend:
   #  build:
   #    context: ./frontend
@@ -85,46 +89,42 @@ services:
   #  env_file: .env
   #  profiles: ["init"]
 
-  test:
-    build: .
-    command: >
-      sh -c "
-        python manage.py wait_for_db &&
-        python manage.py test coreapp.tests
-      "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
-    env_file: .env
-    depends_on: 
-      - db
+  #test:
+  #  build: .
+  #  command: >
+  #    sh -c "
+  #      python manage.py wait_for_db &&
+  #      python manage.py test coreapp.tests
+  #    "
+  #  volumes: 
+  #    - ./digital-shop-app:/digital-shop-app
+  #  env_file: .env
+  #  depends_on: 
+  #    - db
 
-  filldb:
-    build: .
-    command: >
-      sh -c "
-        python manage.py wait_for_db &&
-        python manage.py makemigrations &&
-        python manage.py migrate && 
-        python manage.py loaddata fixtures/dev.json
-      "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
-    env_file: .env
-    depends_on: 
-      - db
+  #filldb:
+  #  build: .
+  #  command: >
+  #    sh -c "
+  #      python manage.py wait_for_db &&
+  #      python manage.py makemigrations &&
+  #      python manage.py migrate && 
+  #      python manage.py loaddata fixtures/dev.json
+  #    "
+  #  volumes: 
+  #    - ./digital-shop-app:/digital-shop-app
+  #  env_file: .env
+  #  depends_on: 
+  #    - db
 
-  lint:
-    build: .
-    command: >
-      sh -c "
-        flake8 --max-line-length 120 --exclude migrations,venv,manage.py,__init__.py
-      "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
-    env_file: .env
-    depends_on:
-      - db
-
-volumes:
-  #react:
-  django:
+  #lint:
+  #  build: .
+  #  command: >
+  #    sh -c "
+  #      flake8 --max-line-length 120 --exclude migrations,venv,manage.py,__init__.py
+  #    "
+  #  volumes: 
+  #    - ./digital-shop-app:/digital-shop-app
+  #  env_file: .env
+  #  depends_on:
+  #    - db

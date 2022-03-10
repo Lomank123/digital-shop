@@ -1,0 +1,397 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderator",
+    "permissions": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ]
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=",
+    "last_login": "2022-03-09T12:24:05.133Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T11:55:30.048Z",
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$eeoLHK40EmdBNtViBibUgy$aPuWFU9WfDA8D78I3p2zNMVkUnXUO2jqzCcfGlj/3JQ=",
+    "last_login": "2022-02-09T18:26:09.619Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:33.586Z",
+    "username": "test1",
+    "email": "test1@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:58.857Z",
+    "username": "test2",
+    "email": "test2@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$E2t5hORXgMEd876UWcy72y$LHmZl+jCn/+tSIijk0g6hZ1voZ/rqGCOkN9EgqMF2EA=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-02-09T17:53:26.410Z",
+    "username": "test3",
+    "email": "test3@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 4,
+  "fields": {
+    "name": "Fantasy",
+    "verbose": "fantasy"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 5,
+  "fields": {
+    "name": "Adventure",
+    "verbose": "adventure"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 6,
+  "fields": {
+    "name": "Novel",
+    "verbose": "novel"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 7,
+  "fields": {
+    "name": "Detective",
+    "verbose": "detective"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 8,
+  "fields": {
+    "name": "For kids",
+    "verbose": "for_kids"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 16,
+  "fields": {
+    "category": 8,
+    "created_by": 1,
+    "title": "Pippi Longstocking",
+    "description": "Follow Pippi Longstocking on her amazing adventures as she moves into Villa Villekulla with a horse, a monkey, and a big suitcase of gold coins, and meets Tommy and Annika who quickly become her best friends. They join her on her amusing escapades – joining the circus, dancing with burglars and celebrating her birthday.\r\n\r\nThis lovely new edition of a classic has been brought up-to-date with delightful illustrations from Lauren Child and a new translation from Tiina Nunnally.",
+    "image": "2022-03-09_14-21-32-796_pippi.jpg",
+    "price": "10.00",
+    "quantity": 9,
+    "is_active": true,
+    "published": "2022-03-09T14:19:45.155Z",
+    "updated": "2022-03-09T14:21:34.573Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 17,
+  "fields": {
+    "category": 8,
+    "created_by": 1,
+    "title": "The Magic Faraway Tree",
+    "description": "When Joe, Beth and Frannie move to a new home, an Enchanted Wood is on their doorstep. And when they discover the Faraway Tree, it proves to be the beginning of many magical adventures! Join them and their friends Moonface, Saucepan Man and Silky the fairy as they discover which new land is at the top of the Faraway Tree.",
+    "image": "2022-03-09_14-26-06-676_magic-faraway-tree.jpg",
+    "price": "8.99",
+    "quantity": 4,
+    "is_active": true,
+    "published": "2022-03-09T14:26:07.384Z",
+    "updated": "2022-03-09T14:26:07.384Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 18,
+  "fields": {
+    "category": 8,
+    "created_by": 1,
+    "title": "Charlotte's Web",
+    "description": "This is the tale of how a little girl named Fern - with the help of a friendly talking spider called Charlotte - saved her pig, Wilbur, from the usual fate of nice fat little pigs.\r\n\r\nAn unusual and witty story which provides a gentle introduction to questions of mortality, Charlotte's Web is a modern classic.",
+    "image": "2022-03-09_14-27-21-309_charlottes-web.jpg",
+    "price": "7.50",
+    "quantity": 45,
+    "is_active": true,
+    "published": "2022-03-09T14:27:21.817Z",
+    "updated": "2022-03-09T14:27:21.817Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 19,
+  "fields": {
+    "category": 8,
+    "created_by": 1,
+    "title": "A Bear Called Paddington",
+    "description": "Paddington, the brown bear from darkest Peru, is found by the Brown family on Paddington Station with his hat, duffel coat and marmalade sandwiches.\r\nPaddington is a decidedly loveable eccentric and his various sticky scrapes will strike chords of recognition with any child. Whilst his intentions are always honourable, his over-literal interpretation of situations means that 'things' inevitably happen, whether at birthday parties or on visits to the theatre or seaside.",
+    "image": "2022-03-09_14-33-25-630_paddington.jpg",
+    "price": "10.99",
+    "quantity": 6,
+    "is_active": true,
+    "published": "2022-03-09T14:33:31.912Z",
+    "updated": "2022-03-09T14:33:31.912Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 20,
+  "fields": {
+    "category": 8,
+    "created_by": 1,
+    "title": "How to Train Your Dragon",
+    "description": "Hiccup Horrendous Haddock III was an incredible sword-fighter, dragon-whisperer and the greatest Viking hero who ever lived. But he wasn't always like that - in fact, in the beginning, Hiccup wasn't fierce, brave or heroic at all. But the arrival of the Seadragonus Giganticus Maximus offers the chance for Hiccup to shine. The ferocious bravado of the other Vikings proves useless, and Hiccup is called upon to save them by using his brains rather than his brawn.Can he defeat the dragon and save the Viking tribe from certain death?",
+    "image": "2022-03-09_14-39-58-699_httyd_jacket.jpg",
+    "price": "20.00",
+    "quantity": 6,
+    "is_active": true,
+    "published": "2022-03-09T14:40:05.050Z",
+    "updated": "2022-03-09T14:40:05.050Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 21,
+  "fields": {
+    "category": 7,
+    "created_by": 1,
+    "title": "And Then There Were None",
+    "description": "It’s impossible to talk about mystery novels without immediately thinking of the legendary Agatha Christie. Amongst all of her works, none has a story quite as impeccably crafted as And Then There Were None, which explains why it is the best selling mystery book of all time.",
+    "image": "2022-03-09_14-47-25-300_41l02vDN4pL.jpg",
+    "price": "40.00",
+    "quantity": 64,
+    "is_active": true,
+    "published": "2022-03-09T14:47:26.236Z",
+    "updated": "2022-03-09T14:47:26.236Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 22,
+  "fields": {
+    "category": 7,
+    "created_by": 1,
+    "title": "The Postman Always Rings Twice",
+    "description": "The Postman Always Rings Twice is often lauded the most important crime book of the 20th century, and it's not hard to see why. Short, racy, and full of surprises, it will leave you no time to catch your breath. In fact, the language used by Cain was so unprecedentedly explicit, the book was banned in Boston for a while.",
+    "image": "",
+    "price": "65.00",
+    "quantity": 11,
+    "is_active": true,
+    "published": "2022-03-09T14:48:45.307Z",
+    "updated": "2022-03-09T14:48:45.307Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 23,
+  "fields": {
+    "category": 7,
+    "created_by": 1,
+    "title": "Woman in White",
+    "description": "This Wilkie Collins’s late Victorian novel is among the earliest psychological thrillers ever written. It follows what first appears to be a simple story of two star-crossed lovers — Walter Hartright and Laura Fairlie — who weren’t meant to be together. Laura was betrothed to Sir Percival Glyde and yet she was mysteriously warned not to proceed with the marriage. Meanwhile, the city is gripped by the story of a strange woman clad in white who’s roaming its dark street.",
+    "image": "2022-03-09_14-49-28-460_418byl8zkqL.jpg",
+    "price": "10.00",
+    "quantity": 40,
+    "is_active": true,
+    "published": "2022-03-09T14:49:32.015Z",
+    "updated": "2022-03-09T14:49:32.015Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 24,
+  "fields": {
+    "category": 6,
+    "created_by": 1,
+    "title": "A VISIT FROM THE GOON SQUAD",
+    "description": "There are some moments from A Visit From the Goon Squad that I won’t forget. In one chapter, a former PR hotshot named Dolly is tasked with reviving the public image of an African dictator known as “The General” with the help of a B-list actress named Kitty Jackson. Kitty’s job is to stand next to The General in a photo, but she ends up asking too many questions about a genocide and gets thrown into prison. Months later, it turns out, The General’s government becomes a democracy, Kitty is freed, and Dolly opens a sandwich shop.",
+    "image": "2022-03-09_14-51-22-355_81Y7nR4h6-L-687x1024.jpg",
+    "price": "11.50",
+    "quantity": 31,
+    "is_active": true,
+    "published": "2022-03-09T14:51:23.186Z",
+    "updated": "2022-03-09T14:51:23.186Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 25,
+  "fields": {
+    "category": 6,
+    "created_by": 1,
+    "title": "THE THOUSAND AUTUMNS OF JACOB DE ZOET",
+    "description": "It is easier to conjure the intellectual-literary atmosphere of an era when it is 30 years’ past than when it is a mere decade ago. It is hard to see 2010 right now, as we wait for time and the canon to true the lens, but I have a very clear sense-memory of revelation and exhilaration as I sped through David Mitchell’s epic-historical ghost story, The Thousand Autumns of Jacob de Zoet, wondering if the spirit of Robert Louis Stevenson had momentarily taken possession of Haruki Murakami.",
+    "image": "2022-03-09_14-52-19-610_91smIBwwTgL-682x1024.jpg",
+    "price": "20.99",
+    "quantity": 0,
+    "is_active": true,
+    "published": "2022-03-09T14:52:20.288Z",
+    "updated": "2022-03-09T14:52:20.288Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 26,
+  "fields": {
+    "category": 5,
+    "created_by": 1,
+    "title": "Don Quixote",
+    "description": "Regarded as one of the greatest works in literature, Don Quixote recounts the adventures of Alonso Quixano: a middle-aged man so obsessed with chivalric books that he decides to imitate them and become a knight-errant. So begins his journey to find a faithful squire, save damsels in distress, and fight windmills.",
+    "image": "",
+    "price": "12.00",
+    "quantity": 50,
+    "is_active": true,
+    "published": "2022-03-09T14:53:33.184Z",
+    "updated": "2022-03-09T14:53:33.184Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-02-09T17:54:03.277Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-02-09T18:15:10.656Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 3,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-02-09T18:34:17.559Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 4,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-03-09T12:23:07.922Z"
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "email": "admin@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "email": "test1@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "email": "test2@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "email": "test3@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+}
+]

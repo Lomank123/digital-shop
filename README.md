@@ -25,13 +25,22 @@ git clone https://github.com/Lomank123/digital-shop.git
 npm i webpack webpack-cli --save-dev
 ```
 
+- Run npm dev or prod version to create bundle file(s):
+```
+npm run dev
+```
+Or:
+```
+npm run prod
+```
+
 - Go to project root folder, create `.env` file and copy the contents of `.env.sample` to it. Replace some variables if needed.
 
 - Run the containers:
 ```
 docker-compose build
 ```
-For the first time it may take 5-10 minutes to build everything (depends on your internet connection and PC hardware)
+For the first time it may take 5-20 minutes to build everything (depends on your internet connection and PC hardware)
 
 ### Possible issues
 
@@ -77,13 +86,14 @@ For the first time it may take 5-10 minutes to build everything (depends on your
 
 ## Usage
 
+### Run project
 - To run project:
 ```
 docker-compose --profile init up
 ```
 This will run services with `"init"` profile defined in `docker-compose.yml`.
 
-
+### Linters
 - To run linters:
 ```
 docker-compose up lint

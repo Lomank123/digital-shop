@@ -10,16 +10,23 @@
   justify-content: center;
 }
 
+@media screen and (min-height: 700px) {
+  .main-menu-block {
+    position: sticky;
+    top: 2%;
+  }
+  .categories-block {
+    position: sticky;
+    top: 2%;
+  }
+}
+
 .categories-block {
   display: flex;
   flex-direction: column;
   min-width: min-content;
   width: fit-content;
   max-width: 230px;
-  /* for sticky positioning */
-  position: -webkit-sticky;
-  position: sticky;
-  top: 2%;
   align-self: flex-start;
   margin-right: 30px;
   padding: 30px;
@@ -130,10 +137,6 @@ a.product-info-block {
   max-width: 400px;
   width: fit-content;
   min-width: fit-content;
-  /* for sticky positioning */
-  position: -webkit-sticky;
-  position: sticky;
-  top: 2%;
 }
 
 .menu-block {

@@ -40,7 +40,7 @@ class CartService:
 	def _attach_cart_to_user_if_none(self):
 		# Assuming we'll get anonymous cart id from this
 		cart_id = self._get_non_user_cart_id_from_cookie()
-		cart = CartRepository.set_user_to_cart_or_create(cart_id, self.request.user)
+		cart = CartRepository.set_user_to_cart(cart_id, self.request.user)
 		return cart
 	
 	def _create_and_attach_cart(self):
@@ -148,12 +148,12 @@ class CartItemService:
 		response = self._build_ids_response(cart_items)
 		return response
 
-	def _delete_inactive_execute(self):
+	def delete_inactive_execute(self):
 		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
 		CartItemRepository.delete_by_product(product)
 		return Response(data={"detail": "CartItem instances were deleted."}, status=status.HTTP_200_OK)
 
-	def _change_items_owner_execute(self):
+	def change_items_owner_execute(self):
 		service = CartService(self.request)
 		non_user_cart_id = service._get_non_user_cart_id_from_cookie()
 		user_cart_id = service._get_user_cart_id_from_cookie()
@@ -163,12 +163,12 @@ class CartItemService:
 		CartItemRepository.change_items_owner(non_user_cart_items, user_cart_items, user_cart)
 		return Response(data={"detail": "Successfully moved cart items."}, status=status.HTTP_200_OK)
 
-	def _calculate_total_price_execute(self):
+	def calculate_total_price_execute(self):
 		cart_items = self._get_cart_related_items(self.request.data["cart_id"])
 		total_price = CartItemRepository.calculate_total_price(cart_items)
 		return Response(data={"total_price": total_price}, status=status.HTTP_200_OK)
 
-	def _post_purchase_execute(self):
+	def post_purchase_execute(self):
 		response = Response(data={"detail": "Post purchase done"}, status=status.HTTP_200_OK)
 		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"])
 		CartItemRepository.change_quantity(cart)

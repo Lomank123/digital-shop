@@ -231,6 +231,7 @@ class CartItemViewSet(ModelViewSet):
         response = CartItemService(request)._get_ids_execute(cart_id)
         return response
 
+    # This endpoint is used when seller sets is_active to False so all cart items with this product should now be removed
     @action(
         methods=['post'],
         detail=False,
@@ -238,7 +239,7 @@ class CartItemViewSet(ModelViewSet):
     )
     def delete_inactive(self, request):
         # In request.data there should be id of a product
-        response = CartItemService(request)._delete_inactive_execute()
+        response = CartItemService(request).delete_inactive_execute()
         return response
 
     @action(
@@ -277,7 +278,7 @@ class CartItemViewSet(ModelViewSet):
         url_path='move_to_user_cart'
     )
     def move_to_user_cart(self, request):
-        response = CartItemService(request)._change_items_owner_execute()
+        response = CartItemService(request).change_items_owner_execute()
         return response
 
     @action(
@@ -286,7 +287,7 @@ class CartItemViewSet(ModelViewSet):
         url_path='get_total_price'
     )
     def get_total_price(self, request):
-        response = CartItemService(request)._calculate_total_price_execute()
+        response = CartItemService(request).calculate_total_price_execute()
         return response
 
     @action(
@@ -295,7 +296,7 @@ class CartItemViewSet(ModelViewSet):
         url_path='post_purchase'
     )
     def post_purchase(self, request):
-        response = CartItemService(request)._post_purchase_execute()
+        response = CartItemService(request).post_purchase_execute()
         return response
 
 

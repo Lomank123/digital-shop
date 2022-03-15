@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 
 
-class AuthTestCase(TestCase):
+class TasksTestCase(TestCase):
 
     # Initial data
     def setUp(self) -> None:

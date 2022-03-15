@@ -9,16 +9,11 @@ logger = logging.getLogger('django')
 class CartRepository:
 
 	@staticmethod
-	def set_user_to_cart_or_create(cart_id, new_user) -> Cart:
+	def set_user_to_cart(cart_id, new_user) -> Cart:
 		"""
-		This method finds current cart (assuming it is non-user) and if it has user then
-		creates a new cart. And then changes ownership to current user.
+		This method finds current cart (assuming it is non-user) and changes it's ownership.
 		"""
 		cart = Cart.objects.filter(id=cart_id).first()
-		# If new cart already has user then we create another
-		if cart.user:
-			logger.info("User already has cart. Creating new one.")
-			cart = Cart.objects.create()
 		cart.user = new_user
 		cart.save()
 		logger.info("Cart has been attached.")

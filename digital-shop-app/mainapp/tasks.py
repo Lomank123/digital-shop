@@ -18,6 +18,6 @@ def delete_expired_carts():
     """
     expiration_date = timezone.now() - timedelta(days=consts.CART_ID_COOKIE_EXPIRATION_DAYS)
     expired_carts = Cart.objects.filter(creation_date__lte=expiration_date, user=None)
-    res = f"{expired_carts.count()} carts have been deleted."
     expired_carts.delete()
+    res = f"{expired_carts.count()} carts have been deleted."
     return res

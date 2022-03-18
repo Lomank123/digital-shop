@@ -1,5 +1,6 @@
 from django.db.models import F, Sum
 from mainapp.models import Cart, Product, CartItem, Category, Order
+from mainapp import consts
 import logging
 
 
@@ -82,7 +83,7 @@ class CartItemRepository:
 		item = CartItem.objects.filter(product=product, cart=cart).first()
 		if item is None:
 			new_cart_item = CartItem.objects.create(quantity=1, cart=cart, product=product)
-			logger.info("Created new cart item and attached it to current cart.")
+			logger.info(consts.CART_ITEM_ADDED)
 			return new_cart_item
 		return None
 
@@ -122,6 +123,8 @@ class CartItemRepository:
 	@staticmethod
 	def calculate_total_price(cart_items):
 		result = cart_items.values('quantity', 'product__price').aggregate(total_price=Sum(F('quantity') * F('product__price')))
+		if result["total_price"] is None:
+			return 0
 		return result["total_price"]
 
 	@staticmethod

@@ -228,7 +228,7 @@ class CartItemViewSet(ModelViewSet):
     )
     def get_cart_product_ids(self, request):
         cart_id = CartService(request)._get_either_cart_id_from_cookie()
-        response = CartItemService(request)._get_ids_execute(cart_id)
+        response = CartItemService(request).get_ids_execute(cart_id)
         return response
 
     # This endpoint is used when seller sets is_active to False so all cart items with this product should now be removed
@@ -239,7 +239,7 @@ class CartItemViewSet(ModelViewSet):
     )
     def delete_inactive(self, request):
         # In request.data there should be id of a product
-        response = CartItemService(request).delete_inactive_execute()
+        response = CartItemService(request).delete_by_product_execute()
         return response
 
     @action(

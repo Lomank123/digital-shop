@@ -47,22 +47,24 @@ class CartService:
 		cart = CartRepository.create_and_attach_cart(self.request.user)
 		return cart
 
-	@staticmethod
-	def _build_response(cart):
+	def _build_response(self, cart):
+		cart_id = self._get_either_cart_id_from_cookie()
 		serializer = CartSerializer(cart)
-		response = Response(data=serializer.data, status=status.HTTP_200_OK)
+		response = Response(data=serializer.data, status=status.HTTP_201_CREATED)
+		if cart_id:
+			response = Response(data={consts.DETAIL_KEY: consts.CART_ALREADY_EXISTS}, status=status.HTTP_200_OK)
 		return response
 
 	def _build_user_cart_response(self, cart):
-		response = Response(data={"detail": "Check cart on login succcessful."}, status=status.HTTP_200_OK)
+		response = Response(data={consts.DETAIL_KEY: consts.CHECK_CART_ON_LOGIN_SUCCESS}, status=status.HTTP_200_OK)
 		if cart is None:
 			cart = self._attach_cart_to_user_if_none()
 			self._delete_cart_id_from_cookie(response, consts.NON_USER_CART_ID_COOKIE_NAME)
-			response.data = {"detail": "New cart has been attached to this user."}
+			response.data = {consts.DETAIL_KEY: consts.NEW_CART_ATTACHED}
 		self._set_cart_id_to_cookie(response, cart.id, consts.USER_CART_ID_COOKIE_NAME, forced=True)
 		return response
 
-	# For getting cart (user or anonymous)
+	# Used when user enters the website
 	def either_cart_execute(self):
 		cart_id = self._get_either_cart_id_from_cookie()
 		cart = CartRepository.get_or_create_cart_by_id(cart_id)
@@ -70,18 +72,15 @@ class CartService:
 		self._set_cart_id_to_cookie(response, cart.id, consts.NON_USER_CART_ID_COOKIE_NAME)
 		return response
 
-	# For getting or setting user cart upon login
+	# Used upon login
 	def user_cart_execute(self):
 		cart = CartRepository.get_user_cart_by_id(self.request.user)
 		response = self._build_user_cart_response(cart)
 		return response
 
-	# For deleting user_cart_id cookie upon log out
+	# Used upon log out
 	def user_cart_id_delete_execute(self):
-		response = Response(
-			data={"detail": "Cookie successfully deleted."},
-			status=status.HTTP_200_OK
-		)
+		response = Response(data={consts.DETAIL_KEY: consts.COOKIE_DELETED}, status=status.HTTP_200_OK)
 		self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)
 		return response
 
@@ -96,30 +95,30 @@ class CartItemService:
 
 	@staticmethod
 	def _build_add_response(cart_item):
-		response = Response(data={"detail": "Product has been added."}, status=status.HTTP_200_OK)
+		response = Response(data={consts.DETAIL_KEY: consts.CART_ITEM_ADDED}, status=status.HTTP_200_OK)
 		if cart_item is None:
 			response.status_code = status.HTTP_400_BAD_REQUEST
-			response.data = {"detail": "Cannot add product to cart."}
-			logger.error("Cannot add product to cart")
+			response.data = {consts.DETAIL_KEY: consts.CART_ITEM_ADD_ERROR_MSG}
+			logger.error(consts.CART_ITEM_ADD_ERROR_MSG)
 		return response
 
 	def add_execute(self):
-		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
-		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		product = ProductRepository.get_product_by_id(self.request.data[consts.PRODUCT_ID_POST_KEY])
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY], create=False)
 		cart_item = CartItemRepository.set_cart_item_or_none(product, cart)
 		response = self._build_add_response(cart_item)
 		return response
 	
 	def remove_execute(self):
-		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
-		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		product = ProductRepository.get_product_by_id(self.request.data[consts.PRODUCT_ID_POST_KEY])
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY], create=False)
 		CartItemRepository.delete_cart_item(product, cart)
-		return Response(data={"detail": "CartItem was deleted."}, status=status.HTTP_200_OK)
+		return Response(data={consts.DETAIL_KEY: consts.CART_ITEM_DELETED}, status=status.HTTP_200_OK)
 
 	def remove_all_execute(self):
-		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"], create=False)
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY], create=False)
 		CartItemRepository.delete_all_from_cart(cart)
-		return Response(data={"detail": "Cart was cleaned. All CartItems were deleted."}, status=status.HTTP_200_OK)
+		return Response(data={consts.DETAIL_KEY: consts.CART_CLEANED}, status=status.HTTP_200_OK)
 
 	@staticmethod
 	def _get_cart_related_items(cart_id):
@@ -143,15 +142,15 @@ class CartItemService:
 		response = Response(data=productIds, status=status.HTTP_200_OK)
 		return response
 
-	def _get_ids_execute(self, cart_id):
+	def get_ids_execute(self, cart_id):
 		cart_items = self._get_cart_related_items(cart_id)
 		response = self._build_ids_response(cart_items)
 		return response
 
-	def delete_inactive_execute(self):
-		product = ProductRepository.get_product_by_id(self.request.data["product_id"])
+	def delete_by_product_execute(self):
+		product = ProductRepository.get_product_by_id(self.request.data[consts.PRODUCT_ID_POST_KEY])
 		CartItemRepository.delete_by_product(product)
-		return Response(data={"detail": "CartItem instances were deleted."}, status=status.HTTP_200_OK)
+		return Response(data={consts.DETAIL_KEY: consts.INACTIVE_CART_ITEMS_DELETED}, status=status.HTTP_200_OK)
 
 	def change_items_owner_execute(self):
 		service = CartService(self.request)
@@ -161,18 +160,18 @@ class CartItemService:
 		non_user_cart_items = self._get_cart_related_items(non_user_cart_id)
 		user_cart_items = self._get_cart_related_items(user_cart_id)
 		CartItemRepository.change_items_owner(non_user_cart_items, user_cart_items, user_cart)
-		return Response(data={"detail": "Successfully moved cart items."}, status=status.HTTP_200_OK)
+		return Response(data={consts.DETAIL_KEY: consts.MOVED_CART_ITEMS}, status=status.HTTP_200_OK)
 
 	def calculate_total_price_execute(self):
-		cart_items = self._get_cart_related_items(self.request.data["cart_id"])
+		cart_items = self._get_cart_related_items(self.request.data[consts.CART_ID_POST_KEY])
 		total_price = CartItemRepository.calculate_total_price(cart_items)
-		return Response(data={"total_price": total_price}, status=status.HTTP_200_OK)
+		return Response(data={consts.TOTAL_PRICE_POST_KEY: total_price}, status=status.HTTP_200_OK)
 
 	def post_purchase_execute(self):
-		response = Response(data={"detail": "Post purchase done"}, status=status.HTTP_200_OK)
-		cart = CartRepository.get_or_create_cart_by_id(self.request.data["cart_id"])
+		response = Response(data={consts.DETAIL_KEY: consts.POST_PURCHASE_DONE}, status=status.HTTP_200_OK)
+		cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY])
 		CartItemRepository.change_quantity(cart)
-		self._post_purchase_set_order_if_user(cart, self.request.data["total_price"])
+		self._post_purchase_set_order_if_user(cart, self.request.data[consts.TOTAL_PRICE_POST_KEY])
 		service = CartService(self.request)
 		cookie_name = service._get_either_cookie_name()
 		service._delete_cart_id_from_cookie(response, cookie_name)
@@ -194,9 +193,6 @@ def build_paginated_response(items, viewset_instance):
 	if page is not None:
 		serializer = viewset_instance.get_serializer(page, many=True)
 		return viewset_instance.get_paginated_response(serializer.data)
-	logger.error("Cannot serialize because there is no objects")
-	response = Response(
-		data={"detail": "Cannot serialize because there is no objects."},
-		status=status.HTTP_400_BAD_REQUEST
-	)
+	logger.error(consts.PAGINATED_SERIALIZE_ERROR_MSG)
+	response = Response(data={consts.DETAIL_KEY: consts.PAGINATED_SERIALIZE_ERROR_MSG}, status=status.HTTP_400_BAD_REQUEST)
 	return response

@@ -32,7 +32,6 @@ services:
       - django
       - redis
       - db
-    profiles: ["init"]
 
   celery-flower:
     image: mher/flower:latest
@@ -42,11 +41,9 @@ services:
     env_file: .env
     depends_on:
       - redis
-    profiles: ["init"]
   
   redis:
     image: "redis:alpine"
-    profiles: ["init"]
 
   nginx:
     build:
@@ -63,7 +60,6 @@ services:
     depends_on:
       - django
       #- frontend
-    profiles: ["init"]
 
   test:
     build: .
@@ -77,6 +73,7 @@ services:
     env_file: .env
     depends_on: 
       - db
+    profiles: ["init"]
 
   lint:
     build: .
@@ -89,6 +86,7 @@ services:
     env_file: .env
     depends_on:
       - db
+    profiles: ["init"]
 
   db:
     image: postgres:13-alpine

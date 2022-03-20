@@ -6,20 +6,18 @@ from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfi
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils.encoding import force_str
-from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 
 from mainapp.models import Product, CustomUser, Category, Cart, CartItem, Order
-from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        #fields = '__all__'
-        #fields = ('id', 'email', 'username', 'photo')
+        # fields = '__all__'
+        # fields = ('id', 'email', 'username', 'photo')
         exclude = ('password', 'user_permissions', 'groups')
 
 
@@ -31,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        #fields = '__all__'
+        # fields = '__all__'
         # All fields were declared explicitly because in_stock is a function with @property decorator
         fields = (
             'id',
@@ -55,7 +53,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-        #fields = ('id', 'name')
+        # fields = ('id', 'name')
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -70,7 +68,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ['id', 'cart', 'product', 'quantity', 'total_price',]
+        fields = ['id', 'cart', 'product', 'quantity', 'total_price', ]
 
 
 class OrderSerializer(serializers.ModelSerializer):

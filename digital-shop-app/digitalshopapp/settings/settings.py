@@ -140,9 +140,9 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [ # new
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -157,9 +157,9 @@ SPECTACULAR_SETTINGS = {
     'SERVE_PUBLIC': False,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAdminUser'],
     'SERVE_AUTHENTICATION': None,   # None will default to DRF's AUTHENTICATION_CLASSES
-    #'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
-    #'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    #'REDOC_DIST': 'SIDECAR',
+    # 'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    # 'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    # 'REDOC_DIST': 'SIDECAR',
 }
 
 # Email

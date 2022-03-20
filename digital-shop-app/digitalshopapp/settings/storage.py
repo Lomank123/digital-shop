@@ -1,6 +1,3 @@
-import os
-
-
 # Static
 STATIC_ROOT = '/vol/web/static'
 STATIC_URL = '/static/'

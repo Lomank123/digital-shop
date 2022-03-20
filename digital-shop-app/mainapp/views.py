@@ -11,12 +11,11 @@ from rest_framework import filters
 
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, \
-CartItemSerializer, EmailAddressSerializer, OrderSerializer
+    CartItemSerializer, EmailAddressSerializer, OrderSerializer
 from mainapp.pagination import DefaultCustomPagination, SmallPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
 from mainapp.services import CartService, CartItemService
 from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
-import mainapp.consts as consts
 import logging
 
 
@@ -42,7 +41,7 @@ class ProductViewSet(ModelViewSet):
         if self.action in unsafe_actions:
             permission_classes = [IsVerifiedEmail, IsSellerOrReadOnly, IsOwnerOrReadOnly]
         else:
-            permission_classes = [AllowAny,]
+            permission_classes = [AllowAny, ]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
@@ -57,7 +56,7 @@ class CategoryViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Category.objects.all()
         return queryset
-    
+
     def get_permissions(self):
         safe_actions = ['list', 'retrieve']
         if self.action in safe_actions:
@@ -103,7 +102,8 @@ class UserViewSet(ModelViewSet):
         if self.request.user.email != new_email:
             # If not, changing email address and sending confirmation message to new email
             address = EmailAddress.objects.filter(user=self.request.user).get()
-            address.change(request, new_email)  # This does all the magic (sends email message and change EmailAdress instance)
+            # This does all the magic (sends email message and change EmailAdress instance)
+            address.change(request, new_email)
             logger.info("Confirmation message sent")
         # Performing update of user instance
         return super().partial_update(request, *args, **kwargs)
@@ -211,7 +211,7 @@ class CartItemViewSet(ModelViewSet):
     def remove_item_from_cart(self, request):
         response = CartItemService(request).remove_execute()
         return response
-    
+
     @action(
         methods=['post'],
         detail=False,
@@ -231,7 +231,8 @@ class CartItemViewSet(ModelViewSet):
         response = CartItemService(request).get_ids_execute(cart_id)
         return response
 
-    # This endpoint is used when seller sets is_active to False so all cart items with this product should now be removed
+    # This endpoint is used when seller sets is_active to False
+    # so all cart items with this product should now be removed
     @action(
         methods=['post'],
         detail=False,

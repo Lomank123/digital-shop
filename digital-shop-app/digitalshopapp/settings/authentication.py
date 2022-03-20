@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 
@@ -32,8 +31,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 # This enabled old_password field in password change endpoint
 OLD_PASSWORD_FIELD_ENABLED = True
 # Set this to True to logout when password was changed
-#LOGOUT_ON_PASSWORD_CHANGE = True
-
+LOGOUT_ON_PASSWORD_CHANGE = False
 
 # Token authentication
 SIMPLE_JWT = {
@@ -41,13 +39,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
 
-CORS_ALLOW_CREDENTIALS=True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1",
 ]
-#CORS_ORIGIN_WHITELIST = (
-#    'localhost:9000',
-#)
 
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'mainapp.serializers.CustomPasswordResetSerializer',

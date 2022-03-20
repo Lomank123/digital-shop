@@ -20,7 +20,9 @@ class CustomUserAdmin(UserAdmin):
     # When editing user
     fieldsets = (
         ('Information', {'fields': ('email', 'username', 'photo', 'password',)}),
-        ('Permissions', {'fields': ('is_superuser', 'is_staff', 'is_active', 'is_seller', 'user_permissions', 'groups')}),
+        ('Permissions', {
+            'fields': ('is_superuser', 'is_staff', 'is_active', 'is_seller', 'user_permissions', 'groups')
+        }),
     )
     # When creating new user via admin dashboard
     add_fieldsets = (
@@ -29,7 +31,19 @@ class CustomUserAdmin(UserAdmin):
             {
                 # CSS style classes
                 'classes': ('wide',),
-                'fields': ('email', 'username', 'photo', 'password1', 'password2', 'is_superuser', 'is_staff', 'is_active', 'user_permissions', 'groups', 'is_seller')
+                'fields': (
+                    'email',
+                    'username',
+                    'photo',
+                    'password1',
+                    'password2',
+                    'is_superuser',
+                    'is_staff',
+                    'is_active',
+                    'user_permissions',
+                    'groups',
+                    'is_seller',
+                )
             }
         ),
     )
@@ -45,7 +59,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'price', 'created_by', 'in_stock', 'is_active', 'published', 'updated',)
     list_filter = ('category', 'is_active',)
     fieldsets = (
-        ('Information', {'fields': ('title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'is_active',)}),
+        ('Information', {'fields': (
+            'title', 'category', 'price', 'quantity', 'image', 'created_by', 'description', 'is_active',
+        )}),
     )
     add_fieldsets = (
         (
@@ -87,7 +103,7 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'is_deleted', 'is_archived', 'creation_date', )
     list_filter = ('is_deleted', 'is_archived', )
     fieldsets = (
-        ('Information', {'fields': ('user', 'is_deleted', 'is_archived',)}),
+        ('Information', {'fields': ('user', 'creation_date', 'is_deleted', 'is_archived', )}),
     )
     add_fieldsets = (
         (
@@ -146,7 +162,7 @@ class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):
 
     # Need to return True here so we can delete user with these tokens via admin panel
     def has_delete_permission(self, *args, **kwargs):
-        return True 
+        return True
 
 
 # Unregistring and registring new outstanding token admin model

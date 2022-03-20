@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
-from django.conf import settings
+from django.utils import timezone
 
 from mainapp.managers import CustomUserManager
 from mainapp.validators import validate_whitespaces
@@ -21,8 +21,8 @@ class CustomUser(AbstractUser):
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
     is_seller = models.BooleanField(default=False, verbose_name='Seller')
-    #balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
-    #payment_method = models.CharField(max_length=80, verbose_name='Payment method')
+    # balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
+    # payment_method = models.CharField(max_length=80, verbose_name='Payment method')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -49,13 +49,18 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         verbose_name = 'Category'
-        ordering=['-id']
+        ordering = ['-id']
 
 
 # Product, some good selling in the shop
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Category')
-    created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_by', verbose_name='Created by')
+    created_by = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='created_by',
+        verbose_name='Created by'
+    )
 
     title = models.CharField(max_length=60, verbose_name='Title')
     description = models.CharField(max_length=600, default="", blank=True, verbose_name='Description')
@@ -92,10 +97,22 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name="User", related_name='user')
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="User",
+        related_name='user'
+    )
     is_deleted = models.BooleanField(default=False, verbose_name='Deleted')
     is_archived = models.BooleanField(default=False, verbose_name='Archived')
-    creation_date = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Creation date')
+    creation_date = models.DateTimeField(verbose_name='Creation date')
+
+    def save(self, *args, **kwargs):
+        if self.creation_date is None:
+            self.creation_date = timezone.now()
+        super(Cart, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Carts'
@@ -116,7 +133,7 @@ class CartItem(models.Model):
     class Meta:
         verbose_name_plural = 'Cart items'
         verbose_name = 'Cart item'
-        ordering=['-id']
+        ordering = ['-id']
 
 
 class Order(models.Model):
@@ -127,4 +144,4 @@ class Order(models.Model):
     class Meta:
         verbose_name_plural = 'Orders'
         verbose_name = 'Order'
-        ordering=['-cart__id']
+        ordering = ['-cart__id']

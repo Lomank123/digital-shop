@@ -7,10 +7,6 @@ import mainapp.consts as consts
 
 
 @shared_task
-def add(x, y):
-    return f"Sum is: {x + y}"
-
-@shared_task
 def delete_expired_carts():
     """
     This task will delete all expired non-user carts.
@@ -18,6 +14,8 @@ def delete_expired_carts():
     """
     expiration_date = timezone.now() - timedelta(days=consts.CART_ID_COOKIE_EXPIRATION_DAYS)
     expired_carts = Cart.objects.filter(creation_date__lte=expiration_date, user=None)
+    count = expired_carts.count()
     expired_carts.delete()
-    res = f"{expired_carts.count()} carts have been deleted."
+    # Here we're using another variable instead of expired_carts.count() because after deletion it'll return wrong value
+    res = f"{count} carts have been deleted."
     return res

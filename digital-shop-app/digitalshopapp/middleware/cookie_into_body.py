@@ -18,7 +18,8 @@ class MoveJWTCookieIntoTheBody(MiddlewareMixin):
         return response
 
     def process_view(self, request, view_func, *view_args, **view_kwargs):
-        if request.path in [reverse("token_verify"), reverse("rest_logout")] and settings.JWT_AUTH_COOKIE in request.COOKIES:
+        if request.path in [reverse("token_verify"), reverse("rest_logout")] \
+                and settings.JWT_AUTH_COOKIE in request.COOKIES:
             if request.body != b'':
                 data = json.loads(request.body)
                 data['token'] = request.COOKIES[settings.JWT_AUTH_COOKIE]
@@ -43,7 +44,8 @@ class MoveJWTRefreshCookieIntoTheBody(MiddlewareMixin):
         return response
 
     def process_view(self, request, view_func, *view_args, **view_kwargs):
-        if request.path in [reverse("token_refresh"), reverse("rest_logout")] and settings.JWT_AUTH_REFRESH_COOKIE in request.COOKIES:
+        if request.path in [reverse("token_refresh"), reverse("rest_logout")] \
+                and settings.JWT_AUTH_REFRESH_COOKIE in request.COOKIES:
             if request.body != b'':
                 data = json.loads(request.body)
                 data['refresh'] = request.COOKIES[settings.JWT_AUTH_REFRESH_COOKIE]

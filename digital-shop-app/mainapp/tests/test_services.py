@@ -13,7 +13,11 @@ class CartServiceTestCase(TestCase):
 
     # Initial data
     def setUp(self) -> None:
-        self.user = CustomUser.objects.create_user(email="test1@gmail.com", username="test1", password="1234")
+        self.user = CustomUser.objects.create_user(
+            email="test1@gmail.com",
+            username="test1",
+            password="1234"
+        )
 
     def test_either_cart_execute(self):
         self.assertEqual(Cart.objects.count(), 0)

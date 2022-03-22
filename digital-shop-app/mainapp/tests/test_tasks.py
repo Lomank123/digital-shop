@@ -8,7 +8,7 @@ from mainapp.models import Cart, CustomUser
 from mainapp import consts
 
 
-class TasksTestCase(TestCase):
+class CeleryTasksTestCase(TestCase):
 
     # Initial data
     def setUp(self) -> None:

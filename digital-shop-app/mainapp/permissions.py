@@ -34,6 +34,17 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.created_by == request.user
 
 
+class IsCreatorEqualsCurrentUser(permissions.BasePermission):
+    """
+    Permission only for Product instance and 'create' action.
+    Ensures that creator is current user.
+    """
+
+    def has_permission(self, request, view):
+        # Instance must have an attribute named `created_by`.
+        return int(request.data["created_by"]) == request.user.id
+
+
 class IsSellerOrReadOnly(permissions.BasePermission):
 
     """

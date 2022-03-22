@@ -7,6 +7,11 @@ from mainapp import consts
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
 from mainapp.services import CartService, CartItemService
 from mainapp.views import CartItemViewSet
+import logging
+
+
+# Disable logging during tests
+logging.disable(logging.CRITICAL)
 
 
 class CartServiceTestCase(TestCase):

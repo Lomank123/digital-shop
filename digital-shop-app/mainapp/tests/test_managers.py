@@ -2,7 +2,7 @@ from django.test import TestCase
 from mainapp.models import CustomUser
 
 
-class TestCustomUserManager(TestCase):
+class CustomUserManagerTestCase(TestCase):
 
     def setUp(self):
         pass

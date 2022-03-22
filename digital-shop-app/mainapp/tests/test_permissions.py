@@ -6,7 +6,7 @@ from mainapp.models import CustomUser, Product, Category
 from mainapp import permissions
 
 
-class TestPermissions(TestCase):
+class CustomPermissionsTestCase(TestCase):
 
     def setUp(self):
         self.superuser = CustomUser.objects.create_superuser(

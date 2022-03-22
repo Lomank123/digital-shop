@@ -13,7 +13,8 @@ from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, \
     CartItemSerializer, EmailAddressSerializer, OrderSerializer
 from mainapp.pagination import DefaultCustomPagination, SmallPagination
-from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail
+from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail, \
+    IsCreatorEqualsCurrentUser
 from mainapp.services import CartService, CartItemService
 from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
 import logging
@@ -39,7 +40,9 @@ class ProductViewSet(ModelViewSet):
             'create',
         ]
         if self.action in unsafe_actions:
-            permission_classes = [IsVerifiedEmail, IsSellerOrReadOnly, IsOwnerOrReadOnly]
+            permission_classes = [IsAuthenticated, IsOwnerOrReadOnly, IsVerifiedEmail, IsSellerOrReadOnly]
+            if self.action == 'create':
+                permission_classes += [IsCreatorEqualsCurrentUser]
         else:
             permission_classes = [AllowAny, ]
         return [permission() for permission in permission_classes]
@@ -191,6 +194,7 @@ class CartItemViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
+        # TODO: This queryset must be limited by cart ids items (get cart id from cookies)
         queryset = CartItem.objects.all()
         return queryset
 

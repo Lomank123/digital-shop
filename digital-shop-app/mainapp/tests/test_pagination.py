@@ -5,7 +5,7 @@ from mainapp.serializers import ProductSerializer
 from rest_framework.request import Request
 
 
-class TestDefaultCustomPagination(TestCase):
+class DefaultCustomPaginationTestCase(TestCase):
 
     def setUp(self):
         self.pagination = DefaultCustomPagination()

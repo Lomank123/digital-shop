@@ -1,17 +1,13 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
 from rest_framework_simplejwt.token_blacklist import models
 
 from mainapp.models import Product, Category, CustomUser, CartItem, Cart, Order
-from mainapp.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 # Here we can configure how the model will look like in admin dashboard
 @admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
+class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
     # Controls which fields are displayed on the change list(!) page of the admin.
     list_display = ('email', 'username', 'is_staff', 'is_superuser', 'is_active', 'date_joined', 'is_seller')

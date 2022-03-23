@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         # fields = ('id', 'email', 'username', 'photo')
         exclude = ('password', 'user_permissions', 'groups')
+        read_only_fields = ('is_seller', )
 
 
 class ProductSerializer(serializers.ModelSerializer):

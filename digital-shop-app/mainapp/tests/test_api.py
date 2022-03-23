@@ -91,7 +91,7 @@ class ProductViewSetTestCase(TestCase):
         }
 
         # Testing AllowAny
-        res = self.api_client.get('/api/product/', new_product)
+        res = self.api_client.get('/api/product/')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         # Testing IsAuthenticated
@@ -147,21 +147,159 @@ class ProductViewSetTestCase(TestCase):
 class UserViewSetTestCase(TestCase):
 
     def setUp(self):
-        # Insert data to test permissions
-        pass
+        self.api_client = APIClient()
+        self.superuser = CustomUser.objects.create_superuser(
+            email="super1@gmail.com",
+            username="super1",
+            password="12345",
+            is_seller=True
+        )
+        self.user = CustomUser.objects.create_user(
+            email="test1@gmail.com",
+            username="test1",
+            password="12345",
+            is_seller=True
+        )
+        self.user2 = CustomUser.objects.create_user(
+            email="test2@gmail.com",
+            username="test2",
+            password="12345",
+            is_seller=True
+        )
+        self.user3 = CustomUser.objects.create_user(
+            email="test3@gmail.com",
+            username="test3",
+            password="12345"
+        )
+        EmailAddress.objects.create(
+            user=self.superuser,
+            email=self.superuser.email,
+            verified=True,
+            primary=True
+        )
+        EmailAddress.objects.create(
+            user=self.user,
+            email=self.user.email,
+            verified=True,
+            primary=True
+        )
+        EmailAddress.objects.create(
+            user=self.user2,
+            email=self.user2.email,
+            verified=False,
+            primary=True
+        )
+        EmailAddress.objects.create(
+            user=self.user3,
+            email=self.user3.email,
+            verified=True,
+            primary=True
+        )
+
+    def test_get_queryset(self):
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        self.assertEqual(CustomUser.objects.count(), 4)
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        res = self.api_client.get('/api/user-info/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
 
     def test_permissions(self):
-        pass
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        new_user_data = {
+            'username': 'new_username123',
+            'is_seller': False,
+        }
+
+        # Testing AllowAny
+        res = self.api_client.get(f'/api/user-info/{self.superuser.id}/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        # Testing IsAuthenticated
+        res = self.api_client.get('/api/user-info/')
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+
+        # Testing IsSameUser
+        res = self.api_client.patch(f'/api/user-info/{self.user2.id}/', new_user_data)
+        # 404 because queryset is limited and you simply can't see any other user if action != 'retrieve'
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_partial_update(self):
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        new_user_data = {
+            'username': 'new_username123',
+            'email': 'new_email123@gmail.com',
+            'is_seller': True,
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        self.assertTrue(EmailAddress.objects.filter(email=self.user3.email).first().verified)
+        res = self.api_client.patch(f'/api/user-info/{self.user3.id}/', new_user_data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        # Email address should become unverified
+        self.assertFalse(EmailAddress.objects.filter(email=res.data["email"]).first().verified)
+        # Here we also checked read_only_fields in serializer
+        self.assertFalse(CustomUser.objects.filter(id=self.user3.id).first().is_seller)
+
+    def test_get_authenticated_user(self):
+        res = self.api_client.get('/api/user-info/get_authenticated_user/')
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+
+        res = self.api_client.get('/api/user-info/get_authenticated_user/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["id"], self.user3.id)
 
 
 class CategoryViewSetTestCase(TestCase):
 
     def setUp(self):
-        # Insert data to test permissions
-        pass
+        self.api_client = APIClient()
+        self.superuser = CustomUser.objects.create_superuser(
+            email="super1@gmail.com",
+            username="super1",
+            password="12345",
+            is_seller=True
+        )
+        self.category = Category.objects.create(
+            name="Test category 1",
+            verbose="test-category-1"
+        )
 
     def test_permissions(self):
-        pass
+        res = self.api_client.get(f'/api/category/{self.category.id}/')
+        res2 = self.api_client.get('/api/category/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res2.status_code, status.HTTP_200_OK)
+
+        new_category_data = {'name': 'New test category 2'}
+
+        res = self.api_client.patch(f'/api/category/{self.category.id}/')
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        user_data = {
+            'username': self.superuser.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+
+        res = self.api_client.patch(f'/api/category/{self.category.id}/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
 class CartViewSetTestCase(TestCase):

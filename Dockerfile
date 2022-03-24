@@ -15,6 +15,7 @@ WORKDIR /digital-shop-app
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --no-cache curl gnupg coreutils && \
     apk add --no-cache bash && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-deps \
@@ -28,12 +29,16 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/static && \
     mkdir -p /vol/web/media && \
     chown -R digitalshop:digitalshop /vol && \
+    chown -R digitalshop:digitalshop /digital-shop-app && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
-    chmod -R +x /scripts
+    chmod -R +x /scripts && \
+    chmod -R +w /digital-shop-app
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 
 RUN python manage.py collectstatic --noinput
+
+USER digitalshop
 
 CMD ["run.sh"]

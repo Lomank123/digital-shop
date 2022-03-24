@@ -423,11 +423,12 @@ class CartItemViewSetTestCase(TestCase):
     def test_permissions(self):
         # AllowAny
         self.api_client.get('/api/cart/get_cart/')
-        new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)).first()
+        cart_id = int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)
+        new_cart = Cart.objects.filter(id=cart_id).first()
         new_cart_item = CartItem.objects.create(quantity=5, cart=new_cart, product=self.product)
         res = self.api_client.patch(f'/api/cart-item/{new_cart_item.id}/', {"quantity": 2})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        
+
         user_data = {
             'username': self.user.email,
             'password': '12345',
@@ -445,8 +446,9 @@ class CartItemViewSetTestCase(TestCase):
 
         # Creating non user cart with cookie
         self.api_client.get('/api/cart/get_cart/')
-        new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)).first()
-        new_cart_item = CartItem.objects.create(quantity=5, cart=new_cart, product=self.product)
+        cart_id = int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)
+        new_cart = Cart.objects.filter(id=cart_id).first()
+        CartItem.objects.create(quantity=5, cart=new_cart, product=self.product)
 
         res = self.api_client.get('/api/cart-item/')
         self.assertEqual(len(res.data["results"]), 1)
@@ -459,10 +461,10 @@ class CartItemViewSetTestCase(TestCase):
         # Creating user cart cookie
         self.api_client.get('/api/cart/get_user_cart/')
         new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.USER_CART_ID_COOKIE_NAME].value)).first()
-        new_cart_item = CartItem.objects.create(quantity=2, cart=new_cart, product=self.product2)
+        CartItem.objects.create(quantity=2, cart=new_cart, product=self.product2)
 
         cart1 = Cart.objects.create()
-        cart_item1 = CartItem.objects.create(quantity=1, cart=cart1, product=self.product2)
+        CartItem.objects.create(quantity=1, cart=cart1, product=self.product2)
 
         res = self.api_client.get('/api/cart-item/')
         self.assertEqual(len(res.data["results"]), 4)

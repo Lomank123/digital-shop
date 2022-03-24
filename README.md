@@ -175,6 +175,7 @@ Process of deployment (WIP)
     - Axios
 - **Other**:
     - GitHub
+    - GitHub Actions
     - Docker
     - Docker-compose
     - Heroku

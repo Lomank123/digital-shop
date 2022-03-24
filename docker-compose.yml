@@ -66,7 +66,7 @@ services:
     command: >
       sh -c "
         python manage.py wait_for_db &&
-        python manage.py test mainapp.tests
+        coverage run --source='.' manage.py test mainapp.tests
       "
     volumes: 
       - ./digital-shop-app:/digital-shop-app
@@ -74,6 +74,21 @@ services:
     depends_on: 
       - db
     profiles: ["init"]
+
+  filldb:
+    build: .
+    command: >
+      sh -c "
+        python manage.py wait_for_db &&
+        python manage.py makemigrations &&
+        python manage.py migrate && 
+        python manage.py loaddata fixtures/dev.json
+      "
+    volumes: 
+      - ./digital-shop-app:/digital-shop-app
+    env_file: .env
+    depends_on: 
+      - db
 
   lint:
     build: .
@@ -109,18 +124,3 @@ volumes:
   #    #- react:/react/assets/ready-build
   #  env_file: .env
   #  profiles: ["init"]
-
-  #filldb:
-  #  build: .
-  #  command: >
-  #    sh -c "
-  #      python manage.py wait_for_db &&
-  #      python manage.py makemigrations &&
-  #      python manage.py migrate && 
-  #      python manage.py loaddata fixtures/dev.json
-  #    "
-  #  volumes: 
-  #    - ./digital-shop-app:/digital-shop-app
-  #  env_file: .env
-  #  depends_on: 
-  #    - db

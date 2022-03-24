@@ -1,6 +1,3 @@
-from digitalshopapp.settings.settings import BASE_DIR
-
-
 # Logging settings
 LOGGING = {
     'version': 1,

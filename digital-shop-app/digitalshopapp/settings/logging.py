@@ -1,6 +1,3 @@
-from digitalshopapp.settings.settings import BASE_DIR
-
-
 # Logging settings
 LOGGING = {
     'version': 1,
@@ -54,23 +51,11 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'error',
             'filters': ['require_debug_true', 'filter_error_level'],
-        },
-        'file_handler': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': f'{BASE_DIR}/logs/digital-shop.log',
-            'maxBytes': 1048576,
-            'backupCount': 40,
-            'formatter': 'default',
         }
     },
     'loggers': {
         'django': {
             'handlers': ['info_handler', 'error_handler', 'console_prod'],
-        },
-        'django.server': {
-            'handlers': ['file_handler'],
-            'level': 'INFO',
-            'propagate': True,
-        },
+        }
     },
 }

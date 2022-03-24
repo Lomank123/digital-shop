@@ -5,7 +5,7 @@
 See live project [here]() (WIP)
 
 
-### Here should be some badges... (WIP)
+[![CI](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml/badge.svg)](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml)
 
 
 ## Requirements (Prerequisites)

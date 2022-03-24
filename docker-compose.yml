@@ -75,6 +75,19 @@ services:
       - db
     profiles: ["init"]
 
+  lint:
+    build: .
+    command: >
+      sh -c "
+        flake8 --max-line-length 120 --exclude migrations,venv,manage.py,__init__.py
+      "
+    volumes: 
+      - ./digital-shop-app:/digital-shop-app
+    env_file: .env
+    depends_on:
+      - db
+    profiles: ["init"]
+
   filldb:
     build: .
     command: >
@@ -89,19 +102,6 @@ services:
     env_file: .env
     depends_on: 
       - db
-
-  lint:
-    build: .
-    command: >
-      sh -c "
-        flake8 --max-line-length 120 --exclude migrations,venv,manage.py,__init__.py
-      "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
-    env_file: .env
-    depends_on:
-      - db
-    profiles: ["init"]
 
   db:
     image: postgres:13-alpine

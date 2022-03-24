@@ -17,6 +17,7 @@ from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUse
     IsCreatorEqualsCurrentUser
 from mainapp.services import CartService, CartItemService
 from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
+from mainapp import consts
 import logging
 
 
@@ -136,7 +137,15 @@ class CartViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        queryset = Cart.objects.all()
+        if self.request.user.is_authenticated:
+            ids = set(int(cart.id) for cart in list(Cart.objects.filter(user=self.request.user)))
+        else:
+            ids = set()
+        try:
+            ids.add(int(self.request.COOKIES[consts.NON_USER_CART_ID_COOKIE_NAME]))
+        except KeyError:
+            pass
+        queryset = Cart.objects.filter(id__in=ids)
         return queryset
 
     # Used in the header when open website
@@ -181,12 +190,8 @@ class CartItemViewSet(ModelViewSet):
         unsafe_actions = [
             'update',
             'create',
-            'destroy',
-            'list',
-            'retrieve'
+            'destroy'
         ]
-        # Allowing partial update to any user can cause security issues
-        # TODO: Add permission like isOwner
         if self.action not in unsafe_actions:
             permission_classes = [AllowAny]
         else:
@@ -194,8 +199,15 @@ class CartItemViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        # TODO: This queryset must be limited by cart ids items (get cart id from cookies)
-        queryset = CartItem.objects.all()
+        if self.request.user.is_authenticated:
+            ids = set(int(cart.id) for cart in list(Cart.objects.filter(user=self.request.user)))
+        else:
+            ids = set()
+        try:
+            ids.add(int(self.request.COOKIES[consts.NON_USER_CART_ID_COOKIE_NAME]))
+        except KeyError:
+            pass
+        queryset = CartItem.objects.filter(cart__id__in=ids)
         return queryset
 
     @action(

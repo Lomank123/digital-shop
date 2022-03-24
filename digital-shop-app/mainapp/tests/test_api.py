@@ -3,6 +3,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
+from mainapp import consts
 
 
 # Integration tests here
@@ -129,8 +130,9 @@ class ProductViewSetTestCase(TestCase):
 
         # Testing IsOwnerOrReadOnly permission
         # Product with id = 1 is owned by superuser
+        # 404 because of custom get_queryset method
         res = self.api_client.patch('/api/product/1/', data=new_product)
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
         # Successfully creating product with same owner
         new_product['created_by'] = self.user.id
@@ -289,7 +291,7 @@ class CategoryViewSetTestCase(TestCase):
 
         new_category_data = {'name': 'New test category 2'}
 
-        res = self.api_client.patch(f'/api/category/{self.category.id}/')
+        res = self.api_client.patch(f'/api/category/{self.category.id}/', new_category_data)
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
         user_data = {
@@ -298,35 +300,207 @@ class CategoryViewSetTestCase(TestCase):
         }
         self.api_client.post('/api/dj-rest-auth/login/', user_data)
 
-        res = self.api_client.patch(f'/api/category/{self.category.id}/')
+        res = self.api_client.patch(f'/api/category/{self.category.id}/', new_category_data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
 class CartViewSetTestCase(TestCase):
 
     def setUp(self):
-        # Insert data to test permissions
-        pass
+        self.api_client = APIClient()
+        self.superuser = CustomUser.objects.create_superuser(
+            email="super1@gmail.com",
+            username="super1",
+            password="12345",
+            is_seller=True
+        )
+        self.user3 = CustomUser.objects.create_user(
+            email="test3@gmail.com",
+            username="test3",
+            password="12345"
+        )
+        self.non_user_cart = Cart.objects.create()
+        self.user_cart = Cart.objects.create(user=self.user3)
+        self.archived_user_cart = Cart.objects.create(user=self.user3, is_archived=True)
 
     def test_permissions(self):
-        pass
+        # AllowAny
+        res = self.api_client.get('/api/cart/get_cart/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(Cart.objects.count(), 4)
+
+        # IsAuthenticated
+        res = self.api_client.get('/api/cart/get_user_cart/')
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        res = self.api_client.get('/api/cart/get_user_cart/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            int(self.api_client.cookies[consts.USER_CART_ID_COOKIE_NAME].value),
+            self.user_cart.id
+        )
+
+        # IsAdminUser
+        new_cart_data = {'is_deleted': True}
+        res = self.api_client.patch('/api/cart/1/', new_cart_data)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_queryset(self):
+        res = self.api_client.get('/api/cart/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 0)
+
+        # Creating non user cart with cookie
+        self.api_client.get('/api/cart/get_cart/')
+
+        res = self.api_client.get('/api/cart/')
+        self.assertEqual(len(res.data), 1)
+
+        user_data = {
+            'username': self.user3.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        # Creating user cart cookie
+        self.api_client.get('/api/cart/get_user_cart/')
+
+        res = self.api_client.get('/api/cart/')
+        self.assertEqual(len(res.data), 3)
+
+        self.assertEqual(Cart.objects.count(), 4)
 
 
 class CartItemViewSetTestCase(TestCase):
 
     def setUp(self):
-        # Insert data to test permissions
-        pass
+        self.api_client = APIClient()
+        self.superuser = CustomUser.objects.create_superuser(
+            email="super1@gmail.com",
+            username="super1",
+            password="12345",
+            is_seller=True
+        )
+        self.user = CustomUser.objects.create_user(
+            email="test3@gmail.com",
+            username="test3",
+            password="12345"
+        )
+        self.user_cart = Cart.objects.create(user=self.user)
+        self.archived_user_cart = Cart.objects.create(user=self.user, is_archived=True)
+        self.category = Category.objects.create(
+            name="Test category 1",
+            verbose="test-category-1"
+        )
+        self.product = Product.objects.create(
+            category=self.category,
+            created_by=self.superuser,
+            title="Test title 1",
+            price=40.0,
+            quantity=20
+        )
+        self.product2 = Product.objects.create(
+            category=self.category,
+            created_by=self.superuser,
+            title="Test title 2",
+            price=52.5,
+            quantity=10
+        )
+        self.user_cart_item = CartItem.objects.create(
+            quantity=5,
+            cart=self.user_cart,
+            product=self.product
+        )
+        self.ordered_cart_item = CartItem.objects.create(
+            quantity=5,
+            cart=self.archived_user_cart,
+            product=self.product
+        )
 
     def test_permissions(self):
-        pass
+        # AllowAny
+        self.api_client.get('/api/cart/get_cart/')
+        new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)).first()
+        new_cart_item = CartItem.objects.create(quantity=5, cart=new_cart, product=self.product)
+        res = self.api_client.patch(f'/api/cart-item/{new_cart_item.id}/', {"quantity": 2})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        
+        user_data = {
+            'username': self.user.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+
+        # IsAdmisUser
+        res = self.api_client.post('/api/cart-item/', {"quantity": 7})
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_queryset(self):
+        res = self.api_client.get('/api/cart-item/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data["results"]), 0)
+
+        # Creating non user cart with cookie
+        self.api_client.get('/api/cart/get_cart/')
+        new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.NON_USER_CART_ID_COOKIE_NAME].value)).first()
+        new_cart_item = CartItem.objects.create(quantity=5, cart=new_cart, product=self.product)
+
+        res = self.api_client.get('/api/cart-item/')
+        self.assertEqual(len(res.data["results"]), 1)
+
+        user_data = {
+            'username': self.user.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        # Creating user cart cookie
+        self.api_client.get('/api/cart/get_user_cart/')
+        new_cart = Cart.objects.filter(id=int(self.api_client.cookies[consts.USER_CART_ID_COOKIE_NAME].value)).first()
+        new_cart_item = CartItem.objects.create(quantity=2, cart=new_cart, product=self.product2)
+
+        cart1 = Cart.objects.create()
+        cart_item1 = CartItem.objects.create(quantity=1, cart=cart1, product=self.product2)
+
+        res = self.api_client.get('/api/cart-item/')
+        self.assertEqual(len(res.data["results"]), 4)
+        self.assertEqual(CartItem.objects.count(), 5)
 
 
 class OrderViewSetTestCase(TestCase):
 
     def setUp(self):
-        # Insert data to test permissions
-        pass
+        self.api_client = APIClient()
+        self.superuser = CustomUser.objects.create_superuser(
+            email="super1@gmail.com",
+            username="super1",
+            password="12345",
+            is_seller=True
+        )
+        self.user = CustomUser.objects.create_user(
+            email="test3@gmail.com",
+            username="test3",
+            password="12345"
+        )
+        self.user_cart = Cart.objects.create(user=self.user)
+        self.non_user_cart = Cart.objects.create()
+        self.order1 = Order.objects.create(cart=self.user_cart, total_price=0)
+        self.order2 = Order.objects.create(cart=self.non_user_cart, total_price=0)
 
-    def test_permissions(self):
-        pass
+    def test_get_queryset(self):
+        self.assertEqual(Order.objects.count(), 2)
+
+        res = self.api_client.get('/api/order/')
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        user_data = {
+            'username': self.user.email,
+            'password': '12345',
+        }
+        self.api_client.post('/api/dj-rest-auth/login/', user_data)
+        res = self.api_client.get('/api/order/')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data["results"]), 1)
+        self.assertEqual(Order.objects.count(), 2)

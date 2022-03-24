@@ -44,7 +44,7 @@ export const getEitherCartItemsURL = cartItemURL + 'get_either_cart_items/';
 
 export const postPurchaseURL = cartItemURL + 'post_purchase/';
 
-export const ordersURL = apiURL + 'orders/';
+export const ordersURL = apiURL + 'order/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

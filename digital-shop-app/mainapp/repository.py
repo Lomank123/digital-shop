@@ -38,7 +38,7 @@ class CartRepository:
 
     @staticmethod
     def get_user_cart_by_id(user) -> Cart:
-        cart = Cart.objects.filter(user=user, is_deleted=False).first()
+        cart = Cart.objects.filter(user=user, is_deleted=False, is_archived=False).first()
         return cart
 
     @staticmethod

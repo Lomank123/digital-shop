@@ -23,7 +23,7 @@ export const profileRoute = 'profile';
 export const editProfileRoute = `${profileRoute}/edit`;
 
 // Order
-export const ordersRoute = 'orders';
+export const ordersRoute = 'order';
 
 // Product
 export const productRoute = 'product';

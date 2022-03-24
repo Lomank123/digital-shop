@@ -14,7 +14,7 @@ router.register('user-info', UserViewSet, basename='user-info')
 router.register('cart', CartViewSet, basename='cart')
 router.register('cart-item', CartItemViewSet, basename='cart-item')
 router.register('email-address', EmailAddressViewSet, basename='email-address')
-router.register('orders', OrderViewSet, basename='orders')
+router.register('order', OrderViewSet, basename='order')
 
 urlpatterns = [
     # API urls

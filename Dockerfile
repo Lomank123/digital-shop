@@ -28,7 +28,7 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/static && \
     mkdir -p /vol/web/media && \
     chown -R digitalshop:digitalshop /vol && \
-    chown -R digitalshop:digitalshop /digital-shop-app && \
+    chown -R digitalshop:digitalshop . && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
     chmod -R +x /scripts

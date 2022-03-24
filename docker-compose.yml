@@ -73,7 +73,6 @@ services:
     env_file: .env
     depends_on: 
       - db
-    profiles: ["init"]
 
   lint:
     build: .
@@ -86,7 +85,6 @@ services:
     env_file: .env
     depends_on:
       - db
-    profiles: ["init"]
 
   filldb:
     build: .

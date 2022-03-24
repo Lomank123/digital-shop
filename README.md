@@ -2,8 +2,10 @@
 
 **Digital Shop** is an internet shop with plenty of features. You can buy any kinds of products from different categories which sellers offer, and also manage your account and orders list.
 
+See live project [here]() (WIP)
 
-### Here should be some badges...
+
+### Here should be some badges... (WIP)
 
 
 ## Requirements (Prerequisites)
@@ -62,6 +64,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
     - Access and refresh tokens
     - Email verification on sign up (optional)
     - Forgot password implementation (using email)
+    - Sign in using Google (WIP)
 
 - Cart system
     - 2 types of carts: user and non-user
@@ -81,7 +84,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 
 - Seller management (same as user management but with few extra options)
     - Manage your products (Add, edit, delete, set to inactive)
-    - Additional filters (e.g.: "Your products" filter)
+    - Additional filters (e.g.: "Your products" filter) (WIP)
 
 
 ## Usage
@@ -110,13 +113,13 @@ There are 2 main fixture files:
 
 If you want to test it with different users here are the credentials (applies to both dev and prod fixtures):
 
-Superuser:
+- Superuser:
     - email: `admin@gmail.com`
     - password: `12345`
-User 1 (**Seller**, can create products):
+- User 1 (**Seller**, can create products):
     - email: `test1@gmail.com`
     - password: `123123123Aa`
-User 2 (regular user):
+- User 2 (regular user):
     - email: `test2@gmail.com`
     - password: `123123123Qq`
 
@@ -150,7 +153,7 @@ These tests cover:
 
 ## Deploy
 
-Describe deployment here.
+Process of deployment (WIP)
 
 
 ## Tech stack
@@ -163,7 +166,6 @@ Describe deployment here.
     - Celery
     - Redis
     - Gunicorn
-    - Dropbox (media storage)
     - PostgreSQL
 - **Frontend**:
     - ReactJS
@@ -176,6 +178,7 @@ Describe deployment here.
     - Docker
     - Docker-compose
     - Heroku
+    - Dropbox (media storage)
 
 
 ## Author
@@ -185,4 +188,4 @@ See my GitHub profile for further information: [link](https://github.com/Lomank1
 
 ## License
 
-Info about License.
+Info about License. (WIP)

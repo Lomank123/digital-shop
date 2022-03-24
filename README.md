@@ -59,14 +59,14 @@ For the first time it may take 5-20 minutes to build everything (depends on your
     - Search product by its title or description
 
 - JWT Authentication
-    - Refresh and access tokens
-    - Email verification on sign up
-    - Forgot password implementation
+    - Access and refresh tokens
+    - Email verification on sign up (optional)
+    - Forgot password implementation (using email)
 
 - Cart system
     - 2 types of carts: user and non-user
     - Non-user cart has its expiration date and after it a new will be given (the old one gets deleted)
-    - Anonymous user (not logged in) will get non-user cart
+    - Anonymous user (not logged in) will get a non-user cart
     - After logging in non-user cart will be attached to logged in user
     - If logged in user already has cart then both carts will be displayed
         - And content from non-user cart can easily be transferred to user one
@@ -89,9 +89,8 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 ### Run project
 - To run project:
 ```
-docker-compose --profile init up
+docker-compose up
 ```
-This will run services with `"init"` profile defined in `docker-compose.yml`.
 
 ### Linters
 - To run linters:
@@ -104,7 +103,26 @@ docker-compose up lint
 ```
 docker-compose up filldb
 ```
-Describe fixtures here.
+
+There are 2 main fixture files:
+- prod.json
+- dev.json
+
+If you want to test it with different users here are the credentials (applies to both dev and prod fixtures):
+
+Superuser:
+    - email: `admin@gmail.com`
+    - password: `12345`
+User 1 (**Seller**, can create products):
+    - email: `test1@gmail.com`
+    - password: `123123123Aa`
+User 2 (regular user):
+    - email: `test2@gmail.com`
+    - password: `123123123Qq`
+
+Production fixtures (`prod.json`) shows how the shop may look like filled with regular products. They include users, superuser, products, categories, carts and cart items.
+
+Development fixtures (`dev.json`) are mainly for testing. For example, how the UI will behave with different amount of symbols (min or max).
 
 
 ## Tests
@@ -113,7 +131,21 @@ Describe fixtures here.
 ```
 docker-compose up test
 ```
-Describe tests here. What they are testing and why.
+
+### Tests description
+These tests cover:
+- API (integration tests)
+    - ViewSet permissions and queryset
+    - Endpoints whose logic hasn't been tested by services tests
+- Services
+    - All custom business logic
+- Pagination
+    - Custom data pagination
+- Managers
+    - Custom user creation
+- Permissions
+    - Custom permissions
+- Celery tasks
 
 
 ## Deploy
@@ -123,25 +155,32 @@ Describe deployment here.
 
 ## Tech stack
 
-- Backend:
-    - 1
-    - 2
-- Frontend:
-    - 1
-    - 2
-- Other:
-    - 1
-    - 2
+- **Backend**:
+    - Django
+    - Django Rest Framework
+    - Django allauth
+    - Nginx
+    - Celery
+    - Redis
+    - Gunicorn
+    - Dropbox (media storage)
+    - PostgreSQL
+- **Frontend**:
+    - ReactJS
+    - Babel
+    - Webpack
+    - Redux
+    - Axios
+- **Other**:
+    - GitHub
+    - Docker
+    - Docker-compose
+    - Heroku
 
 
 ## Author
 
-Info about author.
-
-
-## Credits
-
-What helped you most or what inspired you to make this project.
+See my GitHub profile for further information: [link](https://github.com/Lomank123)
 
 
 ## License

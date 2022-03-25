@@ -66,9 +66,7 @@ services:
     command: >
       sh -c "
         python manage.py wait_for_db &&
-        coverage run --source='.' manage.py test mainapp.tests &&
-        coverage report &&
-        coverage xml
+        python manage.py test mainapp.tests
       "
     volumes: 
       - ./digital-shop-app:/digital-shop-app
@@ -102,6 +100,7 @@ services:
     env_file: .env
     depends_on: 
       - db
+    profiles: ["init"]
 
   db:
     image: postgres:13-alpine

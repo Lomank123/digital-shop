@@ -15,7 +15,6 @@ WORKDIR /digital-shop-app
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    apk add --no-cache curl gnupg coreutils && \
     apk add --no-cache bash && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-deps \
@@ -36,5 +35,7 @@ RUN python -m venv /py && \
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 
 RUN python manage.py collectstatic --noinput
+
+USER digitalshop
 
 CMD ["run.sh"]

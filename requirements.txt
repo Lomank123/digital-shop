@@ -21,4 +21,3 @@ dropbox==11.17.0
 flake8==3.9.2
 uWSGI>=2.0.19.1,<2.1
 requests
-coverage

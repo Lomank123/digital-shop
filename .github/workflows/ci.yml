@@ -24,8 +24,3 @@ jobs:
         run: |
           cat .env.sample >> .env
           docker-compose up --exit-code-from test test
-          curl -Os https://uploader.codecov.io/latest/alpine/codecov
-          chmod +x codecov
-          ./codecov
-      - name: Codecov
-        uses: codecov/codecov-action@v2.1.0

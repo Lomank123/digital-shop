@@ -19,8 +19,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: adduser --disabled-password --no-create-home digitalshop
-      - run: chown -R digitalshop:digitalshop /digital-shop-app
+      - run: chown -R GITHUB_TOKEN:GITHUB_TOKEN /digital-shop-app
       - uses: actions/checkout@v2
       - name: Run tests
         run: |

@@ -15,7 +15,6 @@ WORKDIR /digital-shop-app
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    apk add --no-cache curl gnupg coreutils && \
     apk add --no-cache bash && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-deps \
@@ -31,10 +30,7 @@ RUN python -m venv /py && \
     chown -R digitalshop:digitalshop /vol && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
-    chmod -R +x /scripts && \
-    curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
-    chmod +x codecov && \
-    ./codecov
+    chmod -R +x /scripts
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 

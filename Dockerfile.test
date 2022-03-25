@@ -16,9 +16,6 @@ RUN python -m venv /py && \
         build-base jpeg-dev postgresql-dev musl-dev linux-headers \
         zlib-dev libffi-dev openssl-dev python3-dev cargo && \
     /py/bin/pip install -r /requirements.txt && \
-    apk del .tmp-deps && \
-    curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
-    chmod +x codecov && \
-    ./codecov
+    apk del .tmp-deps
 
 ENV PATH="/py/bin:/py/lib:$PATH"

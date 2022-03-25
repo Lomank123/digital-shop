@@ -34,7 +34,7 @@ RUN python -m venv /py && \
     chmod -R +x /scripts && \
     curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
     chmod +x codecov && \
-    chmod -R 777 /digital-shop-app && \
+    chmod a+w /digital-shop-app && \
     ./codecov
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
@@ -42,5 +42,7 @@ ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 RUN python manage.py collectstatic --noinput
 
 USER digitalshop
+
+RUN chmod a+w /digital-shop-app
 
 CMD ["run.sh"]

@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions: read-all|write-all
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -20,6 +18,7 @@ jobs:
   
   test:
     runs-on: ubuntu-latest
+    permissions: read-all|write-all
     steps:
       - uses: actions/checkout@v2
       - name: Run tests

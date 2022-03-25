@@ -6,6 +6,7 @@ See live project [here]() (WIP)
 
 
 [![CI](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml/badge.svg)](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Lomank123/digital-shop/branch/main/graph/badge.svg?token=WU2JVQUOBV)](https://codecov.io/gh/Lomank123/digital-shop)
 
 
 ## Requirements (Prerequisites)

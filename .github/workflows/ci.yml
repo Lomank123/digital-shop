@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions: read-all|write-all
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,7 +21,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: chown -R GITHUB_TOKEN:GITHUB_TOKEN /digital-shop-app
       - uses: actions/checkout@v2
       - name: Run tests
         run: |

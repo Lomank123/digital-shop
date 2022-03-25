@@ -34,12 +34,11 @@ RUN python -m venv /py && \
     chmod -R +x /scripts && \
     curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
     chmod +x codecov && \
+    chown -R digitalshop:digitalshop codecov && \
     ./codecov
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 
 RUN python manage.py collectstatic --noinput
-
-USER digitalshop
 
 CMD ["run.sh"]

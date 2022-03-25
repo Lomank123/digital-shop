@@ -32,8 +32,9 @@ RUN python -m venv /py && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
     chmod -R +x /scripts && \
-    touch /digital-shop-app/.coverage && \
-    chown -R digitalshop:digitalshop /digital-shop-app/.coverage
+    chmod 777 . && \
+    touch ./.coverage && \
+    chown -R digitalshop:digitalshop ./.coverage
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 

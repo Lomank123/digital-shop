@@ -56,6 +56,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 - Main
     - Fully REST API project (using DRF)
     - Separated backend and frontend
+    - Configured GitHub Actions
 
 - Products and Categories
     - In home page all available (and some unavailable) products can be viewed
@@ -187,8 +188,3 @@ Process of deployment (WIP)
 ## Author
 
 See my GitHub profile for further information: [link](https://github.com/Lomank123)
-
-
-## License
-
-Info about License. (WIP)

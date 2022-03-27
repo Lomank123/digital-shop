@@ -71,8 +71,6 @@ services:
         coverage run --source='.' manage.py test mainapp.tests &&
         coverage xml -o /digital-shop-app/cov/coverage.xml
       "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
     env_file: .env
     depends_on: 
       - db

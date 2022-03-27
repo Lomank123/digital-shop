@@ -30,15 +30,6 @@ RUN python -m venv /py && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
     chmod -R +x /scripts && \
-    # Codecov integrity check
-    apk add curl gnupg coreutils && \
-    curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import && \
-    curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
-    curl -Os https://uploader.codecov.io/latest/alpine/codecov.SHA256SUM && \
-    curl -Os https://uploader.codecov.io/latest/alpine/codecov.SHA256SUM.sig && \
-    gpgv codecov.SHA256SUM.sig codecov.SHA256SUM && \
-    sha256sum -c codecov.SHA256SUM && \
-    chmod +x codecov && \
     # Coverage directory
     mkdir -p /digital-shop-app/cov && \
     chown -R digitalshop:digitalshop /digital-shop-app/cov

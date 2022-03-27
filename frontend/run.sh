@@ -2,4 +2,5 @@
 
 set -e
 
-npm start
+npm run prod
+npm prune --production

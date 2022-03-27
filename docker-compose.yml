@@ -65,16 +65,12 @@ services:
   test:
     build:
       context: .
-      dockerfile: Dockerfile.test
     command: >
       sh -c "
         python manage.py wait_for_db &&
         coverage run --source='.' manage.py test mainapp.tests &&
-        coverage report &&
-        coverage xml
+        coverage xml -o /digital-shop-app/cov/coverage.xml &&
       "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
     env_file: .env
     depends_on: 
       - db

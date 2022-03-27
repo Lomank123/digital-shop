@@ -24,13 +24,24 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /requirements.txt && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home digitalshop && \
-    # If you want to use nginx then move mkdir commands to it's Dockerfile
     mkdir -p /vol/web/static && \
     mkdir -p /vol/web/media && \
     chown -R digitalshop:digitalshop /vol && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
-    chmod -R +x /scripts
+    chmod -R +x /scripts && \
+    # Codecov integrity check
+    apk add curl gnupg coreutils && \
+    curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import && \
+    curl -Os https://uploader.codecov.io/latest/alpine/codecov && \
+    curl -Os https://uploader.codecov.io/latest/alpine/codecov.SHA256SUM && \
+    curl -Os https://uploader.codecov.io/latest/alpine/codecov.SHA256SUM.sig && \
+    gpgv codecov.SHA256SUM.sig codecov.SHA256SUM && \
+    sha256sum -c codecov.SHA256SUM && \
+    chmod +x codecov && \
+    # Coverage directory
+    mkdir -p /digital-shop-app/cov && \
+    chown -R digitalshop:digitalshop /digital-shop-app/cov
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 

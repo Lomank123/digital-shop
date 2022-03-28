@@ -2,8 +2,6 @@
 
 **Digital Shop** is an internet shop with plenty of features. You can buy any kinds of products from different categories which sellers offer, and also manage your account and orders list.
 
-See live project [here]() (WIP)
-
 
 [![CI](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml/badge.svg)](https://github.com/Lomank123/digital-shop/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/Lomank123/digital-shop/branch/main/graph/badge.svg?token=WU2JVQUOBV)](https://codecov.io/gh/Lomank123/digital-shop)
@@ -154,11 +152,6 @@ These tests cover:
 - Celery tasks
 
 
-## Deploy
-
-Process of deployment (WIP)
-
-
 ## Tech stack
 
 - **Backend**:
@@ -181,10 +174,8 @@ Process of deployment (WIP)
     - GitHub Actions
     - Docker
     - Docker-compose
-    - Heroku
-    - Dropbox (media storage)
 
 
 ## Author
 
-See my GitHub profile for further information: [link](https://github.com/Lomank123)
+See my GitHub profile for further information: [profile link](https://github.com/Lomank123)

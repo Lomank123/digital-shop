@@ -1,0 +1,69 @@
+version: '3.9'
+
+services:
+  django:
+    build:
+      context: .
+    volumes:
+      - django:/vol/web/static
+    ports:
+      - 8000:8000
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+
+  celery-worker:
+    build: .
+    command: wait-for-it.sh django:8000 -s -t 120 -- celery -A digitalshopapp worker --loglevel=INFO --beat
+    env_file: .env
+    depends_on:
+      - django
+      - redis
+      - db
+
+  celery-flower:
+    image: mher/flower:latest
+    command: celery flower --port=5555
+    ports:
+      - 5557:5555
+    env_file: .env
+    depends_on:
+      - redis
+  
+  redis:
+    image: "redis:alpine"
+
+  frontend:
+    build:
+      context: ./frontend
+    command: >
+      sh -c "npm run prod"
+    volumes:
+      - ./frontend/react:/react
+      - react:/react/assets/ready-build
+    env_file: .env
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - 80:${PORT}
+    env_file: .env
+    volumes:
+      - react:/var/www/react
+      - django:/var/www/static
+    depends_on:
+      - django
+      - frontend
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+
+volumes:
+  react:
+  django:

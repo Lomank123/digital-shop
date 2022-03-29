@@ -2,5 +2,5 @@
 build:
   docker:
     #frontend: frontend/Dockerfile
-    web: nginx/Dockerfile
-    #worker: Dockerfile
+    web: nginx/Dockerfile.heroku
+    worker: Dockerfile

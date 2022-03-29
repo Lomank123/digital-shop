@@ -7,9 +7,11 @@ USER root
 
 RUN touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d && \
-    chmod +x /run.sh
+    chmod +x /run.sh && \
+    mkdir -p /var/www/react/ && \
+    mkdir -p /var/www/django/
 
-COPY ./config/default.conf /etc/nginx/conf.d/default.conf
+COPY ./config/default-deploy.conf /etc/nginx/conf.d/default.conf
 COPY ./ready-build/* /var/www/react
 
 USER nginx

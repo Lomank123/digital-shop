@@ -5,9 +5,3 @@ build:
     django: Dockerfile
     frontend: frontend/Dockerfile
     nginx: nginx/Dockerfile
-    celery-worker: Dockerfile
-    redis: 
-      image: "redis:alpine"
-# The process types and commands to run
-run:
-  celery-worker: wait-for-it.sh django:8000 -s -t 120 -- celery -A digitalshopapp worker --loglevel=INFO --beat

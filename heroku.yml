@@ -3,4 +3,4 @@ build:
   docker:
     #frontend: frontend/Dockerfile
     web: nginx/Dockerfile
-    worker: Dockerfile
+    #worker: Dockerfile

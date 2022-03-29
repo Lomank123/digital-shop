@@ -1,6 +1,6 @@
 # Resources to provision on app creation
 build:
   docker:
-    django: Dockerfile
     #frontend: frontend/Dockerfile
-    nginx: nginx/Dockerfile
+    worker: nginx/Dockerfile
+    web: Dockerfile

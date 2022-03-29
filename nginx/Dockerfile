@@ -7,7 +7,9 @@ USER root
 
 RUN touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d && \
-    chmod +x /run.sh
+    chmod +x /run.sh && \
+    mkdir -p /var/www/react/ && \
+    touch /var/www/react/index.html
 
 COPY ./config/default.conf /etc/nginx/conf.d/default.conf
 

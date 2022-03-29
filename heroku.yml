@@ -2,5 +2,5 @@
 build:
   docker:
     #frontend: frontend/Dockerfile
-    worker: nginx/Dockerfile
-    web: Dockerfile
+    web: nginx/Dockerfile
+    worker: Dockerfile

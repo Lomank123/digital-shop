@@ -1,5 +1,4 @@
 # Resources to provision on app creation
-setup:
 build:
   docker:
     django: Dockerfile

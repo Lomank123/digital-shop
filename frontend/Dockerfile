@@ -1,24 +1,24 @@
-FROM node:17-alpine3.12
-
+FROM nginxinc/nginx-unprivileged:1-alpine
 LABEL maintainer="lomank200222@gmail.com"
 
 COPY ./react /react
-
-#COPY ./assets /assets
-#COPY ./webpack /webpack
-#COPY ./package.json /package.json
-#COPY ./package-lock.json /package-lock.json
-
 COPY ./run.sh /run.sh
+
+USER root
+
+RUN apk add --update nodejs npm && \
+    touch /etc/nginx/conf.d/default.conf && \
+    chown nginx:nginx /etc/nginx/conf.d && \
+    chmod +x /run.sh
+
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /react
 
 RUN npm ci && \
-    adduser --disabled-password --no-create-home dsfrontend && \
-    chown -R dsfrontend:dsfrontend /react && \
-    chown -R dsfrontend:dsfrontend package.json && \
-    chmod +x /run.sh
+    chown -R nginx:nginx /react && \
+    chown -R nginx:nginx package.json
 
-USER dsfrontend
+USER nginx
 
-CMD ["run.sh"]
+CMD ["/run.sh"]

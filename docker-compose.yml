@@ -62,6 +62,14 @@ services:
       - django
       #- frontend
 
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/react:/react
+      #- react:/react/assets/ready-build
+    env_file: .env
+
   test:
     build:
       context: .
@@ -113,14 +121,3 @@ services:
 volumes:
   #react:
   django:
-
-  #frontend:
-  #  build:
-  #    context: ./frontend
-  #  command: >
-  #    sh -c "npm run dev"
-  #  volumes:
-  #    - ./frontend/react:/react
-  #    #- react:/react/assets/ready-build
-  #  env_file: .env
-  #  profiles: ["init"]

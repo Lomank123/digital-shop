@@ -1,6 +1,0 @@
-# Resources to provision on app creation
-build:
-  docker:
-    #frontend: frontend/Dockerfile
-    web: nginx/Dockerfile.heroku
-    worker: Dockerfile

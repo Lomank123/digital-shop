@@ -7,6 +7,20 @@
 [![codecov](https://codecov.io/gh/Lomank123/digital-shop/branch/main/graph/badge.svg?token=WU2JVQUOBV)](https://codecov.io/gh/Lomank123/digital-shop)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+- [Digital Shop](#digital-shop)
+  - [Requirements (Prerequisites)](#requirements-prerequisites)
+  - [Installation](#installation)
+    - [Possible issues](#possible-issues)
+  - [Screenshots](#screenshots)
+  - [Features](#features)
+  - [Usage](#usage)
+    - [Run project](#run-project)
+    - [Linters](#linters)
+    - [Fixtures](#fixtures)
+  - [Tests](#tests)
+    - [Tests description](#tests-description)
+  - [Tech stack](#tech-stack)
+  - [Author](#author)
 
 ## Requirements (Prerequisites)
 
@@ -47,6 +61,17 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 ### Possible issues
 
 - If celery worker container fails to start check `wait-for-it.sh` bash script's line break type. It should be `LF`, not `CRLF`.
+
+
+## Screenshots
+
+- Home page:
+
+- Carts:
+
+- Product details:
+
+- Profile:
 
 
 ## Features

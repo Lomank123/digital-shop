@@ -23,6 +23,4 @@ RUN python -m venv /py && \
     mkdir -p /digital-shop-app/cov && \
     chown -R testuser:testuser /digital-shop-app
 
-USER testuser
-
 ENV PATH="/py/bin:/py/lib:$PATH"

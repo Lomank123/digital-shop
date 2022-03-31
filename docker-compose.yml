@@ -74,8 +74,6 @@ services:
         coverage xml -o digital-shop-app/cov/coverage.xml &&
         find coverage.xml
       "
-    volumes: 
-      - ./digital-shop-app:/digital-shop-app
     env_file: .env
     depends_on: 
       - db

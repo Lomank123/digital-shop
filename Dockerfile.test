@@ -21,7 +21,7 @@ RUN python -m venv /py && \
     chown -R testuser:testuser /py/lib/python3.9/site-packages && \
     # Coverage directory
     mkdir -p /digital-shop-app/cov && \
-    chown -R testuser:testuser /digital-shop-app/cov
+    chown -R testuser:testuser /digital-shop-app
 
 USER testuser
 

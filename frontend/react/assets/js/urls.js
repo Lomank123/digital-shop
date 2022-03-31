@@ -1,7 +1,10 @@
 // main urls
 //const portNum = 8000;
 //const hostURL = 'http://127.0.0.1' + ':' + portNum + '/';
-const hostURL = 'http://127.0.0.1' + '/';
+let hostURL = 'http://127.0.0.1' + '/';
+if (process.env.NODE_ENV == 'production') {
+  hostURL = 'https://digital-shop-backend.herokuapp.com/';
+}
 
 // media urls
 export const reactURL = hostURL + 'react/';

@@ -27,4 +27,4 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v2.1.0
         with:
-          files: ./digital-shop-app/cov/coverage.xml
+          files: ./home/runner/work/digital-shop/digital-shop/digital-shop-app/cov/coverage.xml

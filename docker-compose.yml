@@ -66,6 +66,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
+    user: "${UID}"
     command: >
       sh -c "
         ls -la

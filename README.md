@@ -38,7 +38,7 @@ git clone https://github.com/Lomank123/digital-shop.git
 
 - Go to `/frontend/react` folder and install `webpack` and `webpack-cli`:
 ```
-npm i webpack webpack-cli --save-dev
+npm i webpack webpack-cli
 ```
 
 - Run npm dev or prod version to create bundle file(s):
@@ -67,11 +67,20 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 
 - Home page:
 
+![Home page screenshot](presentation/screenshots/home.jpg)
+
 - Carts:
+
+![Carts page screenshot](presentation/screenshots/carts.jpg)
 
 - Product details:
 
+![Product details screenshot](presentation/screenshots/product-info.jpg)
+
 - Profile:
+
+![Profile screenshot](presentation/screenshots/profile.jpg)
+
 
 
 ## Features

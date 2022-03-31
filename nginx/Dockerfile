@@ -9,8 +9,7 @@ RUN touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d && \
     chmod +x /run.sh
 
-COPY ./config/default.conf /etc/nginx/conf.d/default.conf
-COPY ./ready-build/* /var/www/react
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 USER nginx
 

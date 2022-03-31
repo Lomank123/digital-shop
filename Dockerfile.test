@@ -25,7 +25,6 @@ RUN python -m venv /py && \
         zlib-dev libffi-dev openssl-dev python3-dev cargo && \
     /py/bin/pip install -r /requirements.txt && \
     apk del .tmp-deps && \
-    adduser --disabled-password --no-create-home testuser && \
     chown -R testuser:testuser /py/lib/python3.9/site-packages
 
 USER testuser

@@ -18,9 +18,7 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /requirements.txt && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home testuser && \
-    chown -R testuser:testuser /py/lib/python3.9/site-packages && \
     # Coverage directory
-    mkdir -p /digital-shop-app/cov && \
-    chown -R testuser:testuser /digital-shop-app
+    mkdir -p /digital-shop-app/cov
 
 ENV PATH="/py/bin:/py/lib:$PATH"

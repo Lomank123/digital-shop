@@ -3,10 +3,18 @@ FROM python:3.9-alpine3.13
 
 ENV PYTHONUNBUFFERED 1
 
-COPY ./requirements.txt /requirements.txt
-COPY ./digital-shop-app /digital-shop-app
+RUN adduser --disabled-password --no-create-home testuser
+
+USER testuser
+
+COPY --chown=testuser:testuser ./requirements.txt /requirements.txt
+COPY --chown=testuser:testuser ./digital-shop-app /digital-shop-app
 
 WORKDIR /digital-shop-app
+
+RUN mkdir -p /digital-shop-app/cov
+
+USER root
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
@@ -18,10 +26,7 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /requirements.txt && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home testuser && \
-    chown -R testuser:testuser /py/lib/python3.9/site-packages && \
-    # Coverage directory
-    mkdir -p /digital-shop-app/cov && \
-    chown -R testuser:testuser /digital-shop-app
+    chown -R testuser:testuser /py/lib/python3.9/site-packages
 
 USER testuser
 

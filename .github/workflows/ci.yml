@@ -26,5 +26,3 @@ jobs:
           docker-compose up --exit-code-from test test
       - name: Codecov
         uses: codecov/codecov-action@v2.1.0
-        with:
-          file: digital-shop-app/cov/coverage.xml

@@ -69,7 +69,7 @@ services:
       sh -c "
         python manage.py wait_for_db &&
         coverage run --source='.' manage.py test mainapp.tests &&
-        coverage xml -o /digital-shop-app/cov/coverage.xml
+        coverage xml
       "
     env_file: .env
     depends_on: 

@@ -3,11 +3,6 @@ FROM python:3.9-alpine3.13
 
 ENV PYTHONUNBUFFERED 1
 
-RUN adduser --disabled-password --no-create-home testuser && \
-    # Coverage directory
-    mkdir /digital-shop-app && \
-    chown -R testuser:testuser /digital-shop-app
-
 COPY ./requirements.txt /requirements.txt
 COPY ./digital-shop-app /digital-shop-app
 
@@ -22,8 +17,11 @@ RUN python -m venv /py && \
         zlib-dev libffi-dev openssl-dev python3-dev cargo && \
     /py/bin/pip install -r /requirements.txt && \
     apk del .tmp-deps && \
+    adduser --disabled-password --no-create-home testuser && \
     chown -R testuser:testuser /py/lib/python3.9/site-packages && \
-    mkdir -p /digital-shop-app/cov
+    # Coverage directory
+    mkdir -p /digital-shop-app/cov && \
+    chown -R testuser:testuser /digital-shop-app
 
 USER testuser
 

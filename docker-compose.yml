@@ -70,7 +70,6 @@ services:
       sh -c "
         python manage.py wait_for_db &&
         coverage run --source='.' manage.py test mainapp.tests &&
-        coverage report &&
         coverage xml
       "
     volumes: 

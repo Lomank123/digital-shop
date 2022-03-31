@@ -32,7 +32,7 @@ RUN python -m venv /py && \
     chmod -R +x /scripts && \
     # Coverage directory
     mkdir -p /digital-shop-app/cov && \
-    chown -R digitalshop:digitalshop /digital-shop-app/cov
+    chown -R digitalshop:digitalshop /digital-shop-app
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 

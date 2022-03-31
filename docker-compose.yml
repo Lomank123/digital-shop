@@ -62,6 +62,14 @@ services:
       - django
       #- frontend
 
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/react:/react
+      #- react:/react/assets/ready-build
+    env_file: .env
+
   test:
     build:
       context: .
@@ -69,8 +77,7 @@ services:
       sh -c "
         python manage.py wait_for_db &&
         coverage run --source='.' manage.py test mainapp.tests &&
-        coverage report &&
-        coverage xml
+        coverage xml -o /digital-shop-app/cov/coverage.xml
       "
     env_file: .env
     depends_on: 
@@ -114,14 +121,3 @@ services:
 volumes:
   #react:
   django:
-
-  #frontend:
-  #  build:
-  #    context: ./frontend
-  #  command: >
-  #    sh -c "npm run dev"
-  #  volumes:
-  #    - ./frontend/react:/react
-  #    #- react:/react/assets/ready-build
-  #  env_file: .env
-  #  profiles: ["init"]

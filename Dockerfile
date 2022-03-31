@@ -29,10 +29,15 @@ RUN python -m venv /py && \
     chown -R digitalshop:digitalshop /vol && \
     # Or you'll get permission denied error
     chown -R digitalshop:digitalshop /py/lib/python3.9/site-packages && \
-    chmod -R +x /scripts
+    chmod -R +x /scripts && \
+    # Coverage directory
+    mkdir -p /digital-shop-app/cov && \
+    chown -R digitalshop:digitalshop /digital-shop-app/cov
 
 ENV PATH="/scripts:/py/bin:/py/lib:$PATH"
 
 RUN python manage.py collectstatic --noinput
+
+USER digitalshop
 
 CMD ["run.sh"]

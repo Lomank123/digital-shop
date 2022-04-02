@@ -119,7 +119,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
 
 - Seller management (same as user management but with few extra options)
     - Manage your products (Add, edit, delete, set to inactive)
-    - Additional filters (e.g.: "Your products" filter) (WIP)
+    - Additional filters (e.g.: "Only your products" filter)
 
 
 ## Usage

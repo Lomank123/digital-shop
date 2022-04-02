@@ -65,8 +65,6 @@ export default function AddEditProduct() {
   useLayoutEffect(() => {
     blankAxiosInstance.get(categoryGetURL).then((res) => {
       setCategoriesData(res.data);
-    }).catch((err) => {
-      console.log(err);
     })
   }, [])
 
@@ -173,7 +171,6 @@ export default function AddEditProduct() {
       console.log('Product created!');
     }).catch((err) => {
       console.log('Product creation error.');
-      console.log(err.response.data);
       // This check is needed to prevent memory leak (the problem wasn't useSelector despite the text in console)
       if (err.response.status !== 401) {
         setErrors({

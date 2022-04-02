@@ -37,7 +37,7 @@ import '../styles/main/main.css';
 import UserOrders from './components/order/order';
 
 
-const defaultState = {
+export const defaultState = {
   user: null,
   cart: null,
   cartProductIds: null,
@@ -49,6 +49,7 @@ const defaultState = {
     published_date_before: '',
     in_stock: 1,
     is_active: true,
+    seller_products_only: null,
   },
   search: {
     search: "",

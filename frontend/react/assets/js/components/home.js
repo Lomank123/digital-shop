@@ -6,6 +6,7 @@ import history from "../history";
 import { DisplayPagination, DisplayProducts, get_items } from "./display";
 import { useDispatch, useSelector } from "react-redux";
 import { Clear, Search } from "@material-ui/icons";
+import { defaultState } from "..";
 
 import "../../styles/main/home.css";
 
@@ -239,16 +240,8 @@ function DisplaySearch(props) {
 function DisplayMenu(props) {
   const filterData = useSelector(state => state.filters);
   const searchData = useSelector(state => state.search);
+  const userData = useSelector(state => state.user);
   const dispatch = useDispatch();
-
-  const filtersInitialState = {
-    price_from: '',
-    price_to: '',
-    published_date_after: '',
-    published_date_before: '',
-    in_stock: 1,
-    is_active: true,
-  };
   const [filtersState, setFiltersState] = useState(filterData);
 
   const handleChange = (e) => {
@@ -264,6 +257,19 @@ function DisplayMenu(props) {
       val = 0
     } else {
       val = 1
+    }
+    setFiltersState({
+      ...filtersState,
+      [e.target.name]: val,
+    });
+  }
+
+  const handleUserProductsCheckboxChange = (e) => {
+    let val;
+    if (e.target.checked) {
+      val = userData.id;
+    } else {
+      val = null;
     }
     setFiltersState({
       ...filtersState,
@@ -294,6 +300,7 @@ function DisplayMenu(props) {
   
   const handleDiscardFilters = (e) => {
     e.preventDefault();
+    const filtersInitialState = defaultState.filters;
     dispatch({
       type: 'get_filters',
       payload: filtersInitialState,
@@ -392,6 +399,32 @@ function DisplayMenu(props) {
           }
         />
       </Box>
+
+      {
+        (userData.seller)
+        ? (
+          <Box>
+            <h5 className="filter-name">Seller filters:</h5>
+            <Box className="quantity-filter-block">
+              <FormControlLabel
+                label='Only your products'
+                control={
+                  <Checkbox
+                    checked={Boolean(filtersState.seller_products_only)}
+                    id="filter-seller-products-only"
+                    color="primary"
+                    label="Only seller products"
+                    name="seller_products_only"
+                    onChange={handleUserProductsCheckboxChange}
+                  />
+                }
+              />
+            </Box>
+          </Box>
+        )
+        : null
+      }
+
     </Box>
   )
 

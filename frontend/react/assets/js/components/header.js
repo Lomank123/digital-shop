@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, cartRoute, ordersRoute } from '../routes';
+import { loginRoute, logoutRoute, signupRoute, profileRoute, addProductRoute, cartRoute, ordersRoute, adminRoute } from '../routes';
 import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
@@ -19,7 +19,7 @@ export default function Header() {
   const cartProductIds = useSelector(state => state.cartProductIds);
   // Use it to display different messages connected with unverified email
   const emailAddress = useSelector(state => state.emailAddress);
-  
+
   async function getData() {
     await getUser(false).then((res) => {
       console.log("Header done!");
@@ -98,6 +98,14 @@ export default function Header() {
           (userData.seller) ? (
             <Button className='add-product-btn' onClick={e => handleClickRedirect(e, addProductRoute)}>
               Add product
+            </Button>
+          ) : null
+        }
+
+        {
+          (userData.is_superuser) ? (
+            <Button className='add-product-btn' onClick={e => {window.location.href = '/admin/'}}>
+              Admin site
             </Button>
           ) : null
         }

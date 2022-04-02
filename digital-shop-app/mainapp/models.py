@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 from mainapp.managers import CustomUserManager
-from mainapp.validators import validate_whitespaces
 from mainapp.validators import validate_file_size
 
 
@@ -21,8 +20,6 @@ class CustomUser(AbstractUser):
         error_messages={'invalid_extension': 'This format does not supported.'}
     )
     is_seller = models.BooleanField(default=False, verbose_name='Seller')
-    # balance = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, verbose_name='Balance')
-    # payment_method = models.CharField(max_length=80, verbose_name='Payment method')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -36,12 +33,7 @@ class CustomUser(AbstractUser):
 # Category, contains lots of products with same qualities
 class Category(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name='Name')
-    verbose = models.CharField(
-        max_length=60,
-        unique=True,
-        verbose_name='Verbose',
-        validators=[validate_whitespaces]
-    )
+    slug = models.SlugField(max_length=60, unique=True, verbose_name='Slug')
 
     def __str__(self):
         return self.name

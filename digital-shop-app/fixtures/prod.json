@@ -83,7 +83,7 @@
   "pk": 1,
   "fields": {
     "name": "R",
-    "verbose": "r"
+    "slug": "r"
   }
 },
 {
@@ -91,7 +91,7 @@
   "pk": 2,
   "fields": {
     "name": "Clothes",
-    "verbose": "clothes"
+    "slug": "clothes"
   }
 },
 {
@@ -99,7 +99,7 @@
   "pk": 3,
   "fields": {
     "name": "New category with tons of useful products and magnificent vi",
-    "verbose": "new-category-with-tons-of-useful-products-and-magnificent-vi"
+    "slug": "new-category-with-tons-of-useful-products-and-magnificent-vi"
   }
 },
 {

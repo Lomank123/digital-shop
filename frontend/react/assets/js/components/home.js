@@ -79,7 +79,7 @@ function getInitialUrl() {
   const page = searchParams.get("page");
   // Checking search params
   if (category !== null) {
-    url.searchParams.set("category__verbose", category);
+    url.searchParams.set("category__slug", category);
   }
   if (page !== null) {
     url.searchParams.set("page", page);
@@ -110,8 +110,8 @@ function DisplayCategories(props) {
     url.searchParams.set("is_active", true);
 
     if (category !== "all") {
-      url.searchParams.set("category__verbose", category.verbose);
-      history.replace({ search: "?category=" + category.verbose, });
+      url.searchParams.set("category__slug", category.slug);
+      history.replace({ search: "?category=" + category.slug, });
     } else {
       history.replace({ search: "" });
     }
@@ -137,7 +137,7 @@ function DisplayCategories(props) {
             <Button
               key={key}
               className={"category-btn" +
-                ((category.verbose === getCategoryParam()) ?
+                ((category.slug === getCategoryParam()) ?
                 (" " + "category-selected") :
                 ""
               )}

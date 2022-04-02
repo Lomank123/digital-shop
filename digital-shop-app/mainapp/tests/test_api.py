@@ -66,7 +66,7 @@ class ProductViewSetTestCase(TestCase):
         )
         self.category = Category.objects.create(
             name="Test category 1",
-            verbose="test-category-1"
+            slug="test-category-1"
         )
         self.product = Product.objects.create(
             category=self.category,
@@ -280,7 +280,7 @@ class CategoryViewSetTestCase(TestCase):
         )
         self.category = Category.objects.create(
             name="Test category 1",
-            verbose="test-category-1"
+            slug="test-category-1"
         )
 
     def test_permissions(self):
@@ -393,7 +393,7 @@ class CartItemViewSetTestCase(TestCase):
         self.archived_user_cart = Cart.objects.create(user=self.user, is_archived=True)
         self.category = Category.objects.create(
             name="Test category 1",
-            verbose="test-category-1"
+            slug="test-category-1"
         )
         self.product = Product.objects.create(
             category=self.category,

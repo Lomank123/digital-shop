@@ -1,14 +1,6 @@
 from django.core.exceptions import ValidationError
 
 
-# Checks whether 'value' has any whitespace characters
-def validate_whitespaces(value):
-    if ' ' in value:
-        raise ValidationError(
-            'This string cannot contain any whitespace characters.'
-        )
-
-
 # Checks whether file hasn't exceeded max size
 def validate_file_size(file):
     value = 1.5		# Max allowed file size, in MB

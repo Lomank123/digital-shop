@@ -103,7 +103,7 @@
   "pk": 4,
   "fields": {
     "name": "Fantasy",
-    "verbose": "fantasy"
+    "slug": "fantasy"
   }
 },
 {
@@ -111,7 +111,7 @@
   "pk": 5,
   "fields": {
     "name": "Adventure",
-    "verbose": "adventure"
+    "slug": "adventure"
   }
 },
 {
@@ -119,7 +119,7 @@
   "pk": 6,
   "fields": {
     "name": "Novel",
-    "verbose": "novel"
+    "slug": "novel"
   }
 },
 {
@@ -127,7 +127,7 @@
   "pk": 7,
   "fields": {
     "name": "Detective",
-    "verbose": "detective"
+    "slug": "detective"
   }
 },
 {
@@ -135,7 +135,7 @@
   "pk": 8,
   "fields": {
     "name": "For kids",
-    "verbose": "for_kids"
+    "slug": "for-kids"
   }
 },
 {

@@ -12,7 +12,7 @@ class ProductFilter(filters.FilterSet):
     class Meta:
         model = Product
         fields = [
-            'category__verbose',
+            'category__slug',
             'created_by__id',
             'in_stock',
             'is_active',

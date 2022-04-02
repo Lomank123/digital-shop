@@ -16,7 +16,7 @@ class DefaultCustomPaginationTestCase(TestCase):
         )
         self.category = Category.objects.create(
             name="Test category 1",
-            verbose="test-category-1"
+            slug="test-category-1"
         )
         self.product = Product.objects.create(
             category=self.category,

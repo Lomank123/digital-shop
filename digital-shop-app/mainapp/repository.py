@@ -70,8 +70,8 @@ class ProductRepository:
 class CategoryRepository:
 
     @staticmethod
-    def get_category_by_verbose(verbose) -> Category:
-        category = Category.objects.filter(verbose=verbose).first()
+    def get_category_by_slug(slug) -> Category:
+        category = Category.objects.filter(slug=slug).first()
         return category
 
 

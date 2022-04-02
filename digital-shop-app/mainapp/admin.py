@@ -75,22 +75,23 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
-    list_display = ('name', 'verbose',)
+    list_display = ('name', 'slug',)
     list_filter = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
-        ('Information', {'fields': ('name', 'verbose',)}),
+        ('Information', {'fields': ('name', 'slug',)}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('name', 'verbose',)
+                'fields': ('name', 'slug',)
             }
         ),
     )
-    search_fields = ('name', 'verbose',)
-    ordering = ('name', 'verbose',)
+    search_fields = ('name',)
+    ordering = ('name',)
 
 
 @admin.register(Cart)

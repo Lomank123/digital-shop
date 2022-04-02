@@ -92,7 +92,7 @@ export default function DetailProduct() {
 
     history.push({
       pathname: '/',
-      search: '?category=' + category.verbose,
+      search: '?category=' + category.slug,
     })
   }
 

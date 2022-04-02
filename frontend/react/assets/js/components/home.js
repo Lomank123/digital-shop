@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { categoryGetURL, productGetURL } from "../urls";
 import { blankAxiosInstance } from "../axios";
 import { Box, Button, TextField, FormControlLabel, Checkbox, InputAdornment, IconButton } from "@material-ui/core";
@@ -15,15 +15,13 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
 
-  // Search params
-  // page, category
-
   // Getting (and setting) categories data
   useLayoutEffect(() => {
     // Getting categories
     blankAxiosInstance.get(categoryGetURL).then((res) => {
       setCategories(res.data);
       console.log("Categories data done! Home page!");
+      // Maybe here should be filterProducts() instead of get_items
       let getUrl = getInitialUrl();
       // Getting products
       get_items(getUrl, setProducts);
@@ -31,6 +29,16 @@ export default function Home() {
       console.log("Categories data error. Home page.");
     });
   }, [])
+
+  function filterProducts(params) {
+    let url = getInitialUrl();   
+    setSearchParams(url, params);
+    // 'page' param should be reset when other filters changing
+    url.searchParams.delete('page');
+    // Setting all search params to current url
+    history.replace({ search: url.searchParams.toString() });
+    get_items(url, setProducts);
+  }
 
   if (products === null) {
     return null;
@@ -40,7 +48,7 @@ export default function Home() {
     <Box className="home-block">
       <Box className="content-block">
         
-        <DisplayCategories categories={categories} setter={setProducts} />
+        <DisplayCategories categories={categories} filterProducts={filterProducts} />
 
         {
           (products.count === 0)
@@ -59,8 +67,8 @@ export default function Home() {
         }
 
         <Box className="main-menu-block">
-          <DisplaySearch setter={setProducts} />
-          <DisplayMenu setter={setProducts} />  
+          <DisplaySearch filterProducts={filterProducts} />
+          <DisplayMenu filterProducts={filterProducts} />  
         </Box>
 
       </Box>
@@ -69,20 +77,17 @@ export default function Home() {
 }
 
 function getInitialUrl() {
-  // Checking search params
   const searchParams = new URLSearchParams(history.location.search);
   let url = new URL(productGetURL);
-  // We want to get only active products
-  url.searchParams.set('is_active', true)
 
-  const category = searchParams.get("category");
-  const page = searchParams.get("page");
-  // Checking search params
-  if (category !== null) {
-    url.searchParams.set("category__slug", category);
-  }
-  if (page !== null) {
-    url.searchParams.set("page", page);
+  // We want to get only active products
+  url.searchParams.set('is_active', true);
+
+  // Setting all search params to get related items
+  for (const [key, value] of searchParams) {
+    if (value !== null) {
+      url.searchParams.set(key, value);
+    }
   }
   return url;
 }
@@ -91,6 +96,8 @@ function setSearchParams(url, dict) {
   for (const [key, value] of Object.entries(dict)) {
     if (value !== null && value !== "") {
       url.searchParams.set(key, value);
+    } else {
+      url.searchParams.delete(key);
     }
   }
   return url;
@@ -101,21 +108,16 @@ function DisplayCategories(props) {
 
   function getCategoryParam() {
     const params = new URLSearchParams(history.location.search);
-    return params.get("category");
+    return params.get("category__slug");
   }
 
   const handleCategoryClick = (e, category) => {
     e.preventDefault();
-    let url = new URL(productGetURL);
-    url.searchParams.set("is_active", true);
-
-    if (category !== "all") {
-      url.searchParams.set("category__slug", category.slug);
-      history.replace({ search: "?category=" + category.slug, });
-    } else {
-      history.replace({ search: "" });
+    let searchParams = { "category__slug": null };
+    if (category !== null) {
+      searchParams["category__slug"] = category.slug;
     }
-    get_items(url, props.setter);
+    props.filterProducts(searchParams);
   }
 
   return (
@@ -127,7 +129,7 @@ function DisplayCategories(props) {
           (" " + "category-selected") :
           ""
         )}
-        onClick={(e) => { handleCategoryClick(e, "all"); }}
+        onClick={(e) => { handleCategoryClick(e, null) }}
       >
         All categories
       </Button>
@@ -155,14 +157,19 @@ function DisplayCategories(props) {
 }
 
 function DisplaySearch(props) {
-  const search = useSelector(state => state.search);
-  const filters = useSelector(state => state.filters);
-  const dispatch = useDispatch();
-
   const initialState = {
     search: "",
   }
-  const [searchData, setSearchData] = useState(search);
+  const [searchData, setSearchData] = useState(initialState);
+
+  // Upon page reloading (not to lose field string)
+  useEffect(() => {
+    let params = new URLSearchParams(history.location.search);
+    let newSearchData = {
+      search: params.get("search"),
+    }
+    setSearchData(newSearchData);
+  }, [])
 
   const handleTextChange = (e) => {
     setSearchData({
@@ -173,25 +180,13 @@ function DisplaySearch(props) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch({
-      type: 'get_search',
-      payload: searchData,
-    });
-    let getUrl = getInitialUrl();
-    setSearchParams(getUrl, filters);
-    setSearchParams(getUrl, searchData);
-    console.log(getUrl.searchParams.toString());
-    get_items(getUrl, props.setter);
+    props.filterProducts(searchData);
   }
 
   const handleClearSearch = (e) => {
+    e.preventDefault();
     setSearchData(initialState);
-    dispatch({
-      type: 'get_search',
-      payload: initialState,
-    });
-    let getUrl = getInitialUrl();
-    get_items(getUrl, props.setter);
+    props.filterProducts(initialState);
   }
 
   const searchBlock = (
@@ -202,7 +197,7 @@ function DisplaySearch(props) {
         variant="outlined"
         margin="normal"
         id="search"
-        label="Search..."
+        label="Search"
         name="search"
         fullWidth
         value={searchData.search || ''}
@@ -210,15 +205,9 @@ function DisplaySearch(props) {
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              {
-                (searchData.search !== "")
-                ? (
-                  <IconButton onClick={handleClearSearch} className="clear-search-btn">
-                    <Clear />
-                  </IconButton>
-                )
-                : null
-              }
+              <IconButton onClick={handleClearSearch} className="clear-search-btn">
+                <Clear />
+              </IconButton>
               <IconButton onClick={handleSearch} className="search-btn-icon">
                 <Search />
               </IconButton>
@@ -238,11 +227,37 @@ function DisplaySearch(props) {
 }
 
 function DisplayMenu(props) {
-  const filterData = useSelector(state => state.filters);
-  const searchData = useSelector(state => state.search);
   const userData = useSelector(state => state.user);
-  const dispatch = useDispatch();
-  const [filtersState, setFiltersState] = useState(filterData);
+  const initialFiltersState = {
+    price_from: '',
+    price_to: '',
+    published_date_after: '',
+    published_date_before: '',
+    in_stock: 1,
+    is_active: true,
+    seller_products_only: null,
+  }
+  const [filtersState, setFiltersState] = useState(initialFiltersState);
+
+  // Upon page reloading (not to lose field strings)
+  useEffect(() => {
+    let params = new URLSearchParams(history.location.search);
+    let newFiltersData = {};
+    for (const [key, value] of Object.entries(initialFiltersState)) {
+      let param = params.get(key);
+      if (param !== null) {
+        // try...catch is needed for date fields
+        try {
+          newFiltersData[key] = JSON.parse(param.toLowerCase());
+        } catch (error) {
+          newFiltersData[key] = param;
+        }
+      } else {
+        newFiltersData[key] = value;
+      }
+    }
+    setFiltersState(newFiltersData);
+  }, [])
 
   const handleChange = (e) => {
     setFiltersState({
@@ -286,30 +301,15 @@ function DisplayMenu(props) {
 
   const handleSubmitFilters = (e) => {
     e.preventDefault();
-    let getUrl = getInitialUrl();
-    setSearchParams(getUrl, filtersState);
-    setSearchParams(getUrl, searchData);
-    console.log(getUrl.searchParams.toString());
-    dispatch({
-      type: 'get_filters',
-      payload: filtersState,
-    });
-    get_items(getUrl, props.setter);
+    props.filterProducts(filtersState);
     console.log("Filtered.");
   }
   
   const handleDiscardFilters = (e) => {
     e.preventDefault();
-    const filtersInitialState = defaultState.filters;
-    dispatch({
-      type: 'get_filters',
-      payload: filtersInitialState,
-    });
-    setFiltersState(filtersInitialState);
-
-    let getUrl = getInitialUrl();
-    get_items(getUrl, props.setter);
-    console.log("Discarded.");
+    setFiltersState(initialFiltersState);
+    props.filterProducts(initialFiltersState);
+    console.log("All filters have been discarded.");
   }
 
   const filters = (
@@ -424,7 +424,6 @@ function DisplayMenu(props) {
         )
         : null
       }
-
     </Box>
   )
 

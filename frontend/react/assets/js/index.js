@@ -42,18 +42,6 @@ export const defaultState = {
   cart: null,
   cartProductIds: null,
   emailAddress: null,
-  filters: {
-    price_from: '',
-    price_to: '',
-    published_date_after: '',
-    published_date_before: '',
-    in_stock: 1,
-    is_active: true,
-    seller_products_only: null,
-  },
-  search: {
-    search: "",
-  },
 };
 
 // E.g.:
@@ -68,10 +56,6 @@ const reducer = (state = defaultState, action) => {
       return {...state, cartProductIds: action.payload};
     case 'get_is_verified_email':
       return {...state, emailAddress: action.payload};
-    case 'get_filters':
-      return {...state, filters: action.payload};
-    case 'get_search':
-      return {...state, search: action.payload};
     default:
       return state;
   }

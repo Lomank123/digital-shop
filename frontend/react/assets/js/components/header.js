@@ -21,7 +21,7 @@ export default function Header() {
   const emailAddress = useSelector(state => state.emailAddress);
 
   async function getData() {
-    await getUser(false).then((res) => {
+    await getUser().then((res) => {
       console.log("Header done!");
     }).catch((err) => {
       console.log("Header error.");

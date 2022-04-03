@@ -1,6 +1,4 @@
 // main urls
-//const portNum = 8000;
-//const hostURL = 'http://127.0.0.1' + ':' + portNum + '/';
 const hostURL = 'http://127.0.0.1' + '/';
 
 // media urls
@@ -18,7 +16,6 @@ export const getAuthenticatedUserURL = userGetURL + 'get_authenticated_user/';
 
 // Product
 export const productGetURL = apiURL + 'product/';
-//export const userProductsGetURL = productGetURL + 'get_user_products/';
 
 // Category
 export const categoryGetURL = apiURL + 'category/';

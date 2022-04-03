@@ -31,7 +31,7 @@ class CartCookieManager:
         """
         return self.request.COOKIES.get(consts.USER_CART_ID_COOKIE_NAME, None)
 
-    def get_cart_id(self):
+    def get_non_user_cart_id(self):
         """
         Returns non-user cart id.
         """

@@ -25,7 +25,7 @@ class CartService:
         return self.cookie_manager.get_either_cookie_name()
 
     def _get_non_user_cart_id_from_cookie(self):
-        return self.cookie_manager.get_cart_id()
+        return self.cookie_manager.get_non_user_cart_id()
 
     def _get_user_cart_id_from_cookie(self):
         return self.cookie_manager.get_user_cart_id()
@@ -70,7 +70,7 @@ class CartService:
 
     # Used upon login
     def user_cart_execute(self):
-        cart = CartRepository.get_user_cart_by_id(self.request.user)
+        cart = CartRepository.get_cart_by_user(self.request.user)
         response = self._build_user_cart_response(cart)
         return response
 

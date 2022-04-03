@@ -1,5 +1,5 @@
 import React from 'react';
-import { cartGetURL, logoutURL, userDeleteCartCookieURL } from '../../urls';
+import { logoutURL, userDeleteCartCookieURL } from '../../urls';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useDispatch } from 'react-redux';

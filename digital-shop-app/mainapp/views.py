@@ -137,10 +137,9 @@ class CartViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
+        ids = set()
         if self.request.user.is_authenticated:
             ids = set(int(cart.id) for cart in list(Cart.objects.filter(user=self.request.user)))
-        else:
-            ids = set()
         try:
             ids.add(int(self.request.COOKIES[consts.NON_USER_CART_ID_COOKIE_NAME]))
         except KeyError:
@@ -199,10 +198,9 @@ class CartItemViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
+        ids = set()
         if self.request.user.is_authenticated:
             ids = set(int(cart.id) for cart in list(Cart.objects.filter(user=self.request.user)))
-        else:
-            ids = set()
         try:
             ids.add(int(self.request.COOKIES[consts.NON_USER_CART_ID_COOKIE_NAME]))
         except KeyError:

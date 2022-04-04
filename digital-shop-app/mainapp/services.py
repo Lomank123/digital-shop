@@ -62,10 +62,24 @@ class CartService:
 
     # Used when user enters the website
     def either_cart_execute(self):
-        cart_id = self._get_either_cart_id_from_cookie()
+        response = None
+        # User cart check
+        if self.request.user.is_authenticated:
+            cart = CartRepository.get_cart_by_user(self.request.user)
+            if cart is None:
+                new_cart = CartRepository.get_or_create_cart_by_id()
+                cart = CartRepository.set_user_to_cart(new_cart.id, self.request.user)
+            response = self._build_response(cart)
+            # Here we specialized forced in case when cookie exists but cart not
+            self._set_cart_id_to_cookie(response, cart.id, consts.USER_CART_ID_COOKIE_NAME, forced=True)
+
+        # Non-user cart check
+        cart_id = self._get_non_user_cart_id_from_cookie()
         cart = CartRepository.get_or_create_cart_by_id(cart_id)
-        response = self._build_response(cart)
-        self._set_cart_id_to_cookie(response, cart.id, consts.NON_USER_CART_ID_COOKIE_NAME)
+        if response is None:
+            response = self._build_response(cart)
+        # Here we specialized forced in case when cookie exists but cart not
+        self._set_cart_id_to_cookie(response, cart.id, consts.NON_USER_CART_ID_COOKIE_NAME, forced=True)
         return response
 
     # Used upon login

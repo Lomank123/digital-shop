@@ -7,7 +7,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import history from '../history';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { getCart, getUser, getCartProductIds, getEmailAddress } from '../utils';
-import { noImageURL } from '../urls';
+import { noImageURL, userDeleteCartCookieURL } from '../urls';
+import { blankAxiosInstance } from '../axios';
 
 import '../../styles/main/header.css';
 import { ShoppingCart } from '@material-ui/icons';
@@ -23,11 +24,18 @@ export default function Header() {
   async function getData() {
     await getUser().then((res) => {
       console.log("Header done!");
-    }).catch((err) => {
+    }).catch(async (err) => {
       console.log("Header error.");
+      // Deleting user cart cookie if no user found
+      await blankAxiosInstance.get(userDeleteCartCookieURL).then((res) => {
+        console.log("User cart cookie has been deleted.");
+      }).catch((error) => {
+        console.log(error);
+        console.log("Cart cookie deletion error.");
+      });
     });
 
-    getCart().then((res) => {
+    await getCart().then((res) => {
       console.log("Get cart header done!");
     }).catch((err) => {
       console.log("Header get cart error.");

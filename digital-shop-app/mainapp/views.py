@@ -169,7 +169,7 @@ class CartViewSet(ModelViewSet):
 
     # Used on log out
     @action(
-        methods=['post'],
+        methods=['get'],
         detail=False,
         url_path='delete_user_cart_id_cookie'
     )

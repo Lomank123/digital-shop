@@ -27,6 +27,7 @@ class CartServiceTestCase(TestCase):
     def test_either_cart_execute(self):
         self.assertEqual(Cart.objects.count(), 0)
         request = RequestFactory().request()
+        request.user = AnonymousUser()
         res = CartService(request).either_cart_execute()
         cart_cookie = res.cookies[consts.NON_USER_CART_ID_COOKIE_NAME]
         self.assertEqual(res.status_code, status.HTTP_200_OK)

@@ -19,7 +19,7 @@ export default function Logout() {
     // Logout request
     axiosInstance.post(logoutURL, {}, { params: { redirect: false } }).then(async (res) => {
         // Deleting user cart id cookie
-        await blankAxiosInstance.post(userDeleteCartCookieURL, {});
+        await blankAxiosInstance.get(userDeleteCartCookieURL);
         // Creating new cart if previous one attaches to user
         await getCart();
         await getCartProductIds();

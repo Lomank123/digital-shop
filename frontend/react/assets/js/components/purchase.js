@@ -122,7 +122,46 @@ export default function Purchase() {
               (paymentMethod === "card")
               ? (
                 <Box className="card-credentials-block">
-                  <p>It's card credentials box!</p>
+                  <TextField
+                    className="form-field"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    id="card-number"
+                    label="Card number"
+                    name="card-number"
+                    fullWidth
+                  />
+                  <TextField
+                    className="form-field"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    id="card-name"
+                    label="Name"
+                    name="card-name"
+                    fullWidth
+                  />
+                  <TextField
+                    className="form-field"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    id="valid-thru"
+                    label="Valid Thru"
+                    name="valid-thru"
+                    fullWidth
+                  />
+                  <TextField
+                    className="form-field"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    id="cvc"
+                    label="CVC"
+                    name="cvc"
+                    fullWidth
+                  />
                 </Box>
               )
               : null

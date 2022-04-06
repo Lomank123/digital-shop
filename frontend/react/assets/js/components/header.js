@@ -12,6 +12,7 @@ import { blankAxiosInstance } from '../axios';
 
 import '../../styles/main/header.css';
 import { ShoppingCart } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 
 export default function Header() {
@@ -20,6 +21,13 @@ export default function Header() {
   const cartProductIds = useSelector(state => state.cartProductIds);
   // Use it to display different messages connected with unverified email
   const emailAddress = useSelector(state => state.emailAddress);
+
+  // Translation
+  const {t, i18n} = useTranslation();
+
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language);
+  };
 
   async function getData() {
     await getUser().then((res) => {
@@ -77,8 +85,8 @@ export default function Header() {
 
   const notLoggedIn = (
     <Box className='no-login-btns'>
-      <Button onClick={e => handleClickRedirect(e, loginRoute)}>Login</Button>
-      <Button onClick={e => handleClickRedirect(e, signupRoute)}>Sign up</Button>
+      <Button onClick={e => handleClickRedirect(e, loginRoute)}>{t("login-text")}</Button>
+      <Button onClick={e => handleClickRedirect(e, signupRoute)}>{t("signup-text")}</Button>
     </Box>
   )
 
@@ -176,12 +184,20 @@ export default function Header() {
     );
   }
 
+  const langBox = (
+    <Box className='language-change-block'>
+      <Button className='ru-button' onClick={() => {changeLanguage("ru")}}>RU</Button>
+      <Button className='en-button' onClick={() => {changeLanguage("en")}}>EN</Button>
+    </Box>
+  );
+
   const mainBox = (
     <Box className='header-main'>
       <Box className='header-block'>
         <Box className='logo'>
           <Link className='logo-text' to={'/'}>Digital Shop</Link>
         </Box>
+        {langBox}
         {cartBox}
         <Box className='header-auth-block'>
           {

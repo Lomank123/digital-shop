@@ -312,6 +312,10 @@ function DisplayMenu(props) {
     console.log("All filters have been discarded.");
   }
 
+  if (userData === null) {
+    return null;
+  }
+
   const filters = (
     <Box className="filters-block">
       <h5 className="filter-name">Price:</h5>

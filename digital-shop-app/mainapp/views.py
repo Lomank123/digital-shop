@@ -9,14 +9,14 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import filters
 
-from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
+from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order, Address
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, \
-    CartItemSerializer, EmailAddressSerializer, OrderSerializer
+    CartItemSerializer, EmailAddressSerializer, OrderSerializer, AddressSerializer
 from mainapp.pagination import DefaultCustomPagination, SmallPagination
 from mainapp.permissions import IsOwnerOrReadOnly, IsSellerOrReadOnly, IsSameUser, IsVerifiedEmail, \
     IsCreatorEqualsCurrentUser
 from mainapp.services import CartService, CartItemService
-from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter
+from mainapp.filters import ProductFilter, CartItemFilter, OrderFilter, AddressFilter
 from mainapp import consts
 import logging
 
@@ -191,9 +191,8 @@ class CartItemViewSet(ModelViewSet):
             'create',
             'destroy'
         ]
-        if self.action not in unsafe_actions:
-            permission_classes = [AllowAny]
-        else:
+        permission_classes = [AllowAny]
+        if self.action in unsafe_actions:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
@@ -327,6 +326,28 @@ class OrderViewSet(ModelViewSet):
         else:
             queryset = Order.objects.filter(cart__user=self.request.user)
         return queryset
+
+
+class AddressViewSet(ModelViewSet):
+    serializer_class = AddressSerializer
+    permission_classes = (AllowAny, )
+    filterset_class = AddressFilter
+
+    def get_queryset(self):
+        queryset = Address.objects.all()
+        return queryset
+
+    def get_permissions(self):
+        unsafe_actions = [
+            'update',
+            'create',
+            'destroy',
+            'partial_update',
+        ]
+        permission_classes = [AllowAny]
+        if self.action in unsafe_actions:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
 
 
 # TODO: Remove if unused

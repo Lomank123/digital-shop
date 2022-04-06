@@ -38,10 +38,13 @@ export const removeAllFromCartURL = cartItemURL + 'remove_all_from_cart/';
 export const moveToUseCartURL = cartItemURL + 'move_to_user_cart/';
 export const getTotalPriceURL = cartItemURL + 'get_total_price/';
 export const getEitherCartItemsURL = cartItemURL + 'get_either_cart_items/';
-
 export const postPurchaseURL = cartItemURL + 'post_purchase/';
 
+// Order
 export const ordersURL = apiURL + 'order/';
+
+// Address
+export const addressURL = apiURL + 'address/';
 
 // Signup
 export const signupURL = apiRestAuthURL + 'registration/';

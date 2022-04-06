@@ -1,5 +1,5 @@
 from django.db.models import F, Sum
-from mainapp.models import Cart, Product, CartItem, Category, Order
+from mainapp.models import Cart, Product, CartItem, Category, Order, Address
 from mainapp import consts
 import logging
 
@@ -142,8 +142,26 @@ class CartItemRepository:
 class OrderRepository:
 
     @staticmethod
-    def create_order(cart, total_price):
-        new_order = Order.objects.create(cart=cart, total_price=total_price)
+    def create_order(cart, total_price, address, payment_method):
+        new_order = Order.objects.create(
+            cart=cart,
+            total_price=total_price,
+            address=address,
+            payment_method=payment_method
+        )
         new_order.save()
         logger.info("New order has been created.")
         return new_order
+
+
+class AddressRepository:
+
+    @staticmethod
+    def get_available_addresses():
+        addresses = Address.objects.filter(available=True)
+        return addresses
+
+    @staticmethod
+    def find_address_by_id(address_id):
+        address = Address.objects.filter(id=address_id).first()
+        return address

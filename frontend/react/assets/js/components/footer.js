@@ -1,21 +1,11 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import '../../styles/main/footer.css';
 
 
 export default function Footer() {
-
-  const links = (
-    <Box className='links-block'>
-      <Link className='link' to="/">Home</Link>
-      <Link className='link' to="/">About</Link>
-      <Link className='link' to="/">News</Link>
-      <Link className='link' to="/">Shop</Link>
-    </Box>
-  )
-
+  const {t, i18n} = useTranslation();
   return (
     <Box className='footer-block'>
       <span className='credentials'>
@@ -24,7 +14,7 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Robert "Lomank" Khakimov
+          {t("footer.author")}
         </a>
       </span>
     </Box>

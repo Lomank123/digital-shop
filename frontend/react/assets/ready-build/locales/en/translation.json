@@ -169,19 +169,56 @@
   },
 
   "display": {
-    
+    "in-cart-button": "In cart",
+    "remove-button": "Remove",
+    "your-product": "It is your product",
+    "not-available": "Not available",
+    "out-of-stock": "Out of stock",
+    "first": "First",
+    "previous": "Previous",
+    "last": "Last",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "delete-button": "Delete",
+    "order-id": "Order id:",
+    "total-price": "Total price:",
+    "date": "Date:",
+    "order-details-label": "View order details",
+    "quantity": "Quantity:"
   },
 
   "footer": {
-
+    "author": "Robert \"Lomank\" Khakimov"
   },
 
   "header": {
-
+    "login": "Log in",
+    "signup": "Sign up",
+    "add-product": "Add product",
+    "admin-site": "Admin site",
+    "menu-profile": "Profile",
+    "menu-orders": "My orders",
+    "menu-logout": "Logout"
   },
 
   "home": {
-
+    "no-products": "No products available.",
+    "categories-label": "Categories",
+    "all-categories-button": "All categories",
+    "search": "Search",
+    "price": "Price:",
+    "price-from": "From",
+    "price-to": "To",
+    "published": "Published:",
+    "is-active": "Is active",
+    "quantity": "Quantity:",
+    "in-stock": "In stock",
+    "seller-filters": "Seller filters",
+    "only-seller-products": "Only your products",
+    "apply-button": "Apply",
+    "discard-button": "Discard",
+    "filters": "Filters"
   },
 
   "image-upload": {

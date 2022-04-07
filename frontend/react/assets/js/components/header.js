@@ -9,21 +9,18 @@ import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { getCart, getUser, getCartProductIds, getEmailAddress } from '../utils';
 import { noImageURL, userDeleteCartCookieURL } from '../urls';
 import { blankAxiosInstance } from '../axios';
-
-import '../../styles/main/header.css';
 import { ShoppingCart } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
+import '../../styles/main/header.css';
 
 
 export default function Header() {
+  const {t, i18n} = useTranslation();
   const userData = useSelector(state => state.user, shallowEqual);
   const userCart = useSelector(state => state.cart, shallowEqual);
   const cartProductIds = useSelector(state => state.cartProductIds);
   // Use it to display different messages connected with unverified email
   const emailAddress = useSelector(state => state.emailAddress);
-
-  // Translation
-  const {t, i18n} = useTranslation();
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
@@ -85,8 +82,8 @@ export default function Header() {
 
   const notLoggedIn = (
     <Box className='no-login-btns'>
-      <Button onClick={e => handleClickRedirect(e, loginRoute)}>{t("login-text")}</Button>
-      <Button onClick={e => handleClickRedirect(e, signupRoute)}>{t("signup-text")}</Button>
+      <Button onClick={e => handleClickRedirect(e, loginRoute)}>{t("header.login")}</Button>
+      <Button onClick={e => handleClickRedirect(e, signupRoute)}>{t("header.signup")}</Button>
     </Box>
   )
 
@@ -109,11 +106,10 @@ export default function Header() {
   if (userData !== null && userData !== 1) {
     loggedIn = (
       <Box className='loggedin-btns'>
-
         {
           (userData.seller) ? (
             <Button className='add-product-btn' onClick={e => handleClickRedirect(e, addProductRoute)}>
-              Add product
+              {t("header.add-product")}
             </Button>
           ) : null
         }
@@ -121,7 +117,7 @@ export default function Header() {
         {
           (userData.is_superuser) ? (
             <Button className='add-product-btn' onClick={e => {window.location.href = '/admin/'}}>
-              Admin site
+              {t("header.admin-site")}
             </Button>
           ) : null
         }
@@ -160,9 +156,9 @@ export default function Header() {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
         >
-          <MenuItem onClick={e => handleClickRedirect(e, `${profileRoute}/${userData.id}/`)}>Profile</MenuItem>
-          <MenuItem onClick={e => handleClickRedirect(e, ordersRoute)}>My orders</MenuItem>
-          <MenuItem onClick={e => handleClickRedirect(e, logoutRoute)}>Log out</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, `${profileRoute}/${userData.id}/`)}>{t("header.menu-profile")}</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, ordersRoute)}>{t("header.menu-orders")}</MenuItem>
+          <MenuItem onClick={e => handleClickRedirect(e, logoutRoute)}>{t("header.menu-logout")}</MenuItem>
         </Menu>
       </Box>
     )

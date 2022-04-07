@@ -4,14 +4,14 @@ import { blankAxiosInstance } from "../axios";
 import { Box, Button, TextField, FormControlLabel, Checkbox, InputAdornment, IconButton } from "@material-ui/core";
 import history from "../history";
 import { DisplayPagination, DisplayProducts, get_items } from "./display";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Clear, Search } from "@material-ui/icons";
-import { defaultState } from "..";
-
+import { useTranslation } from "react-i18next";
 import "../../styles/main/home.css";
 
 
 export default function Home() {
+  const {t, i18n} = useTranslation();
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState(null);
 
@@ -54,7 +54,7 @@ export default function Home() {
           (products.count === 0)
           ? (
               <Box className="default-block products-block no-products-block">
-                <p>No products available.</p>
+                <p>{t("home.no-products")}</p>
               </Box>
             )
           : (
@@ -104,6 +104,7 @@ function setSearchParams(url, dict) {
 }
 
 function DisplayCategories(props) {
+  const {t, i18n} = useTranslation();
   const categories = props.categories;
 
   function getCategoryParam() {
@@ -122,7 +123,7 @@ function DisplayCategories(props) {
 
   return (
     <Box className="default-block categories-block">
-      <h4 className="filters-label">Categories</h4>
+      <h4 className="filters-label">{t("home.categories-label")}</h4>
       <Button
         className={"category-btn" +
           ((getCategoryParam() === null) ?
@@ -131,7 +132,7 @@ function DisplayCategories(props) {
         )}
         onClick={(e) => { handleCategoryClick(e, null) }}
       >
-        All categories
+        {t("home.all-categories-button")}
       </Button>
       {
         Object.entries(categories).map(([key, category]) => {
@@ -157,6 +158,7 @@ function DisplayCategories(props) {
 }
 
 function DisplaySearch(props) {
+  const {t, i18n} = useTranslation();
   const initialState = {
     search: "",
   }
@@ -197,7 +199,7 @@ function DisplaySearch(props) {
         variant="outlined"
         margin="normal"
         id="search"
-        label="Search"
+        label={t("home.search")}
         name="search"
         fullWidth
         value={searchData.search || ''}
@@ -220,13 +222,14 @@ function DisplaySearch(props) {
 
   return (
     <Box className="search default-block menu-block">
-      <h4 className="filters-label">Search</h4>
+      <h4 className="filters-label">{t("home.search")}</h4>
       {searchBlock}
     </Box>
   );
 }
 
 function DisplayMenu(props) {
+  const {t, i18n} = useTranslation();
   const userData = useSelector(state => state.user);
   const initialFiltersState = {
     price_from: '',
@@ -318,7 +321,7 @@ function DisplayMenu(props) {
 
   const filters = (
     <Box className="filters-block">
-      <h5 className="filter-name">Price:</h5>
+      <h5 className="filter-name">{t("home.price")}</h5>
       <Box className="price-filter-block">
         <TextField
           className="filter-field price-from-field"
@@ -326,7 +329,7 @@ function DisplayMenu(props) {
           variant="outlined"
           margin="normal"
           id="price-from"
-          label="From"
+          label={t("home.price-from")}
           name="price_from"
           value={filtersState.price_from || ''}
           onChange={handleChange}
@@ -337,7 +340,7 @@ function DisplayMenu(props) {
           variant="outlined"
           margin="normal"
           id="price-to"
-          label="To"
+          label={t("home.price-to")}
           name="price_to"
           value={filtersState.price_to || ''}
           onChange={handleChange}
@@ -345,7 +348,7 @@ function DisplayMenu(props) {
       </Box>
 
       <p></p>
-      <h5 className="filter-name">Published:</h5>
+      <h5 className="filter-name">{t("home.published")}</h5>
       <Box className="published-filter-block">
         <TextField
           className="filter-field price-from-field"
@@ -370,7 +373,7 @@ function DisplayMenu(props) {
       </Box>
 
       <p></p>
-      <h5 className="filter-name">Is active:</h5>
+      <h5 className="filter-name">{t("home.is-active")}:</h5>
       <Box className="is-active-filter-block">
         <FormControlLabel
           label='Is active'
@@ -379,7 +382,7 @@ function DisplayMenu(props) {
               checked={filtersState.is_active}
               id="filter-is-active"
               color="primary"
-              label="Is active"
+              label={t("home.is-active")}
               name="is_active"
               onChange={handleIsActiveChange}
             />
@@ -387,7 +390,7 @@ function DisplayMenu(props) {
         />
       </Box>
 
-      <h5 className="filter-name">Quantity:</h5>
+      <h5 className="filter-name">{t("home.quantity")}</h5>
       <Box className="quantity-filter-block">
         <FormControlLabel
           label='In stock'
@@ -396,7 +399,7 @@ function DisplayMenu(props) {
               checked={Boolean(filtersState.in_stock)}
               id="filter-in-stock"
               color="primary"
-              label="In stock"
+              label={t("home.in-stock")}
               name="in_stock"
               onChange={handleCheckboxChange}
             />
@@ -408,16 +411,16 @@ function DisplayMenu(props) {
         (userData.seller)
         ? (
           <Box>
-            <h5 className="filter-name">Seller filters:</h5>
+            <h5 className="filter-name">{t("home.seller-filters")}</h5>
             <Box className="quantity-filter-block">
               <FormControlLabel
-                label='Only your products'
+                label={t("home.only-seller-products")}
                 control={
                   <Checkbox
                     checked={Boolean(filtersState.seller_products_only)}
                     id="filter-seller-products-only"
                     color="primary"
-                    label="Only seller products"
+                    label={t("home.only-seller-products")}
                     name="seller_products_only"
                     onChange={handleUserProductsCheckboxChange}
                   />
@@ -439,7 +442,7 @@ function DisplayMenu(props) {
         color="primary"
         onClick={handleSubmitFilters}
       >
-        Apply
+        {t("home.apply-button")}
       </Button>
       <Button
         className="filters-btn"
@@ -447,14 +450,14 @@ function DisplayMenu(props) {
         color="primary"
         onClick={handleDiscardFilters}
       >
-        Discard
+        {t("home.discard-button")}
       </Button>
     </Box>
   )
 
   return(
     <Box className="default-block menu-block">
-      <h4 className="filters-label">Filters</h4>
+      <h4 className="filters-label">{t("home.filters")}</h4>
       {filters}
       {buttons}
     </Box>

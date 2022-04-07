@@ -3,10 +3,12 @@ import { Box, Button, FormControl, FormControlLabel, MenuItem, Radio, RadioGroup
 import { useSelector } from "react-redux";
 import { getTotalPrice, handlePostPurchase, getAvailableAddresses } from "../utils";
 import history from "../history";
+import { useTranslation } from "react-i18next";
 import '../../styles/components/purchase.css';
 
 
 export default function Purchase() {
+  const {t, i18n} = useTranslation();
   const cart = useSelector(state => state.cart);
   const cartProductIds = useSelector(state => state.cartProductIds);
   const [totalPrice, setTotalPrice] = useState(null);
@@ -73,27 +75,27 @@ export default function Purchase() {
         (cartProductIds.length > 0)
         ? (
             <Box className="form-order-block">
-              <h4>Confirm your purchase</h4>
+              <h4>{t("purchase.confirm-label")}</h4>
               <p>
-                You are going to purchase these products by total cost of <b>{totalPrice}$</b>.
-                To confirm you need to choose available address and payment method. Finally click purchase button.
+                {t("purchase.confirm-text")} <b>{totalPrice}$</b>.
+                {t("purchase.confirm-text2")}
               </p>
 
               <Box className="choose-address-block">
-                <h5>Choose available address:</h5>
+                <h5>{t("purchase.choose-address-label")}</h5>
                 <TextField
                   className="form-field"
                   select
                   variant="outlined"
                   id="address-select"
-                  label="Address"
+                  label={t("purchase.address")}
                   name="address"
                   required
                   fullWidth
                   value={chosenAddress || ""}
                   onChange={handleAddressChange}
                   error={Boolean(errors.address)}
-                  helperText={Boolean(errors.address) ? 'This field is required.' : ''}
+                  helperText={Boolean(errors.address) ? t("purchase.field-is-required") : ''}
                 >
                   {
                     Object.entries(addresses).map(([key, address]) => {
@@ -106,14 +108,14 @@ export default function Purchase() {
               </Box>
 
               <Box className="choose-payment-block">
-                <h5>Choose payment method:</h5>
+                <h5>{t("purchase.payment-method-label")}</h5>
                 <FormControl>
                   <RadioGroup
                     value={paymentMethod}
                     onChange={handleRadioChange}
                   >
-                    <FormControlLabel value={"cash"} control={ <Radio /> } label="Cash" />
-                    <FormControlLabel value={"card"} control={ <Radio /> } label="Credit card" />
+                    <FormControlLabel value={"cash"} control={ <Radio /> } label={t("purchase.cash")} />
+                    <FormControlLabel value={"card"} control={ <Radio /> } label={t("purchase.card")} />
                   </RadioGroup>
                 </FormControl>
               </Box>
@@ -128,7 +130,7 @@ export default function Purchase() {
                     margin="normal"
                     required
                     id="card-number"
-                    label="Card number"
+                    label={t("purchase.card-number")}
                     name="card-number"
                     fullWidth
                   />
@@ -138,7 +140,7 @@ export default function Purchase() {
                     margin="normal"
                     required
                     id="card-name"
-                    label="Name"
+                    label={t("purchase.card-name")}
                     name="card-name"
                     fullWidth
                   />
@@ -148,7 +150,7 @@ export default function Purchase() {
                     margin="normal"
                     required
                     id="valid-thru"
-                    label="Valid Thru"
+                    label={t("purchase.card-date")}
                     name="valid-thru"
                     fullWidth
                   />
@@ -158,7 +160,7 @@ export default function Purchase() {
                     margin="normal"
                     required
                     id="cvc"
-                    label="CVC"
+                    label={t("purchase.card-cvc")}
                     name="cvc"
                     fullWidth
                   />
@@ -170,7 +172,7 @@ export default function Purchase() {
               <Button variant="contained" color="primary" onClick={postPurchase}>Purchase</Button>
             </Box>
           )
-        : (<h4>Cart is empty. Nothing to purchase.</h4>)
+        : (<h4>{t("purchase.empty-cart")}</h4>)
       }
     </Box>
   )

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, IconButton } from "@material-ui/core";
 import { Clear } from "@material-ui/icons";
 import { getTimestamp } from "../utils";
-
+import { useTranslation } from 'react-i18next';
 import '../../styles/components/imageUpload.css';
 
 
@@ -15,6 +15,7 @@ export function ImageUpload(props) {
       - edit - indicates whether it's using to edit or to create
   */
 
+  const {t, i18n} = useTranslation();
   // Rename most vars
   const [previewImage, setPreviewImage] = useState(null);     // For preview image
 	const errorsInitialState = { image: '' };
@@ -108,7 +109,7 @@ export function ImageUpload(props) {
 
   return (
     <Box className="field-block image-upload-block">
-      <p className="field-label">Upload image:</p>
+      <p className="field-label">{t("image-upload.text")}</p>
       <Box className="upload-block">
         <input
           accept="image/*"
@@ -139,7 +140,9 @@ export function ImageUpload(props) {
           : (
             <label className="btn-label-upload" htmlFor="raised-button-file">
               <Box className="choose-image-block" component="span">
-                <span className="choose-image-text">Click here to choose image</span>
+                <span className="choose-image-text">
+                  {t("image-upload.click-to-choose-text")}
+                </span>
               </Box>
             </label>
           )

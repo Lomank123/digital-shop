@@ -1,4 +1,245 @@
 {
-  "login-text": "Войти",
-  "signup-text": "Регистрация"
+  "login-text": "Log in",
+  "signup-text": "Sign up",
+
+  "already-logged-in": {
+    "label": "Already logged in",
+    "information": "You have already logged in. Maybe you want to go to home page?",
+    "home-button": "Home"
+  },
+
+  "change-password-confirm": {
+    "information": "Password has been changed."
+  },
+
+  "reset-password-confirm": {
+    "label": "Password has been reset successfully",
+    "information": "Your password has been reset. Now you need to log in again.",
+    "login-button": "Log in"
+  },
+
+  "reset-password-email-sent": {
+    "label": "Reset password email message sent",
+    "information": "Email confirmation message has been sent. If you don't see any, press the button below to resend it.",
+    "send-again-button": "Send again"
+  },
+
+  "verify-email-confirm": {
+    "label": "Email confirmation",
+    "information": "To confirm your email click the button below.",
+    "confirm-button": "Confirm"
+  },
+
+  "verify-email-sent": {
+    "label": "Email verification message sent",
+    "information": "Email message has been sent. Check your mailbox. If you don't see any, try to resend it by pressing the button below.",
+    "send-again-button": "Send again"
+  },
+
+  "change-password": {
+    "label": "Change password",
+    "old-password": "Old password",
+    "new-password": "New password",
+    "confirm-new-password": "Confirm new password",
+    "change-button": "Change password"
+  },
+
+  "forgot": {
+    "label": "Forgot password",
+    "email": "Email address",
+    "send-button": "Send"
+  },
+
+  "login": {
+    "label": "Login",
+    "email": "Email",
+    "password": "Password",
+    "login-button": "Log In",
+    "signup-button": "Sign up",
+    "forgot-link": "Forgot password?"
+  },
+
+  "logout": {
+    "label": "Logout",
+    "information": "Do you want to logout?",
+    "logout-button": "Logout"
+  },
+
+  "reset-password": {
+    "label": "Reset password",
+    "password": "Password",
+    "confirm-password": "Confirm password",
+    "confirm-button": "Confirm"
+  },
+
+  "signup": {
+    "label": "Signup",
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "confirm-password": "Confirm password",
+    "signup-button": "Sign up"
+  },
+
+  "forbidden-401": {
+    "number": "401",
+    "label": "Forbidden"
+  },
+
+  "not-found-404": {
+    "number": "404",
+    "label": "Page not found"
+  },
+
+  "orders": {
+    "your-orders": "Your orders",
+    "orders-not-found": "No orders found"
+  },
+
+  "product-add-edit": {
+    "edit": "Edit product",
+    "create": "Create product",
+    "choose-category-label": "Choose category:",
+    "choose-category": "Category",
+    "field-required-error": "This field is required",
+    "title-label": "Write a title:",
+    "title": "Title",
+    "price-label": "Enter price:",
+    "price": "Price",
+    "quantity-label": "Enter quantity:",
+    "quantity": "Quantity",
+    "description-label": "Describe your product:",
+    "description": "Description",
+    "availability-label": "Product availability:",
+    "availability": "Is active",
+    "save-button": "Save",
+    "add-button": "Add",
+    "delete-button": "Delete"
+  },
+
+  "product-detail": {
+    "category": "Category:",
+    "description": "Description",
+    "publication-date": "Publication date:",
+    "last-update": "Last update:",
+    "in-stock": "In stock",
+    "out-of-stock": "Out of stock",
+    "in-cart": "In cart",
+    "add-to-cart": "Add to cart",
+    "remove-button": "Remove",
+    "seller-info": "Seller info"
+  },
+
+  "user-edit": {
+    "edit-label": "Edit profile",
+    "username": "Username",
+    "email": "Email address",
+    "save-button": "Save changes"
+  },
+
+  "user-profile": {
+    "label": "User profile",
+    "your-products": "Your products",
+    "other-user-products": "Products of ",
+    "no-products": "No products available",
+    "email":"Email:",
+    "username": "Username:",
+    "date-joined": "Date joined:",
+    "edit-button": "Edit profile"
+  },
+
+  "cart": {
+    "user-cart-label": "User cart",
+    "clean-cart-button": "Clean cart",
+    "total-price": "Total price:",
+    "purchase-button": "Purchase",
+    "non-user-label": "Non-user cart",
+    "non-user-information": "Non-user cart products will be kept for 30 days. After that they will be discarded.",
+    "move-to-user-cart-button": "Move to user cart",
+    "cart-empty": "Cart is empty."
+  },
+
+  "dialog": {
+    "del-dialog-text": "Are you sure you want to delete this product?",
+    "del-dialog-extra": "You can't undo this action.",
+    "cancel-button": "Cancel",
+    "delete-button": "Delete",
+    "is-active-text": "Do you want to set this to inactive? This will delete product from all active carts.",
+    "confirm-button": "Confirm"
+  },
+
+  "display": {
+    "in-cart-button": "In cart",
+    "remove-button": "Remove",
+    "your-product": "It is your product",
+    "not-available": "Not available",
+    "out-of-stock": "Out of stock",
+    "first": "First",
+    "previous": "Previous",
+    "last": "Last",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "delete-button": "Delete",
+    "order-id": "Order id:",
+    "total-price": "Total price:",
+    "date": "Date:",
+    "order-details-label": "View order details",
+    "quantity": "Quantity:"
+  },
+
+  "footer": {
+    "author": "Robert \"Lomank\" Khakimov"
+  },
+
+  "header": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "add-product": "Add product",
+    "admin-site": "Admin site",
+    "menu-profile": "Profile",
+    "menu-orders": "My orders",
+    "menu-logout": "Logout"
+  },
+
+  "home": {
+    "no-products": "No products available.",
+    "categories-label": "Categories",
+    "all-categories-button": "All categories",
+    "search": "Search",
+    "price": "Price:",
+    "price-from": "From",
+    "price-to": "To",
+    "published": "Published:",
+    "is-active": "Is active",
+    "quantity": "Quantity:",
+    "in-stock": "In stock",
+    "seller-filters": "Seller filters",
+    "only-seller-products": "Only your products",
+    "apply-button": "Apply",
+    "discard-button": "Discard",
+    "filters": "Filters"
+  },
+
+  "image-upload": {
+    "text": "Upload image:",
+    "click-to-choose-text": "Click here to choose image"
+  },
+
+  "purchase": {
+    "confirm-label": "Confirm your purchase",
+    "confirm-text": "You are going to purchase these products by total cost of ",
+    "confirm-text2": "To confirm you need to choose available address and payment method. Finally click purchase button.",
+    "choose-address-label": "Choose available address:",
+    "address": "Address",
+    "payment-method-label": "Choose payment method:",
+    "field-is-required": "This field is required.",
+    "cash": "Cash",
+    "card": "Credit card",
+    "card-number": "Card number",
+    "card-name": "Name",
+    "card-date": "Valid thru",
+    "card-cvc": "CVC",
+    "empty-cart": "Cart is empty. Nothing to purchase."
+  }
 }

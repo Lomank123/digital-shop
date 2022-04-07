@@ -222,10 +222,24 @@
   },
 
   "image-upload": {
-
+    "text": "Upload image:",
+    "click-to-choose-text": "Click here to choose image"
   },
 
   "purchase": {
-
+    "confirm-label": "Confirm your purchase",
+    "confirm-text": "You are going to purchase these products by total cost of ",
+    "confirm-text2": "To confirm you need to choose available address and payment method. Finally click purchase button.",
+    "choose-address-label": "Choose available address:",
+    "address": "Address",
+    "payment-method-label": "Choose payment method:",
+    "field-is-required": "This field is required.",
+    "cash": "Cash",
+    "card": "Credit card",
+    "card-number": "Card number",
+    "card-name": "Name",
+    "card-date": "Valid thru",
+    "card-cvc": "CVC",
+    "empty-cart": "Cart is empty. Nothing to purchase."
   }
 }

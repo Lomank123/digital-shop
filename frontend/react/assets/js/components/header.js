@@ -22,7 +22,15 @@ export default function Header() {
   // Use it to display different messages connected with unverified email
   const emailAddress = useSelector(state => state.emailAddress);
 
+  useLayoutEffect(() => {
+    let lang = window.localStorage.getItem('lng');
+    if (lang !== null && lang !== '') {
+      i18n.changeLanguage(lang);
+    }
+  }, [])
+
   const changeLanguage = (language) => {
+    window.localStorage.setItem('lng', language);
     i18n.changeLanguage(language);
   };
 
@@ -181,7 +189,7 @@ export default function Header() {
   }
 
   const langBox = (
-    <Box className='language-change-block'>
+    <Box className='language-change-block' display={'flex'}>
       <Button className='ru-button' onClick={() => {changeLanguage("ru")}}>RU</Button>
       <Button className='en-button' onClick={() => {changeLanguage("en")}}>EN</Button>
     </Box>

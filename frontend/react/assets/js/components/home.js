@@ -376,7 +376,7 @@ function DisplayMenu(props) {
       <h5 className="filter-name">{t("home.is-active")}:</h5>
       <Box className="is-active-filter-block">
         <FormControlLabel
-          label='Is active'
+          label={t("home.is-active")}
           control={
             <Checkbox
               checked={filtersState.is_active}
@@ -393,7 +393,7 @@ function DisplayMenu(props) {
       <h5 className="filter-name">{t("home.quantity")}</h5>
       <Box className="quantity-filter-block">
         <FormControlLabel
-          label='In stock'
+          label={t("home.in-stock")}
           control={
             <Checkbox
               checked={Boolean(filtersState.in_stock)}

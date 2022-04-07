@@ -90,6 +90,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
     - Separated backend and frontend
     - Configured GitHub Actions
     - Codecov coverage support
+    - Localization (EN and RU)
 
 - Products and Categories
     - In home page all available (and some unavailable) products can be viewed

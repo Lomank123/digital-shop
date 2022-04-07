@@ -1,0 +1,233 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderator",
+    "permissions": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ]
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=",
+    "last_login": "2022-04-07T18:20:40.957Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T11:55:30.048Z",
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$eeoLHK40EmdBNtViBibUgy$aPuWFU9WfDA8D78I3p2zNMVkUnXUO2jqzCcfGlj/3JQ=",
+    "last_login": "2022-02-09T18:26:09.619Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:33.586Z",
+    "username": "test1",
+    "email": "test1@gmail.com",
+    "photo": "",
+    "is_seller": true,
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=",
+    "last_login": "2022-04-06T16:26:16.397Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-01-03T12:02:58.857Z",
+    "username": "test2",
+    "email": "test2@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$E2t5hORXgMEd876UWcy72y$LHmZl+jCn/+tSIijk0g6hZ1voZ/rqGCOkN9EgqMF2EA=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-02-09T17:53:26.410Z",
+    "username": "test3",
+    "email": "test3@gmail.com",
+    "photo": "",
+    "is_seller": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 9,
+  "fields": {
+    "name": "Детективы",
+    "slug": "detektivy"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 10,
+  "fields": {
+    "name": "Романы",
+    "slug": "romany"
+  }
+},
+{
+  "model": "mainapp.category",
+  "pk": 11,
+  "fields": {
+    "name": "Приключения",
+    "slug": "priklyucheniya"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 27,
+  "fields": {
+    "category": 9,
+    "created_by": 1,
+    "title": "Убийство в «Восточном экспрессе»",
+    "description": "Находившийся в Стамбуле великий сыщик Эркюль Пуаро возвращается в Англию на знаменитом «Восточном экспрессе», в котором вместе с ним едут, кажется, представители всех возможных национальностей. Один из пассажиров, неприятный американец по фамилии Рэтчетт, предлагает Пуаро стать его телохранителем, поскольку считает, что его должны убить. Знаменитый бельгиец отмахивается от этой абсурдной просьбы. А на следующий день американца находят мертвым в своем купе, причем двери закрыты, а окно открыто.",
+    "image": "",
+    "price": "30.00",
+    "quantity": 10,
+    "is_active": true,
+    "published": "2022-04-07T18:24:50.750Z",
+    "updated": "2022-04-07T18:24:50.750Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 28,
+  "fields": {
+    "category": 10,
+    "created_by": 1,
+    "title": "Гордость и предубеждение",
+    "description": "Действие романа разворачивается в Англии конца 18 века. В семье Беннет пятеро дочерей и конечно, заботливые родители души не чаят в своих красавицах, но всех их нужно выдать замуж. И тут как нельзя кстати, по соседству поселяется мистер Бингли, джентльмен юных лет.",
+    "image": "",
+    "price": "1000.00",
+    "quantity": 4,
+    "is_active": true,
+    "published": "2022-04-07T18:31:07.231Z",
+    "updated": "2022-04-07T18:31:07.231Z"
+  }
+},
+{
+  "model": "mainapp.product",
+  "pk": 29,
+  "fields": {
+    "category": 11,
+    "created_by": 1,
+    "title": "Дети капитана Гранта",
+    "description": "История повествует о поисках капитана Гранта, командовавшего судном «Британия», которое потерпело крушение где-то на 37° южной широты. То есть всё, что знают путешественники — это градус южной широты. Всё. Ни больше, ни меньше. Поиск неизвестного капитана при названных условиях и обстоятельствах, судя по всему, не казался поступком сумасшедших.",
+    "image": "",
+    "price": "400.00",
+    "quantity": 40,
+    "is_active": true,
+    "published": "2022-04-07T18:32:04.006Z",
+    "updated": "2022-04-07T18:32:04.006Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-04-07T18:21:39.192Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 11,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-04-07T18:21:39.338Z"
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "email": "admin@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "email": "test1@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "email": "test2@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "email": "test3@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+}
+]

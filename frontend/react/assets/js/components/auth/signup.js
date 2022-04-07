@@ -6,10 +6,12 @@ import Button from '@material-ui/core/Button';
 import history from '../../history';
 import { emailSentRoute } from '../../routes';
 import { Box } from '@material-ui/core';
-
+import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/auth.css';
 
+
 export default function Signup() {
+	const {t, i18n} = useTranslation();
 	// Signup form
 	const initialFormData = {
     email: '',
@@ -69,7 +71,7 @@ export default function Signup() {
 
 	return(
 		<Box className='default-block auth-block'>
-			<h3 className='auth-h3'>Signup</h3>
+			<h3 className='auth-h3'>{t("signup.label")}</h3>
 
 			<Box className='auth-textfield-block'>
 				<TextField
@@ -78,7 +80,7 @@ export default function Signup() {
 					required
 					fullWidth
 					id="username"
-					label="Username"
+					label={t("signup.username")}
 					name="username"
 					autoComplete="username"
 					autoFocus
@@ -92,7 +94,7 @@ export default function Signup() {
 					required
 					fullWidth
 					id="email"
-					label="Email Address"
+					label={t("signup.email")}
 					name="email"
 					autoComplete="example@gmail.com"
 					autoFocus
@@ -106,7 +108,7 @@ export default function Signup() {
 					required
 					fullWidth
 					name="password1"
-					label="Password"
+					label={t("signup.password")}
 					type="password"
 					id="password1"
 					autoComplete="current-password"
@@ -120,7 +122,7 @@ export default function Signup() {
 					required
 					fullWidth
 					name="password2"
-					label="Confirm password"
+					label={t("signup.confirm-password")}
 					type="password"
 					id="password2"
 					autoComplete="confirm-password"
@@ -138,7 +140,7 @@ export default function Signup() {
 					color="primary"
 					onClick={handleSubmit}
 				>
-					Sign Up
+					{t("signup.signup-button")}
 				</Button>
 			</Box>
 

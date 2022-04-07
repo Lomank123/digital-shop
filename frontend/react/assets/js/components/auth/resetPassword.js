@@ -6,12 +6,12 @@ import { passwordResetConfirmURL } from '../../urls';
 import history from '../../history';
 import { resetRoute, confirmRoute } from '../../routes';
 import { useParams } from 'react-router';
-
+import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/auth.css';
 
 
 export default function ResetPassword() {
-
+	const {t, i18n} = useTranslation();
   const params = useParams();
 
 	const initialFormData = {
@@ -62,7 +62,7 @@ export default function ResetPassword() {
 
   return (
     <Box className='default-block auth-block'>
-      <h3 className='auth-h3'>Reset password</h3>
+      <h3 className='auth-h3'>{t("reset-password.label")}</h3>
 
 			<Box className='auth-textfield-block'>
 				<TextField
@@ -70,7 +70,7 @@ export default function ResetPassword() {
 					margin="normal"
 					required
 					name="password1"
-					label="Password"
+					label={t("reset-password.password")}
 					type="password"
 					id="password1"
 					autoComplete="current-password"
@@ -83,7 +83,7 @@ export default function ResetPassword() {
 					margin="normal"
 					required
 					name="password2"
-					label="Confirm password"
+					label={t("reset-password.confirm-password")}
 					type="password"
 					id="password2"
 					autoComplete="confirm-password"
@@ -102,10 +102,9 @@ export default function ResetPassword() {
 					color="primary"
 					onClick={handleSubmit}
 				>
-					Confirm
+					{t("reset-password.confirm-button")}
 				</Button>
 			</Box>
-
     </Box>
   );
 }

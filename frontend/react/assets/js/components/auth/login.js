@@ -9,12 +9,13 @@ import history from '../../history';
 import { getCart, getCartProductIds, getUser } from '../../utils';
 import { useLocation } from 'react-router';
 import { forgotRoute, signupRoute } from '../../routes';
-
+import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/login.css';
 import '../../../styles/auth/auth.css';
 
 
 export default function Login() {
+	const {t, i18n} = useTranslation();
 	const search = useLocation().search;
 
 	// Handles redirect on click
@@ -84,7 +85,7 @@ export default function Login() {
 
 	return(
 		<Box className='default-block auth-block'>
-			<h3 className='auth-h3'>Login</h3>
+			<h3 className='auth-h3'>{t("login.label")}</h3>
 
 			<Box className='auth-textfield-block'>
 				<TextField
@@ -93,7 +94,7 @@ export default function Login() {
 					margin="normal"
 					required
 					id="email"
-					label="Email"
+					label={t("login.email")}
 					name="email"
 					autoComplete="email"
 					autoFocus
@@ -107,7 +108,7 @@ export default function Login() {
 					margin="normal"
 					required
 					name="password"
-					label="Password"
+					label={t("login.password")}
 					type="password"
 					id="password"
 					autoComplete="current-password"
@@ -125,7 +126,7 @@ export default function Login() {
 					color="primary"
 					onClick={handleSubmit}
 				>
-					Log In
+					{t("login.login-button")}
 				</Button>
 			
 				<Button
@@ -134,14 +135,14 @@ export default function Login() {
 					onClick={e => handleClickRedirect(e, signupRoute)}
 					color="primary"
 				>
-					Sign Up
+					{t("login.signup-button")}
 				</Button>
 
 			</Box>
 
 			<Box className='login-forgot-block'>
 				<Link to={'/' + forgotRoute} className='forgot-link'>
-						Forgot password?
+					{t("login.forgot-link")}
 				</Link>
 			</Box>
 		</Box>

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Box, TextField, Button } from "@material-ui/core";
 import { axiosInstance } from "../../axios";
 import { passwordChangeURL } from "../../urls";
+import { useTranslation } from "react-i18next";
 
 
 export default function ChangePassword() {
+  const {t, i18n} = useTranslation();
   const initialFormData = {
     old_password: "",
     new_password1: "",
@@ -53,7 +55,7 @@ export default function ChangePassword() {
 
   return(
     <Box>
-      <h3 className="edit-password-label">Change password</h3>
+      <h3 className="edit-password-label">{t("change-password.label")}</h3>
       <Box className="default-block edit-profile-block">
         <TextField
           className="form-field"
@@ -62,7 +64,7 @@ export default function ChangePassword() {
 					required
 					fullWidth
 					name="old_password"
-					label="Old password"
+					label={t("change-password.old-password")}
 					type="password"
 					id="old_password"
 					autoComplete="old_password"
@@ -79,7 +81,7 @@ export default function ChangePassword() {
 					required
 					fullWidth
 					name="new_password1"
-					label="New password"
+					label={t("change-password.new-password")}
 					type="password"
 					id="new_password1"
 					autoComplete="new_password1"
@@ -96,7 +98,7 @@ export default function ChangePassword() {
 					required
 					fullWidth
 					name="new_password2"
-					label="Confirm new password"
+					label={t("change-password.confirm-new-password")}
 					type="password"
 					id="new_password2"
 					autoComplete="new_password2"
@@ -116,7 +118,7 @@ export default function ChangePassword() {
             color="primary"
             onClick={handlePasswordSubmit}
           >
-            Change password
+            {t("change-password.change-button")}
           </Button>
         </Box>
       </Box>

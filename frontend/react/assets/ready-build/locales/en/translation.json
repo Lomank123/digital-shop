@@ -33,7 +33,52 @@
   "verify-email-sent": {
     "label": "Email verification message sent",
     "information": "Email message has been sent. Check your mailbox. If you don't see any, try to resend it by pressing the button below.",
-    "send-again-button": ""
+    "send-again-button": "Send again"
+  },
+
+  "change-password": {
+    "label": "Change password",
+    "old-password": "Old password",
+    "new-password": "New password",
+    "confirm-new-password": "Confirm new password",
+    "change-button": "Change password"
+  },
+
+  "forgot": {
+    "label": "Forgot password",
+    "email": "Email address",
+    "send-button": "Send"
+  },
+
+  "login": {
+    "label": "Login",
+    "email": "Email",
+    "password": "Password",
+    "login-button": "Log In",
+    "signup-button": "Sign up",
+    "forgot-link": "Forgot password?"
+  },
+
+  "logout": {
+    "label": "Logout",
+    "information": "Do you want to logout?",
+    "logout-button": "Logout"
+  },
+
+  "reset-password": {
+    "label": "Reset password",
+    "password": "Password",
+    "confirm-password": "Confirm password",
+    "confirm-button": "Confirm"
+  },
+
+  "signup": {
+    "label": "Signup",
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "confirm-password": "Confirm password",
+    "signup-button": "Sign up"
   }
 
 }

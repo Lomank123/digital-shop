@@ -8,11 +8,13 @@ import '../../styles/components/cart.css';
 import { handleRemoveFromCart, handleRemoveAllFromCart, handleMoveToUserCart, getTotalPrice } from "../utils";
 import history from "../history";
 import { purchaseRoute } from "../routes";
+import { useTranslation } from "react-i18next";
 
 
 const pageParamName = "anon-cart-page";
 
 export default function Cart() {
+  const {t, i18n} = useTranslation();
   const userData = useSelector(state => state.user);
   const [cartItems, setCartItems] = useState(null);
   const [userTotal, setUserTotal] = useState(null);
@@ -121,7 +123,9 @@ export default function Cart() {
   return(
     <Box className="cart-block">
       {
-        (cartItems.results.length === 0 && secondCartItems.results.length === 0) ? (<h3>Cart is empty.</h3>) : null
+        (cartItems.results.length === 0 && secondCartItems.results.length === 0)
+        ? (<h3>{t("cart.cart-empty")}</h3>)
+        : null
       }
 
       {
@@ -130,7 +134,7 @@ export default function Cart() {
               <Box className="user-cart-block cart">
                 <Box className="non-user-cart-header">
                   <Box>
-                    <h3 className="cart-label">User cart</h3>
+                    <h3 className="cart-label">{t("cart.user-cart-label")}</h3>
                   </Box>
                   <Button
                     variant="outlined"
@@ -138,7 +142,7 @@ export default function Cart() {
                     className="remove-all-from-cart-btn"
                     onClick={() => {handleDeleteAll(cartItems.results[0])}}
                   >
-                    Clean cart
+                    {t("cart.clean-cart-button")}
                   </Button>
                 </Box>
                 <hr />
@@ -158,15 +162,15 @@ export default function Cart() {
           ? (
               <Box>
                 <Box className="default-block cart-purchase-block">
-                  <h4 className="purchase-block-label">User cart</h4>
-                  <h4 className="total-price-label">Total price: {userTotal}$</h4>
+                  <h4 className="purchase-block-label">{t("cart.user-cart-label")}</h4>
+                  <h4 className="total-price-label">{t("cart.total-price")} {userTotal}$</h4>
                   <Button
                     variant="contained"
                     color="primary"
                     className="cart-purchase-btn"
                     onClick={() => {handleRedirect(purchaseRoute)}}
                   >
-                    Purchase
+                    {t("cart.purchase-button")}
                   </Button>
                 </Box>
               </Box>
@@ -180,8 +184,8 @@ export default function Cart() {
               <Box className="non-user-cart-block cart">
                 <Box className="non-user-cart-header">
                   <Box>
-                    <h3 className="cart-label">Non-user cart</h3>
-                    <p className="cart-label">Non-user cart products will be kept for 30 days. After that they will be discarded.</p>
+                    <h3 className="cart-label">{t("cart.non-user-label")}</h3>
+                    <p className="cart-label">{t("cart.non-user-information")}</p>
                   </Box>
                   <Button
                     variant="outlined"
@@ -189,7 +193,7 @@ export default function Cart() {
                     className="remove-all-from-cart-btn"
                     onClick={() => {handleDeleteAll(secondCartItems.results[0])}}
                   >
-                    Clean cart
+                    {t("cart.clean-cart-button")}
                   </Button>
                 </Box>
                 <hr />
@@ -209,8 +213,8 @@ export default function Cart() {
           ? (
               <Box>
                 <Box className="default-block cart-purchase-block">
-                  <h4 className="purchase-block-label">Non-user cart</h4>
-                  <h4 className="total-price-label">Total price: {nonUserTotal}$</h4>
+                  <h4 className="purchase-block-label">{t("cart.non-user-label")}</h4>
+                  <h4 className="total-price-label">{t("cart.total-price")} {nonUserTotal}$</h4>
                   {
                     (userData !== 1)
                     ? (
@@ -219,7 +223,7 @@ export default function Cart() {
                           color="primary"
                           onClick={handleMoveToCart}
                         >
-                          Move to user cart
+                          {t("cart.move-to-user-cart-button")}
                         </Button>
                       )
                     : (
@@ -228,7 +232,7 @@ export default function Cart() {
                           color="primary"
                           onClick={() => {handleRedirect(purchaseRoute)}}
                         >
-                          Purchase
+                          {t("cart.purchase-button")}
                         </Button>
                       )
                   }

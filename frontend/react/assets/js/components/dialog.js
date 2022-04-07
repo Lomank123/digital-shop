@@ -3,7 +3,7 @@ import { axiosInstance } from "../axios";
 import { cartItemDeleteInactiveURL, productGetURL } from "../urls";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import history from "../history";
-
+import { useTranslation } from "react-i18next";
 
 
 /* Delete dialog screen
@@ -15,6 +15,7 @@ import history from "../history";
 */
 
 export function DeleteDialog(props) {
+  const {t, i18n} = useTranslation();
   const open = props.open;
 
   const handleDialogConfirm = () => {
@@ -54,16 +55,16 @@ export function DeleteDialog(props) {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Are you sure you want to delete this product?"}
+        {t("dialog.del-dialog-text")}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          You can't undo this action.
+          {t("dialog.del-dialog-extra")}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose} autoFocus>Cancel</Button>
-        <Button onClick={handleDialogConfirm}>Delete</Button>
+        <Button onClick={props.handleClose} autoFocus>{t("dialog.cancel-button")}</Button>
+        <Button onClick={handleDialogConfirm}>{t("dialog.delete-button")}</Button>
       </DialogActions>
     </Dialog>
   );
@@ -71,6 +72,7 @@ export function DeleteDialog(props) {
 
 
 export function IsActiveDialog(props) {
+  const {t, i18n} = useTranslation();
   const open = props.open;
 
   const handleDialogConfirm = () => {
@@ -98,16 +100,16 @@ export function IsActiveDialog(props) {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Do you want to set this to inactive? This will delete product from all active carts."}
+        {t("dialog.is-active-text")}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          You can't undo this action.
+          {t("dialog.del-dialog-extra")}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose} autoFocus>Cancel</Button>
-        <Button onClick={handleDialogConfirm}>Confirm</Button>
+        <Button onClick={props.handleClose} autoFocus>{t("dialog.cancel-button")}</Button>
+        <Button onClick={handleDialogConfirm}>{t("dialog.confirm-button")}</Button>
       </DialogActions>
     </Dialog>
   );

@@ -146,6 +146,49 @@
     "username": "Username:",
     "date-joined": "Date joined:",
     "edit-button": "Edit profile"
-  }
+  },
 
+  "cart": {
+    "user-cart-label": "User cart",
+    "clean-cart-button": "Clean cart",
+    "total-price": "Total price:",
+    "purchase-button": "Purchase",
+    "non-user-label": "Non-user cart",
+    "non-user-information": "Non-user cart products will be kept for 30 days. After that they will be discarded.",
+    "move-to-user-cart-button": "Move to user cart",
+    "cart-empty": "Cart is empty."
+  },
+
+  "dialog": {
+    "del-dialog-text": "Are you sure you want to delete this product?",
+    "del-dialog-extra": "You can't undo this action.",
+    "cancel-button": "Cancel",
+    "delete-button": "Delete",
+    "is-active-text": "Do you want to set this to inactive? This will delete product from all active carts.",
+    "confirm-button": "Confirm"
+  },
+
+  "display": {
+    
+  },
+
+  "footer": {
+
+  },
+
+  "header": {
+
+  },
+
+  "home": {
+
+  },
+
+  "image-upload": {
+
+  },
+
+  "purchase": {
+
+  }
 }

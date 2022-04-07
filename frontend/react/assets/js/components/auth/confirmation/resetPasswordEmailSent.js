@@ -4,11 +4,12 @@ import { blankAxiosInstance } from "../../../axios";
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import history from "../../../history";
-
+import { useTranslation } from "react-i18next";
 import '../../../../styles/auth/auth.css';
 
 
 export default function ResetPasswordEmailSent() {
+  const {t, i18n} = useTranslation();
   const email = history.location.state.email;
 
   const handleSubmit = (e) => {
@@ -23,11 +24,11 @@ export default function ResetPasswordEmailSent() {
 
   return(
     <Box className="default-block auth-block">
-      <h3 className="auth-h3">Reset password email sent</h3>
+      <h3 className="auth-h3">{t("reset-password-email-sent.label")}</h3>
 
       <Box textAlign={'center'}>
         <span>
-          Email confirmation message has been sent. If you don't see any, press the button below to resend it.
+          {t("reset-password-email-sent.information")}
         </span>
       </Box>
 
@@ -39,7 +40,7 @@ export default function ResetPasswordEmailSent() {
           color="primary"
           onClick={handleSubmit}
         >
-          Send again
+          {t("reset-password-email-sent.send-again-button")}
         </Button>
       </Box>
 

@@ -136,7 +136,7 @@ class Address(models.Model):
         verbose_name_plural = "Addresses"
         verbose_name = "Address"
         ordering = ["-id"]
-    
+
     def __str__(self):
         return self.name
 

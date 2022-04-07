@@ -1,4 +1,39 @@
 {
   "login-text": "Log in",
-  "signup-text": "Sign up"
+  "signup-text": "Sign up",
+
+  "already-logged-in": {
+    "label": "Already logged in",
+    "information": "You have already logged in. Maybe you want to go to home page?",
+    "home-button": "Home"
+  },
+
+  "change-password-confirm": {
+    "information": "Password has been changed."
+  },
+
+  "reset-password-confirm": {
+    "label": "Password has been reset successfully",
+    "information": "Your password has been reset. Now you need to log in again.",
+    "login-button": "Log in"
+  },
+
+  "reset-password-email-sent": {
+    "label": "Reset password email message sent",
+    "information": "Email confirmation message has been sent. If you don't see any, press the button below to resend it.",
+    "send-again-button": "Send again"
+  },
+
+  "verify-email-confirm": {
+    "label": "Email confirmation",
+    "information": "To confirm your email click the button below.",
+    "confirm-button": "Confirm"
+  },
+
+  "verify-email-sent": {
+    "label": "Email verification message sent",
+    "information": "Email message has been sent. Check your mailbox. If you don't see any, try to resend it by pressing the button below.",
+    "send-again-button": ""
+  }
+
 }

@@ -79,6 +79,16 @@
     "password": "Password",
     "confirm-password": "Confirm password",
     "signup-button": "Sign up"
+  },
+
+  "forbidden-401": {
+    "number": "401",
+    "label": "Forbidden"
+  },
+
+  "not-found-404": {
+    "number": "404",
+    "label": "Page not found"
   }
 
 }

@@ -128,6 +128,24 @@
     "add-to-cart": "Add to cart",
     "remove-button": "Remove",
     "seller-info": "Seller info"
+  },
+
+  "user-edit": {
+    "edit-label": "Edit profile",
+    "username": "Username",
+    "email": "Email address",
+    "save-button": "Save changes"
+  },
+
+  "user-profile": {
+    "label": "User profile",
+    "your-products": "Your products",
+    "other-user-products": "Products of ",
+    "no-products": "No products available",
+    "email":"Email:",
+    "username": "Username:",
+    "date-joined": "Date joined:",
+    "edit-button": "Edit profile"
   }
 
 }

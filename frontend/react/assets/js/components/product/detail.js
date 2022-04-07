@@ -10,12 +10,13 @@ import { useSelector } from "react-redux";
 import { Delete, Edit } from '@material-ui/icons';
 import { DeleteDialog } from "../dialog";
 import { handleAddToCart, handleRemoveFromCart } from "../../utils";
-
+import { useTranslation } from "react-i18next";
 import '../../../styles/product/detail.css';
 import '../../../styles/user/profile.css';
 
 
 export default function DetailProduct() {
+  const {t, i18n} = useTranslation();
   const params = useParams();
   const cartData = useSelector(state => state.cart);
   const userData = useSelector(state => state.user);
@@ -99,7 +100,7 @@ export default function DetailProduct() {
   return(
     <Box className="default-main-block product-detail">
       <Box className="small-text category-block">
-        <span>Category: <Link to="" onClick={handleClickRedirect}>{product.category_name}</Link></span>
+        <span>{t("product-detail.category")} <Link to="" onClick={handleClickRedirect}>{product.category_name}</Link></span>
       </Box>
 
       <Box className="default-block product-block">
@@ -114,20 +115,20 @@ export default function DetailProduct() {
           <span className="title">{product.title}</span>
 
           <Box>
-            <span className="description"><b>Description</b></span>
+            <span className="description"><b>{t("product-detail.description")}</b></span>
             <p className="description">{product.description}</p>
           </Box>
 
           <Box className="date-block">
-            <p><b>Publication date:</b> {product.published}</p>
-            <p><b>Last update:</b> {product.updated}</p>
+            <p><b>{t("product-detail.publication-date")}</b> {product.published}</p>
+            <p><b>{t("product-detail.last-update")}</b> {product.updated}</p>
           </Box>
 
           <p className="description in-stock">
             {
               (product.in_stock) ?
-              (<span className="in-stock-true"><b>In stock</b></span>) :
-              (<span className="in-stock-false"><b>Out of stock</b></span>)
+              (<span className="in-stock-true"><b>{t("product-detail.in-stock")}</b></span>) :
+              (<span className="in-stock-false"><b>{t("product-detail.out-of-stock")}</b></span>)
             }
           </p>
 
@@ -140,7 +141,9 @@ export default function DetailProduct() {
               disabled={!product.in_stock || !product.is_active || product.created_by == userData.id}
             >
               {
-                (cartProductIds.includes(product.id)) ? ('In cart') : ('Add to cart')
+                (cartProductIds.includes(product.id))
+                ? t("product-detail.in-cart")
+                : t("product-detail.add-to-cart")
               }
             </Button>
             {
@@ -152,7 +155,7 @@ export default function DetailProduct() {
                     color="primary"
                     onClick={() => {handleRemoveFromCart(product.id, cartData.id)}}
                   >
-                    Remove
+                    {t("product-detail.remove-button")}
                   </Button>
                 )
               : null
@@ -181,7 +184,7 @@ export default function DetailProduct() {
 
       </Box>
 
-      <span className="author-info-label">Seller info</span>
+      <span className="author-info-label">{t("product-detail.seller-info")}</span>
 
       <Link className="default-block author-block" to={'/' + profileRoute + '/' + author.id + '/'}>
 

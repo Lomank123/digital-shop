@@ -89,6 +89,45 @@
   "not-found-404": {
     "number": "404",
     "label": "Page not found"
+  },
+
+  "orders": {
+    "your-orders": "Your orders",
+    "orders-not-found": "No orders found"
+  },
+
+  "product-add-edit": {
+    "edit": "Edit product",
+    "create": "Create product",
+    "choose-category-label": "Choose category:",
+    "choose-category": "Category",
+    "field-required-error": "This field is required",
+    "title-label": "Write a title:",
+    "title": "Title",
+    "price-label": "Enter price:",
+    "price": "Price",
+    "quantity-label": "Enter quantity:",
+    "quantity": "Quantity",
+    "description-label": "Describe your product:",
+    "description": "Description",
+    "availability-label": "Product availability:",
+    "availability": "Is active",
+    "save-button": "Save",
+    "add-button": "Add",
+    "delete-button": "Delete"
+  },
+
+  "product-detail": {
+    "category": "Category:",
+    "description": "Description",
+    "publication-date": "Publication date:",
+    "last-update": "Last update:",
+    "in-stock": "In stock",
+    "out-of-stock": "Out of stock",
+    "in-cart": "In cart",
+    "add-to-cart": "Add to cart",
+    "remove-button": "Remove",
+    "seller-info": "Seller info"
   }
 
 }

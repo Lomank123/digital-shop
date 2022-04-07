@@ -8,11 +8,12 @@ import { DeleteDialog, IsActiveDialog } from "../dialog";
 import { ImageUpload } from "../imageUpload";
 import { productRoute } from "../../routes";
 import history from "../../history";
-
+import { useTranslation } from "react-i18next";
 import '../../../styles/product/add-edit.css';
 
 
 export default function AddEditProduct() {
+  const {t, i18n} = useTranslation();
   const userData = useSelector(state => state.user);
   const [categoriesData, setCategoriesData] = useState([]);
   const params = useParams();   // Here we expect to get id of a product (edit product)
@@ -187,25 +188,26 @@ export default function AddEditProduct() {
 
   return (
     <Box className="default-main-block">
-      <h2 className="head-label">{(params.id) ? 'Edit product' : 'Create product'}</h2>
+      <h2 className="head-label">
+        {(params.id) ? t("product-add-edit.edit") : t("product-add-edit.create")}
+      </h2>
 
       <Box className="default-block form-block">
-
         <Box className="field-block">
-          <p className="field-label">Choose category:</p>
+          <p className="field-label">{t("product-add-edit.choose-category-label")}</p>
           <TextField
             className="form-field"
             select
             variant="outlined"
             id="category-select"
-            label="Category"
+            label={t("product-add-edit.choose-category")}
             name="category"
             fullWidth
             required
             value={postData.category || ""}
             onChange={handleChange}
             error={Boolean(errors.category)}
-            helperText={Boolean(errors.category) ? 'This field is required.' : ''}
+            helperText={Boolean(errors.category) ? t("product-add-edit.field-required-error") : ''}
           >
             {
               Object.entries(categoriesData).map(([key, category]) => {
@@ -218,14 +220,14 @@ export default function AddEditProduct() {
         </Box>
         
         <Box className="field-block">
-          <p className="field-label">Write a title:</p>
+          <p className="field-label">{t("product-add-edit.title-label")}</p>
           <TextField
             className="form-field"
             variant="outlined"
             margin="normal"
             required
             id="title"
-            label="Title"
+            label={t("product-add-edit.title")}
             name="title"
             fullWidth
             value={postData.title || ""}
@@ -236,7 +238,7 @@ export default function AddEditProduct() {
         </Box>
         
         <Box className="field-block">
-          <p className="field-label">Enter price:</p>
+          <p className="field-label">{t("product-add-edit.price-label")}</p>
           <TextField
             className="form-field"
             type='number'
@@ -244,7 +246,7 @@ export default function AddEditProduct() {
             margin="normal"
             required
             id="price"
-            label="Price"
+            label={t("product-add-edit.price")}
             name="price"
             fullWidth
             value={postData.price || ''}
@@ -255,7 +257,7 @@ export default function AddEditProduct() {
         </Box>
 
         <Box className="field-block">
-          <p className="field-label">Enter quantity:</p>
+          <p className="field-label">{t("product-add-edit.quantity-label")}</p>
           <TextField
             className="form-field"
             type='number'
@@ -263,7 +265,7 @@ export default function AddEditProduct() {
             margin="normal"
             required
             id="quantity"
-            label="Quantity"
+            label={t("product-add-edit.quantity")}
             name="quantity"
             fullWidth
             value={postData.quantity || ''}
@@ -274,7 +276,7 @@ export default function AddEditProduct() {
         </Box>
 
         <Box className="field-block">
-          <p className="field-label">Describe your product:</p>
+          <p className="field-label">{t("product-add-edit.description-label")}</p>
           <TextField
             multiline
             maxRows={8}
@@ -282,7 +284,7 @@ export default function AddEditProduct() {
             variant="outlined"
             margin="normal"
             id="description"
-            label="Description"
+            label={t("product-add-edit.description")}
             name="description"
             autoComplete="Some description..."
             fullWidth
@@ -301,7 +303,7 @@ export default function AddEditProduct() {
         />
 
         <Box className="field-block">
-          <p className="field-label">Product availability:</p>
+          <p className="field-label">{t("product-add-edit.availability-label")}</p>
           <FormControlLabel
             label='Is active'
             control={
@@ -309,7 +311,7 @@ export default function AddEditProduct() {
                 checked={postData.is_active}
                 id="is-active"
                 color="primary"
-                label="Is active"
+                label={t("product-add-edit.availability")}
                 name="is_active"
                 onChange={handleChange}
               />
@@ -332,7 +334,10 @@ export default function AddEditProduct() {
             }
           }}
         >
-          { (params.id) ? 'Save' : 'Add' }
+          { (params.id)
+            ? t("product-add-edit.save-button")
+            : t("product-add-edit.add-button")
+          }
         </Button>
         <IsActiveDialog
           productId={params.id}
@@ -349,7 +354,7 @@ export default function AddEditProduct() {
                 color="primary"
                 onClick={handleOpen}
               >
-                Delete
+                {t("product-add-edit.delete-button")}
               </Button>
               <DeleteDialog
                 productId={params.id}

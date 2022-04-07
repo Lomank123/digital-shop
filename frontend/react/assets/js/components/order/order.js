@@ -7,9 +7,11 @@ import { blankAxiosInstance } from "../../axios";
 import { get_items } from "../display";
 import history from "../../history";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 
 export default function UserOrders() {
+  const {t, i18n} = useTranslation();
   const userData = useSelector(state => state.user);
   const [orders, setOrders] = useState(null);
   const [isOpen, setIsOpen] = useState({});
@@ -62,7 +64,7 @@ export default function UserOrders() {
 
   return (
     <Box className="default-main-block orders-main-block">
-      <h3 className="orders-label">{(orders.results.length > 0) ? "Your orders" : "No orders found"}</h3>
+      <h3 className="orders-label">{(orders.results.length > 0) ? t("orders.your-orders") : t("orders.orders-not-found")}</h3>
       {
         (orders.results.length > 0) 
         ? (

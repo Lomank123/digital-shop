@@ -64,7 +64,6 @@ class CartServiceTestCase(TestCase):
         cart_id = Cart.objects.filter(user=self.user).first().id
         self.assertEqual(cart_id, int(cart_cookie.value))
 
-
     def test_user_cart_execute(self):
         cart = Cart.objects.create()
         request = RequestFactory().request()

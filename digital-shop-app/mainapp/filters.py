@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from mainapp.models import Product, CartItem, Order
+from mainapp.models import Product, CartItem, Order, Address
 
 
 class ProductFilter(filters.FilterSet):
@@ -37,4 +37,13 @@ class OrderFilter(filters.FilterSet):
         fields = [
             'cart__user__id',
             'cart__is_archived',
+        ]
+
+
+class AddressFilter(filters.FilterSet):
+    class Meta:
+        model = Address
+        fields = [
+            'available',
+            'id',
         ]

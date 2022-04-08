@@ -7,6 +7,8 @@ CART_ID_COOKIE_EXPIRATION_DAYS = 30
 PRODUCT_ID_POST_KEY = "product_id"
 CART_ID_POST_KEY = "cart_id"
 TOTAL_PRICE_POST_KEY = "total_price"
+ADDRESS_POST_KEY = "address"
+PAYMENT_POST_KEY = "payment_method"
 DETAIL_KEY = "detail"
 
 # Strings (values) for response data dict

@@ -5,12 +5,13 @@ import Box from '@material-ui/core/Box';
 import { useDispatch } from 'react-redux';
 import history from '../../history';
 import { axiosInstance, blankAxiosInstance } from '../../axios';
-
+import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/auth.css';
 import { getCart, getCartProductIds } from '../../utils';
 
 
 export default function Logout() {
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -44,8 +45,8 @@ export default function Logout() {
 
   return (
     <Box className='default-block auth-block'>
-      <h3 className='auth-h3'>Logout</h3>
-      <p>Do you want to logout?</p>
+      <h3 className='auth-h3'>{t("logout.label")}</h3>
+      <p>{t("logout.information")}</p>
 
       <Button
         className='logout-btn'
@@ -54,7 +55,7 @@ export default function Logout() {
         color="primary"
         onClick={handleSubmit}
       >
-        Logout
+        {t("logout.logout-button")}
       </Button>
 
 

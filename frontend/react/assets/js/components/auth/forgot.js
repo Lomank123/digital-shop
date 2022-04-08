@@ -6,11 +6,12 @@ import { passwordResetURL } from '../../urls';
 import history from '../../history';
 import { emailSentRoute } from '../../routes';
 import { Box } from '@material-ui/core';
-
+import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/auth.css';
 
 
 export default function Forgot() {
+  const {t, i18n} = useTranslation();
 	const initialFormData = {
     email: '',
 	};
@@ -53,7 +54,7 @@ export default function Forgot() {
 
   return (
     <Box className='default-block auth-block'>
-      <h3 className='auth-h3'>Forgot password</h3>
+      <h3 className='auth-h3'>{t("forgot.label")}</h3>
 
       <Box className='auth-textfield-block'>
         <TextField
@@ -62,7 +63,7 @@ export default function Forgot() {
           margin="normal"
           required
           id="email"
-          label="Email Address"
+          label={t("forgot.email")}
           name="email"
           autoComplete="email"
           autoFocus
@@ -81,7 +82,7 @@ export default function Forgot() {
           color="primary"
           onClick={handleSubmit}
         >
-          Send
+          {t("forgot.send-button")}
         </Button>
       </Box>
     </Box>

@@ -1,0 +1,245 @@
+{
+  "login-text": "Вход",
+  "signup-text": "Регистрация",
+
+  "already-logged-in": {
+    "label": "Уже авторизован",
+    "information": "Вы уже авторизованы. Может быть хотите перейти на главную страницу?",
+    "home-button": "Главная страница"
+  },
+
+  "change-password-confirm": {
+    "information": "Пароль был изменен."
+  },
+
+  "reset-password-confirm": {
+    "label": "Пароль успешно сброшен",
+    "information": "Ваш пароль был сброшен. Сейчас нужно заново авторизироваться.",
+    "login-button": "Вход"
+  },
+
+  "reset-password-email-sent": {
+    "label": "Письмо для сброса пароля отправлено",
+    "information": "Письмо с подтверждением отправлено. Если вы не видите письма, нажмите кнопку ниже, чтобы заново отправить его.",
+    "send-again-button": "Отправить заново"
+  },
+
+  "verify-email-confirm": {
+    "label": "Подтверждение электронной почты",
+    "information": "Чтобы подтвердить почту, нажмите кнопку ниже.",
+    "confirm-button": "Подтвердить"
+  },
+
+  "verify-email-sent": {
+    "label": "Письмо с подтверждением электронной почты отправлено",
+    "information": "Письмо отправлено. Проверьте свою почту. Если вы не видите письма, нажмите кнопку ниже, чтобы заново отправить его.",
+    "send-again-button": "Отправить заново"
+  },
+
+  "change-password": {
+    "label": "Изменить пароль",
+    "old-password": "Старый пароль",
+    "new-password": "Новый пароль",
+    "confirm-new-password": "Подтверждение пароля",
+    "change-button": "Изменить пароль"
+  },
+
+  "forgot": {
+    "label": "Забыли пароль",
+    "email": "Электронная почта",
+    "send-button": "Отправить"
+  },
+
+  "login": {
+    "label": "Вход",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "login-button": "Войти",
+    "signup-button": "Зарегистрироваться",
+    "forgot-link": "Забыли пароль?"
+  },
+
+  "logout": {
+    "label": "Выйти",
+    "information": "Вы хотите выйти?",
+    "logout-button": "Выйти"
+  },
+
+  "reset-password": {
+    "label": "Сброс пароля",
+    "password": "Пароль",
+    "confirm-password": "Подтверждение пароля",
+    "confirm-button": "Подтвердить"
+  },
+
+  "signup": {
+    "label": "Регистрация",
+    "username": "Имя пользователя",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirm-password": "Подтверждение пароля",
+    "signup-button": "Зарегистрироваться"
+  },
+
+  "forbidden-401": {
+    "number": "401",
+    "label": "Запрещено"
+  },
+
+  "not-found-404": {
+    "number": "404",
+    "label": "Страница не найдена"
+  },
+
+  "orders": {
+    "your-orders": "Ваши заказы",
+    "orders-not-found": "Заказы не найдены"
+  },
+
+  "product-add-edit": {
+    "edit": "Редактировать товар",
+    "create": "Создать товар",
+    "choose-category-label": "Выберите категорию:",
+    "choose-category": "Категория",
+    "field-required-error": "Это поле нужно заполнить",
+    "title-label": "Введите название:",
+    "title": "Название",
+    "price-label": "Введите цену:",
+    "price": "Цена",
+    "quantity-label": "Введите количество:",
+    "quantity": "Количество",
+    "description-label": "Опишите свой товар:",
+    "description": "Описание",
+    "availability-label": "Доступность товара:",
+    "availability": "Доступен",
+    "save-button": "Сохранить",
+    "add-button": "Добавить",
+    "delete-button": "Удалить"
+  },
+
+  "product-detail": {
+    "category": "Категория:",
+    "description": "Описание",
+    "publication-date": "Дата публикации:",
+    "last-update": "Последнее обновление:",
+    "in-stock": "Есть в наличии",
+    "out-of-stock": "Нет в наличии",
+    "in-cart": "В корзине",
+    "add-to-cart": "Добавить в корзину",
+    "remove-button": "Убрать",
+    "seller-info": "Информация о продавце"
+  },
+
+  "user-edit": {
+    "edit-label": "Редактировать профиль",
+    "username": "Имя пользователя",
+    "email": "Электронная почта",
+    "save-button": "Сохранить изменения"
+  },
+
+  "user-profile": {
+    "label": "Профиль пользователя",
+    "your-products": "Ваши товары",
+    "other-user-products": "Товар ",
+    "no-products": "Товары не доступны",
+    "email":"Электронная почта:",
+    "username": "Имя пользователя:",
+    "date-joined": "Дата регистрации:",
+    "edit-button": "Изменить профиль"
+  },
+
+  "cart": {
+    "user-cart-label": "Корзина пользователя",
+    "clean-cart-button": "Очистить",
+    "total-price": "Общая стоимость:",
+    "purchase-button": "Купить",
+    "non-user-label": "Корзина гостя",
+    "non-user-information": "Товары в корзине гостя будут храниться 30 дней. После этого они будут удалены из корзины.",
+    "move-to-user-cart-button": "Переместить в корзину пользователя",
+    "cart-empty": "Корзина пуста."
+  },
+
+  "dialog": {
+    "del-dialog-text": "Вы уверены, что хотите удалить данный товар?",
+    "del-dialog-extra": "Вы не сможете отменить это действие.",
+    "cancel-button": "Отменить",
+    "delete-button": "Ужадить",
+    "is-active-text": "Вы уверены, что хотите сделать данный товар недоступным? Это действие удалит товар из всех корзин.",
+    "confirm-button": "Подтвердить"
+  },
+
+  "display": {
+    "in-cart-button": "В корзине",
+    "remove-button": "Убрать",
+    "your-product": "Это ваш товар",
+    "not-available": "Недоступен",
+    "out-of-stock": "Нет в наличии",
+    "first": "Первый",
+    "previous": "Предыдущий",
+    "last": "Последний",
+    "next": "Следующий",
+    "page": "Страница",
+    "of": "из",
+    "delete-button": "Удалить",
+    "order-id": "Id заказа:",
+    "total-price": "Общая стоимость:",
+    "date": "Дата:",
+    "order-details-label": "Просмотреть подробности заказа",
+    "quantity": "Количество:"
+  },
+
+  "footer": {
+    "author": "Роберт \"Lomank\" Хакимов"
+  },
+
+  "header": {
+    "login": "Вход",
+    "signup": "Регистрация",
+    "add-product": "Добавить товар",
+    "admin-site": "Админка",
+    "menu-profile": "Профиль",
+    "menu-orders": "Мои заказы",
+    "menu-logout": "Выйти"
+  },
+
+  "home": {
+    "no-products": "Нет доступных товаров.",
+    "categories-label": "Категории",
+    "all-categories-button": "Все категории",
+    "search": "Поиск",
+    "price": "Цена:",
+    "price-from": "От",
+    "price-to": "До",
+    "published": "Опубликован:",
+    "is-active": "Доступен",
+    "quantity": "Количество:",
+    "in-stock": "В наличии",
+    "seller-filters": "Фильтры продавца",
+    "only-seller-products": "Только ваши товары",
+    "apply-button": "Применить",
+    "discard-button": "Сбросить",
+    "filters": "Фильтры"
+  },
+
+  "image-upload": {
+    "text": "Загрузить изображение:",
+    "click-to-choose-text": "Нажмите сюда, чтобы выбрать изображение"
+  },
+
+  "purchase": {
+    "confirm-label": "Подтверждение покупки",
+    "confirm-text": "Вы собираетесь купить эти товары стоимостью ",
+    "confirm-text2": "Для подтверждения нужно выбрать доступный адрес и способ оплаты. После нажмите кнопку купить.",
+    "choose-address-label": "Выберете доступный адрес:",
+    "address": "Адрес",
+    "payment-method-label": "Выберете способ оплаты:",
+    "field-is-required": "Это поле нужно заполнить.",
+    "cash": "Наличные",
+    "card": "Банковская карта",
+    "card-number": "Номер карты",
+    "card-name": "Имя владельца",
+    "card-date": "Срок действия",
+    "card-cvc": "CVC",
+    "empty-cart": "Корзина пуста. Нечего покупать."
+  }
+}

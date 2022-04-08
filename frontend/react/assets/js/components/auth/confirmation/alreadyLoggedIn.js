@@ -1,11 +1,13 @@
 import React from "react";
 import { Box, Button } from "@material-ui/core";
 import history from "../../../history";
+import { useTranslation } from "react-i18next";
 
 import '../../../../styles/auth/auth.css';
 
 
 export default function AlreadyLoggedIn() {
+  const {t, i18n} = useTranslation();
 
   const handleRedirect = (e) => {
     e.preventDefault();
@@ -14,10 +16,10 @@ export default function AlreadyLoggedIn() {
 
   return (
     <Box className="default-block auth-block">
-      <h3 className="auth-h3">Already logged in</h3>
+      <h3 className="auth-h3">{t("already-logged-in.label")}</h3>
 
       <Box textAlign={'center'}>
-        <p>You have already logged in. Maybe you want to go to home page?</p>
+        <p>{t("already-logged-in.information")}</p>
       </Box>
 
       <Box className="auth-btns-block">
@@ -28,7 +30,7 @@ export default function AlreadyLoggedIn() {
           color="primary"
           onClick={handleRedirect}
         >
-          Home
+          {t("already-logged-in.home-button")}
         </Button>
       </Box>
 

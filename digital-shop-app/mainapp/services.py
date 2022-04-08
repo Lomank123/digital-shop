@@ -1,6 +1,6 @@
 import mainapp.consts as consts
 from mainapp.utils import CartCookieManager
-from mainapp.repository import CartRepository, ProductRepository, CartItemRepository, OrderRepository
+from mainapp.repository import CartRepository, ProductRepository, CartItemRepository, OrderRepository, AddressRepository
 from mainapp.serializers import CartSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -70,10 +70,10 @@ class CartService:
                 new_cart = CartRepository.get_or_create_cart_by_id()
                 cart = CartRepository.set_user_to_cart(new_cart.id, self.request.user)
             response = self._build_response(cart)
-            # Here we specialized forced in case when cookie exists but cart not
+            # Here we specified forced in case when cookie exists but cart not
             self._set_cart_id_to_cookie(response, cart.id, consts.USER_CART_ID_COOKIE_NAME, forced=True)
 
-        # Non-user cart check
+        # Non-user cart check (if authenticated user has no cookies at all then both carts will be created)
         cart_id = self._get_non_user_cart_id_from_cookie()
         cart = CartRepository.get_or_create_cart_by_id(cart_id)
         if response is None:
@@ -88,7 +88,7 @@ class CartService:
         response = self._build_user_cart_response(cart)
         return response
 
-    # Used upon log out
+    # Used upon log out and when no user found but user cart cookie existed
     def user_cart_id_delete_execute(self):
         response = Response(data={consts.DETAIL_KEY: consts.COOKIE_DELETED}, status=status.HTTP_200_OK)
         self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)
@@ -180,10 +180,11 @@ class CartItemService:
         response = Response(data={consts.DETAIL_KEY: consts.POST_PURCHASE_DONE}, status=status.HTTP_200_OK)
         cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY])
         CartItemRepository.change_quantity(cart)
-        self._post_purchase_set_order_if_user(cart, self.request.data[consts.TOTAL_PRICE_POST_KEY])
+        archived_cart = CartRepository.set_cart_archived(cart)
         service = CartService(self.request)
         cookie_name = service._get_either_cookie_name()
         service._delete_cart_id_from_cookie(response, cookie_name)
+        self._create_order(archived_cart)
         if self.request.user.is_authenticated:
             new_cart = service._create_and_attach_cart()
         else:
@@ -191,10 +192,12 @@ class CartItemService:
         service._set_cart_id_to_cookie(response, new_cart.id, cookie_name, forced=True)
         return response
 
-    def _post_purchase_set_order_if_user(self, cart, total_price):
-        saved_cart = CartRepository.set_cart_archived(cart)
-        if self.request.user.is_authenticated:
-            OrderRepository.create_order(saved_cart, total_price)
+    def _create_order(self, cart):
+        address_id = int(self.request.data[consts.ADDRESS_POST_KEY])
+        address = AddressRepository.find_address_by_id(address_id)
+        payment_method = self.request.data[consts.PAYMENT_POST_KEY]
+        total_price = self.request.data[consts.TOTAL_PRICE_POST_KEY]
+        OrderRepository.create_order(cart, total_price, address, payment_method)
 
 
 def build_paginated_response(items, viewset_instance):

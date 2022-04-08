@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Router, Switch } from 'react-router-dom';
 import history from './history';
@@ -35,6 +35,7 @@ import Purchase from './components/purchase';
 import Cart from './components/cart';
 import '../styles/main/main.css';
 import UserOrders from './components/order/order';
+import './i18n';
 
 
 export const defaultState = {
@@ -66,64 +67,65 @@ export const store = createStore(reducer, applyMiddleware(...middleware));
 
 // It's something like a main page where there are header and footer along with all components
 const routing = (
-  <Provider store={store}>
-    <Router history={history}>
-
-        <Header key={'header'} />
-
-        <Box className='container'>
-          <Switch>
-            <Route exact path="/" component={() => <PageComponent component={Home} />} />
-            <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddEditProduct} />} />
-            <Route path={`/${routes.productRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
-            <Route path={`/${routes.editProductRoute}/${routes.idValues}`} component={() => <SellerComponent component={AddEditProduct} />} />
-
-            <Route path={`/${routes.ordersRoute}`} component={() => <LoginRequiredComponent component={UserOrders} />} />
-
-            <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
-            <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
-
-            <Route path={`/${routes.cartRoute}`} component={() => <PageComponent component={Cart} />} />
-            <Route path={`/${routes.purchaseRoute}`} component={() => <PageComponent component={Purchase} />} />
-
-            <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
-
-            <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
-            <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
-            <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
-            <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
-                <>
-                  <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
-                  <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
-                  <Route 
-                    path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`}
-                    component={() => <PageComponent component={VerifyEmailConfirm} />} 
-                  />
-                </>
-              )}
-            />
-            <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
-                <>
-                  <Route exact path={`${path}/`} component={() => <AuthComponent component={Forgot} />} />
-                  <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={ResetPasswordEmailSent} />} /> 
-                </>
-              )} 
-            />
-            <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
-                <>
-                  <Route exact path={`${path}/${routes.resetValues}`} component={() => <AuthComponent component={ResetPassword} />} />
-                  <Route path={`${path}/${routes.confirmRoute}`} component={() => <AuthComponent component={ResetPasswordConfirm} />} /> 
-                </>
-              )}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Box>
-
-        <Footer key={'footer'} />
-
-    </Router>
-  </Provider>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Provider store={store}>
+      <Router history={history}>
+          <Header key={'header'} />
+  
+          <Box className='container'>
+            <Switch>
+              <Route exact path="/" component={() => <PageComponent component={Home} />} />
+              <Route path={`/${routes.addProductRoute}`} component={() => <SellerComponent component={AddEditProduct} />} />
+              <Route path={`/${routes.productRoute}/${routes.idValues}`} component={() => <PageComponent component={DetailProduct} />} />
+              <Route path={`/${routes.editProductRoute}/${routes.idValues}`} component={() => <SellerComponent component={AddEditProduct} />} />
+  
+              <Route path={`/${routes.ordersRoute}`} component={() => <LoginRequiredComponent component={UserOrders} />} />
+  
+              <Route path={`/${routes.profileRoute}/${routes.idValues}`} component={() => <PageComponent component={UserProfile}/>} />
+              <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
+  
+              <Route path={`/${routes.cartRoute}`} component={() => <PageComponent component={Cart} />} />
+              <Route path={`/${routes.purchaseRoute}`} component={() => <PageComponent component={Purchase} />} />
+  
+              <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
+  
+              <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
+              <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
+              <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
+              <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
+                  <>
+                    <Route exact path={`${path}/`} component={() => <AuthComponent component={Signup} />} />
+                    <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={VerifyEmailSent} />} />
+                    <Route 
+                      path={`${path}/${routes.confirmRoute}/${routes.signupConfirmValues}`}
+                      component={() => <PageComponent component={VerifyEmailConfirm} />} 
+                    />
+                  </>
+                )}
+              />
+              <Route path={`/${routes.forgotRoute}`} render={ ({ match: { path } }) => (
+                  <>
+                    <Route exact path={`${path}/`} component={() => <AuthComponent component={Forgot} />} />
+                    <Route path={`${path}/${routes.emailSentRoute}`} component={() => <AuthComponent component={ResetPasswordEmailSent} />} /> 
+                  </>
+                )} 
+              />
+              <Route path={`/${routes.resetRoute}`} render={ ({ match: { path } }) => (
+                  <>
+                    <Route exact path={`${path}/${routes.resetValues}`} component={() => <AuthComponent component={ResetPassword} />} />
+                    <Route path={`${path}/${routes.confirmRoute}`} component={() => <AuthComponent component={ResetPasswordConfirm} />} /> 
+                  </>
+                )}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </Box>
+              
+          <Footer key={'footer'} />
+              
+      </Router>
+    </Provider>
+  </Suspense>
 )
 
 ReactDOM.render(routing, document.getElementById('root'));

@@ -2,7 +2,7 @@ from allauth.account.models import EmailAddress
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order
+from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order, Address
 from mainapp import consts
 
 
@@ -488,8 +488,9 @@ class OrderViewSetTestCase(TestCase):
         )
         self.user_cart = Cart.objects.create(user=self.user)
         self.non_user_cart = Cart.objects.create()
-        self.order1 = Order.objects.create(cart=self.user_cart, total_price=0)
-        self.order2 = Order.objects.create(cart=self.non_user_cart, total_price=0)
+        self.address = Address.objects.create(name="Norway", available=True)
+        self.order1 = Order.objects.create(cart=self.user_cart, address=self.address, total_price=0)
+        self.order2 = Order.objects.create(cart=self.non_user_cart, address=self.address, total_price=0)
 
     def test_get_queryset(self):
         self.assertEqual(Order.objects.count(), 2)

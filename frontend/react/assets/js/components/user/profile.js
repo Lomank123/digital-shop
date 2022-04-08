@@ -9,9 +9,11 @@ import { DisplayPagination, DisplayProducts, get_items } from '../display';
 import history from '../../history';
 import '../../../styles/user/profile.css';
 import { editProfileRoute } from '../../routes';
+import { useTranslation } from 'react-i18next';
 
 
 export default function UserProfile() {
+  const {t, i18n} = useTranslation();
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState(null);
   const userData = useSelector(state => state.user);
@@ -60,12 +62,20 @@ export default function UserProfile() {
 
   return (
     <Box className='default-main-block'>
-      <h3 className='your-label'>User profile</h3>
+      <h3 className='your-label'>{t("user-profile.label")}</h3>
       <UserInfo data={user} isUser={isOwner} />
 
       {
         (user.is_seller)
-        ? (<h3 className='your-label'>{(isOwner) ? 'Your products' : user.username + "\'s products"}</h3>)
+        ? (
+            <h3 className='your-label'>
+              {
+                (isOwner)
+                ? t("user-profile.your-products")
+                : t("user-profile.other-user-products") + user.username
+              }
+            </h3>
+          )
         : null
       }
 
@@ -75,7 +85,7 @@ export default function UserProfile() {
             (user.is_seller)
             ? (
                 <Box className='default-block products-block no-products-block'>
-                  <p>No products available.</p>
+                  <p>{t("user-profile.no-products")}</p>
                 </Box>
               )
             : null
@@ -97,6 +107,7 @@ export default function UserProfile() {
 }
 
 export function UserInfo(props) {
+  const {t, i18n} = useTranslation();
   const user = props.data;
   const isUser = props.isUser;
 
@@ -116,14 +127,20 @@ export function UserInfo(props) {
         </Box>
 
         <Box className='credentials-block'>
-          <span><b>Email:</b> {user.email}</span>
-          <span><b>Username:</b> {user.username}</span>
-          <span><b>Date joined:</b> {user.date_joined}</span>
+          <span><b>{t("user-profile.email")}</b> {user.email}</span>
+          <span><b>{t("user-profile.username")}</b> {user.username}</span>
+          <span><b>{t("user-profile.date-joined")}</b> {user.date_joined}</span>
         </Box>
 
         <Box className='edit-btn-block'>
           {
-            (isUser) ? <Link to={`/${editProfileRoute}/${user.id}`}>Edit profile</Link> : null
+            (isUser)
+            ? (
+                <Link to={`/${editProfileRoute}/${user.id}`}>
+                  {t("user-profile.edit-button")}
+                </Link>
+              )
+            : null
           }
         </Box>
 

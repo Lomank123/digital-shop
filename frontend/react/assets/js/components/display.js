@@ -9,11 +9,12 @@ import history from "../history";
 import { DeleteDialog } from "./dialog";
 import { useSelector } from "react-redux";
 import { handleAddToCart, handleRemoveFromCart } from "../utils";
-
+import { useTranslation } from "react-i18next";
 import '../../styles/components/display.css';
 
 
 export function DisplayProducts(props) {
+  const {t, i18n} = useTranslation();
   const products = props.products;    // dict with products info
   const size = props.size;            // normal, small
   const isOwner = props.isOwner;      // For edit mode
@@ -108,7 +109,7 @@ export function DisplayProducts(props) {
                                 color="primary"
                                 onClick={() => {handleRedirect(cartRoute)}}
                               >
-                                In cart
+                                {t("display.in-cart-button")}
                               </Button>
                               <Button
                                 className='remove-cart-item-btn'
@@ -116,7 +117,7 @@ export function DisplayProducts(props) {
                                 color="primary"
                                 onClick={() => {handleRemoveFromCart(product.id, cartData.id)}}
                               >
-                                Remove
+                                {t("display.remove-button")}
                               </Button>
                             </Box>
                           )
@@ -124,10 +125,10 @@ export function DisplayProducts(props) {
                             <Box className="display-cart-btn-block">
                               {
                                 (product.created_by === userData.id)
-                                ? <span className="out-of-stock-label"><b>It is your product</b></span>
+                                ? <span className="out-of-stock-label"><b>{t("display.your-product")}</b></span>
                                 : (
                                     (!product.is_active)
-                                    ? (<span className="out-of-stock-label"><b>Not available</b></span>)
+                                    ? (<span className="out-of-stock-label"><b>{t("display.not-available")}</b></span>)
                                     : (
                                         <IconButton
                                           className='cart-btn'
@@ -146,8 +147,8 @@ export function DisplayProducts(props) {
                           <b>
                             {
                               (product.created_by === userData.id)
-                              ? "It is your product"
-                              : ((!product.is_active) ? "Not available" : "Out of stock")
+                              ? t("display.your-product")
+                              : ((!product.is_active) ? t("display.not-available") : t("display.out-of-stock"))
                             }
                           </b>
                         </span>
@@ -171,6 +172,7 @@ export function DisplayProducts(props) {
 }
 
 export function DisplayPagination(props) {
+  const {t, i18n} = useTranslation();
   const items = props.items;
   let paginationBlock = null;
 
@@ -213,19 +215,19 @@ export function DisplayPagination(props) {
             onClick={(e) => {handlePaginationClick(items.first)}}
             disabled={!Boolean(items.previous)}
           >
-            First
+            {t("display.first")}
           </Button>
 
           <Button
             onClick={(e) => {handlePaginationClick(items.previous)}}
             disabled={!Boolean(items.previous)}
           >
-            Previous
+            {t("display.previous")}
           </Button>
         </Box>
 
         <span className='pages-info'>
-          Page {items.number} of {items.num_pages}
+        {t("display.page")} {items.number} {t("display.of")} {items.num_pages}
         </span>
 
         <Box className='next-pages'>
@@ -233,14 +235,14 @@ export function DisplayPagination(props) {
             onClick={(e) => {handlePaginationClick(items.next)}}
             disabled={!Boolean(items.next)}
           >
-            Next
+            {t("display.next")}
           </Button>
 
           <Button
             onClick={(e) => {handlePaginationClick(items.last)}}
             disabled={!Boolean(items.next)}
           >
-            Last
+            {t("display.last")}
           </Button>
         </Box>
         
@@ -255,7 +257,7 @@ export function DisplayPagination(props) {
 }
 
 export function DisplayCartItems(props) {
-
+  const {t, i18n} = useTranslation();
   const handleQuantityChange = (e, cartItem, value, productQuantity) => {
     e.preventDefault();
 
@@ -296,7 +298,7 @@ export function DisplayCartItems(props) {
                 className='delete-cart-item-btn'
                 onClick={() => props.handleDelete(cartItem)}
               >
-                Delete
+                {t("display.delete-button")}
               </Button>
             </Box>
           );
@@ -337,20 +339,21 @@ export function DisplayCartItems(props) {
 }
 
 export function DisplayOrders(props) {
+  const {t, i18n} = useTranslation();
   return(
     <Box className="display-orders">
       {
         Object.entries(props.items.results).map(([key, item]) => {
           const infoBox = (
             <Box className="order-info">
-              <h4 className="order-id">Order id: {item.cart.id}</h4>
-              <h5 className="order-price">Total price: {item.total_price}$</h5>
+              <h4 className="order-id">{t("display.order-id")} {item.cart.id}</h4>
+              <h5 className="order-price">{t("display.total-price")} {item.total_price}$</h5>
             </Box>
           );
 
           const addInfoBox = (
             <Box className="order-add-info-block">
-              <span className="order-date">Date: {setDate(item.creation_date)}</span>
+              <span className="order-date">{t("display.date")} {setDate(item.creation_date)}</span>
             </Box>
           );
 
@@ -359,7 +362,7 @@ export function DisplayOrders(props) {
           const listItemsBox = (
             <List component="nav">
               <ListItem button onClick={() => {props.setNestedList(key, item.cart.id)}}>
-                <ListItemText primary="View order details" />
+                <ListItemText primary={t("display.order-details-label")} />
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={open} timeout="auto" unmountOnExit>
@@ -395,8 +398,8 @@ export function DisplayOrders(props) {
                                     </Link>
                                   </Box>
                                   <Box className='order-item-price-block'>
-                                    <h6 className='order-item-quantity'>Quantity: {childItem.quantity}</h6>
-                                    <h6 className='order-item-price'>Total price: {childItem.total_price}$</h6>
+                                    <h6 className='order-item-quantity'>{t("display.quantity")} {childItem.quantity}</h6>
+                                    <h6 className='order-item-price'>{t("display.total-price")} {childItem.total_price}$</h6>
                                   </Box>
                                 </Box>
                               </ListItem>

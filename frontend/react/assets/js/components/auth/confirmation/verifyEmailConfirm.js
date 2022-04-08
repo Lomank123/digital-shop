@@ -5,11 +5,12 @@ import { blankAxiosInstance } from "../../../axios";
 import { signupVerifyEmailURL } from "../../../urls";
 import history from "../../../history";
 import { loginRoute } from "../../../routes";
-
+import { useTranslation } from "react-i18next";
 import '../../../../styles/auth/auth.css';
 
 
 export default function VerifyEmailConfirm() {
+  const {t, i18n} = useTranslation();
   const params = useParams();
 
   const handleSubmit = (e) => {
@@ -28,8 +29,8 @@ export default function VerifyEmailConfirm() {
 
   return(
     <Box className="default-block auth-block">
-      <h3 className="auth-h3">Email confirmation</h3>
-      <p>To confirm your email click the button below.</p>
+      <h3 className="auth-h3">{t("verify-email-confirm.label")}</h3>
+      <p>{t("verify-email-confirm.information")}</p>
 
       <Box className="auth-btns-block">
         <Button
@@ -40,7 +41,7 @@ export default function VerifyEmailConfirm() {
           color="primary"
           onClick={handleSubmit}
         >
-          Confirm
+          {t("verify-email-confirm.confirm-button")}
         </Button>
       </Box>
 

@@ -1,13 +1,14 @@
 import { Box, Button } from "@material-ui/core";
-import React, { Component } from "react";
+import React from "react";
 import { blankAxiosInstance } from "../../../axios";
 import { signupEmailResendURL } from "../../../urls";
 import history from "../../../history";
-
+import { useTranslation } from "react-i18next";
 import '../../../../styles/auth/auth.css';
 
 
 export default function VerifyEmailSent() {
+  const {t, i18n} = useTranslation();
   const email = history.location.state.email;
 
   const handleSubmit = (e) => {
@@ -24,12 +25,9 @@ export default function VerifyEmailSent() {
 
   return(
     <Box className="default-block auth-block">
-      <h3 className="auth-h3">Email verification message sent</h3>
+      <h3 className="auth-h3">{t("verify-email-sent.label")}</h3>
       <Box textAlign={'center'}>
-        <span>
-          Email message has been sent. Check your mail.
-          If you don't see any, try to resend it by pressing the button below.
-        </span>
+        <span>{t("verify-email-sent.information")}</span>
       </Box>
 
       <Box className="auth-btns-block">
@@ -41,7 +39,7 @@ export default function VerifyEmailSent() {
           color="primary"
           onClick={handleSubmit}
         >
-          Send again
+          {t("verify-email-sent.send-again-button")}
         </Button>
       </Box>
 

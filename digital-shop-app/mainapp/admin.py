@@ -2,7 +2,7 @@ from django.contrib import admin
 from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
 from rest_framework_simplejwt.token_blacklist import models
 
-from mainapp.models import Product, Category, CustomUser, CartItem, Cart, Order
+from mainapp.models import Product, Category, CustomUser, CartItem, Cart, Order, Address
 
 
 # Here we can configure how the model will look like in admin dashboard
@@ -138,21 +138,43 @@ class CartItemAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     model = Order
-    list_display = ('cart', 'total_price', 'creation_date',)
+    list_display = ('cart', 'total_price', 'creation_date', 'address', 'payment_method', )
+    list_filter = ('payment_method', )
     fieldsets = (
-        ('Information', {'fields': ('cart', 'total_price',)}),
+        ('Information', {'fields': ('cart', 'total_price', 'address', 'payment_method', )}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide',),
-                'fields': ('cart', 'total_price',)
+                'fields': ('cart', 'total_price', 'address', 'payment_method', )
             }
         ),
     )
-    search_fields = ('total_price', 'cart',)
-    ordering = ('creation_date', 'total_price',)
+    search_fields = ('total_price', 'cart', )
+    ordering = ('creation_date', 'total_price', )
+
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    model = Address
+    list_display = ('id', 'name', 'available', )
+    list_filter = ('available', )
+    fieldsets = (
+        ('Information', {'fields': ('name', 'available', )}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('name', 'available', )
+            }
+        ),
+    )
+    search_fields = ('name', )
+    ordering = ('id', 'name', 'available', )
 
 
 class CustomOutstandingTokenAdmin(OutstandingTokenAdmin):

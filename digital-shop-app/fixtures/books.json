@@ -21,7 +21,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$260000$Ttc3WLm9dOxzz04Xv2jnbG$8vjRlLJtCE14+ekjjhN36gxgsQGze6UGogUmcX3arAc=",
-    "last_login": "2022-03-09T12:24:05.133Z",
+    "last_login": "2022-04-06T16:26:52.336Z",
     "is_superuser": true,
     "first_name": "",
     "last_name": "",
@@ -63,7 +63,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$260000$JUJwb9eXz9rMWnj2QYIHPY$9mvLS9QtUcmXHXVvYd72iAWzjjk6Ea5x+r//PNWbd/k=",
-    "last_login": null,
+    "last_login": "2022-04-06T16:26:16.397Z",
     "is_superuser": false,
     "first_name": "",
     "last_name": "",
@@ -244,10 +244,10 @@
     "description": "The Postman Always Rings Twice is often lauded the most important crime book of the 20th century, and it's not hard to see why. Short, racy, and full of surprises, it will leave you no time to catch your breath. In fact, the language used by Cain was so unprecedentedly explicit, the book was banned in Boston for a while.",
     "image": "",
     "price": "65.00",
-    "quantity": 11,
+    "quantity": 10,
     "is_active": true,
     "published": "2022-03-09T14:48:45.307Z",
-    "updated": "2022-03-09T14:48:45.307Z"
+    "updated": "2022-04-06T16:26:41.799Z"
   }
 },
 {
@@ -260,10 +260,10 @@
     "description": "This Wilkie Collins’s late Victorian novel is among the earliest psychological thrillers ever written. It follows what first appears to be a simple story of two star-crossed lovers — Walter Hartright and Laura Fairlie — who weren’t meant to be together. Laura was betrothed to Sir Percival Glyde and yet she was mysteriously warned not to proceed with the marriage. Meanwhile, the city is gripped by the story of a strange woman clad in white who’s roaming its dark street.",
     "image": "2022-03-09_14-49-28-460_418byl8zkqL.jpg",
     "price": "10.00",
-    "quantity": 40,
+    "quantity": 39,
     "is_active": true,
     "published": "2022-03-09T14:49:32.015Z",
-    "updated": "2022-03-09T14:49:32.015Z"
+    "updated": "2022-04-06T16:26:41.829Z"
   }
 },
 {
@@ -308,10 +308,10 @@
     "description": "Regarded as one of the greatest works in literature, Don Quixote recounts the adventures of Alonso Quixano: a middle-aged man so obsessed with chivalric books that he decides to imitate them and become a knight-errant. So begins his journey to find a faithful squire, save damsels in distress, and fight windmills.",
     "image": "",
     "price": "12.00",
-    "quantity": 50,
+    "quantity": 48,
     "is_active": true,
     "published": "2022-03-09T14:53:33.184Z",
-    "updated": "2022-03-09T14:53:33.184Z"
+    "updated": "2022-04-06T16:26:26.851Z"
   }
 },
 {
@@ -352,6 +352,133 @@
     "is_deleted": false,
     "is_archived": false,
     "creation_date": "2022-03-09T12:23:07.922Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "is_deleted": false,
+    "is_archived": true,
+    "creation_date": "2022-04-06T16:23:31.080Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 6,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "is_archived": true,
+    "creation_date": "2022-04-06T16:26:16.550Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 7,
+  "fields": {
+    "user": 3,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-04-06T16:26:27.030Z"
+  }
+},
+{
+  "model": "mainapp.cart",
+  "pk": 8,
+  "fields": {
+    "user": null,
+    "is_deleted": false,
+    "is_archived": false,
+    "creation_date": "2022-04-06T16:26:41.972Z"
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 1,
+  "fields": {
+    "cart": 5,
+    "product": 26,
+    "quantity": 2
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 2,
+  "fields": {
+    "cart": 6,
+    "product": 23,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.cartitem",
+  "pk": 3,
+  "fields": {
+    "cart": 6,
+    "product": 22,
+    "quantity": 1
+  }
+},
+{
+  "model": "mainapp.address",
+  "pk": 1,
+  "fields": {
+    "name": "Russia",
+    "available": true
+  }
+},
+{
+  "model": "mainapp.address",
+  "pk": 2,
+  "fields": {
+    "name": "Norway",
+    "available": true
+  }
+},
+{
+  "model": "mainapp.address",
+  "pk": 3,
+  "fields": {
+    "name": "USA",
+    "available": true
+  }
+},
+{
+  "model": "mainapp.address",
+  "pk": 4,
+  "fields": {
+    "name": "Japan",
+    "available": true
+  }
+},
+{
+  "model": "mainapp.address",
+  "pk": 5,
+  "fields": {
+    "name": "Germany",
+    "available": false
+  }
+},
+{
+  "model": "mainapp.order",
+  "pk": 6,
+  "fields": {
+    "address": 1,
+    "payment_method": "cash",
+    "creation_date": "2022-04-06T16:26:41.897Z",
+    "total_price": "75.00"
+  }
+},
+{
+  "model": "mainapp.order",
+  "pk": 5,
+  "fields": {
+    "address": 3,
+    "payment_method": "card",
+    "creation_date": "2022-04-06T16:26:26.923Z",
+    "total_price": "24.00"
   }
 },
 {

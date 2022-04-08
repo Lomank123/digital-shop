@@ -6,9 +6,11 @@ import { ImageUpload } from "../imageUpload";
 import { userGetURL } from "../../urls";
 import { blankAxiosInstance, axiosInstance } from "../../axios";
 import ChangePassword from "../auth/changePassword";
+import { useTranslation } from "react-i18next";
 
 
 export default function EditProfile() {
+  const {t, i18n} = useTranslation();
   const params = useParams();
   const [postImage, setPostImage] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -100,7 +102,7 @@ export default function EditProfile() {
 
   return(
     <Box className="default-main-block">
-      <h3 className="edit-label">Edit profile</h3>
+      <h3 className="edit-label">{t("user-edit.edit-label")}</h3>
       <Box className="default-block edit-profile-block">
         <Box className="username-field-block">
           <TextField
@@ -109,7 +111,7 @@ export default function EditProfile() {
             margin="normal"
             required
             id="username"
-            label="Username"
+            label={t("user-edit.username")}
             name="username"
             fullWidth
             value={postData.username}
@@ -126,7 +128,7 @@ export default function EditProfile() {
             margin="normal"
             required
             id="email"
-            label="Email address"
+            label={t("user-edit.email")}
             name="email"
             fullWidth
             value={postData.email}
@@ -155,7 +157,7 @@ export default function EditProfile() {
             color="primary"
             onClick={handleSubmit}
           >
-            Save changes
+            {t("user-edit.save-button")}
           </Button>
         </Box>
       </Box>

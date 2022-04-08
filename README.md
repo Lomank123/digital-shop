@@ -41,7 +41,7 @@ git clone https://github.com/Lomank123/digital-shop.git
 npm i webpack webpack-cli
 ```
 
-- Run npm dev or prod version to create bundle file(s):
+- Run npm dev or prod version to create bundle file:
 ```
 npm run dev
 ```
@@ -90,6 +90,7 @@ For the first time it may take 5-20 minutes to build everything (depends on your
     - Separated backend and frontend
     - Configured GitHub Actions
     - Codecov coverage support
+    - Localization (EN and RU)
 
 - Products and Categories
     - In home page all available (and some unavailable) products can be viewed
@@ -192,23 +193,26 @@ These tests cover:
 - **Backend**:
     - Django
     - Django Rest Framework
-    - Django allauth
+    - dj-rest-auth
     - Nginx
     - Celery
     - Redis
     - Gunicorn
     - PostgreSQL
+    - Coverage
 - **Frontend**:
     - ReactJS
     - Babel
     - Webpack
     - Redux
     - Axios
+    - i18next
 - **Other**:
     - GitHub
     - GitHub Actions
     - Docker
     - Docker-compose
+    - Codecov
 
 
 ## Author

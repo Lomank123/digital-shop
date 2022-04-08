@@ -41,7 +41,7 @@ git clone https://github.com/Lomank123/digital-shop.git
 npm i webpack webpack-cli
 ```
 
-- Run npm dev or prod version to create bundle file(s):
+- Run npm dev or prod version to create bundle file:
 ```
 npm run dev
 ```
@@ -193,23 +193,26 @@ These tests cover:
 - **Backend**:
     - Django
     - Django Rest Framework
-    - Django allauth
+    - dj-rest-auth
     - Nginx
     - Celery
     - Redis
     - Gunicorn
     - PostgreSQL
+    - Coverage
 - **Frontend**:
     - ReactJS
     - Babel
     - Webpack
     - Redux
     - Axios
+    - i18next
 - **Other**:
     - GitHub
     - GitHub Actions
     - Docker
     - Docker-compose
+    - Codecov
 
 
 ## Author

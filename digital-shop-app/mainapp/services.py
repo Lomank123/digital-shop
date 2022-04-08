@@ -70,10 +70,10 @@ class CartService:
                 new_cart = CartRepository.get_or_create_cart_by_id()
                 cart = CartRepository.set_user_to_cart(new_cart.id, self.request.user)
             response = self._build_response(cart)
-            # Here we specialized forced in case when cookie exists but cart not
+            # Here we specified forced in case when cookie exists but cart not
             self._set_cart_id_to_cookie(response, cart.id, consts.USER_CART_ID_COOKIE_NAME, forced=True)
 
-        # Non-user cart check
+        # Non-user cart check (if authenticated user has no cookies at all then both carts will be created)
         cart_id = self._get_non_user_cart_id_from_cookie()
         cart = CartRepository.get_or_create_cart_by_id(cart_id)
         if response is None:
@@ -88,7 +88,7 @@ class CartService:
         response = self._build_user_cart_response(cart)
         return response
 
-    # Used upon log out
+    # Used upon log out and when no user found but user cart cookie existed
     def user_cart_id_delete_execute(self):
         response = Response(data={consts.DETAIL_KEY: consts.COOKIE_DELETED}, status=status.HTTP_200_OK)
         self._delete_cart_id_from_cookie(response, consts.USER_CART_ID_COOKIE_NAME)

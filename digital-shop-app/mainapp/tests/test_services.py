@@ -33,7 +33,7 @@ class CartServiceTestCase(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(Cart.objects.count(), 1)
         self.assertTrue(cart_cookie)
-        # Second check to ensure we're not creating the second cart
+        # Check to ensure we're not creating the second cart
         request.COOKIES = {
             consts.NON_USER_CART_ID_COOKIE_NAME: cart_cookie.value,
         }
@@ -42,6 +42,28 @@ class CartServiceTestCase(TestCase):
         self.assertEqual(Cart.objects.count(), 1)
         cart_id = Cart.objects.first().id
         self.assertEqual(cart_id, int(cart_cookie.value))
+
+        # Second case, with authenticated user
+        request.COOKIES = {}
+        request.user = self.user
+        res = CartService(request).either_cart_execute()
+        cart_cookie = res.cookies[consts.USER_CART_ID_COOKIE_NAME]
+        non_user_cart_cookie = res.cookies[consts.NON_USER_CART_ID_COOKIE_NAME]
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        # Here 1 additional cart will be created because we have no non-user cookie
+        self.assertEqual(Cart.objects.count(), 3)
+        self.assertTrue(cart_cookie)
+        # Additional check for unwanted extra carts
+        request.COOKIES = {
+            consts.USER_CART_ID_COOKIE_NAME: cart_cookie.value,
+            consts.NON_USER_CART_ID_COOKIE_NAME: non_user_cart_cookie.value,
+        }
+        res2 = CartService(request).either_cart_execute()
+        self.assertEqual(res2.status_code, status.HTTP_200_OK)
+        self.assertEqual(Cart.objects.count(), 3)
+        cart_id = Cart.objects.filter(user=self.user).first().id
+        self.assertEqual(cart_id, int(cart_cookie.value))
+
 
     def test_user_cart_execute(self):
         cart = Cart.objects.create()

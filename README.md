@@ -101,7 +101,6 @@ For the first time it may take 5-20 minutes to build everything (depends on your
     - Access and refresh tokens
     - Email verification on sign up (optional)
     - Forgot password implementation (using email)
-    - Sign in using Google (WIP)
 
 - Cart system
     - 2 types of carts: user and non-user

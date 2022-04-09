@@ -1,4 +1,27 @@
 .purchase-main-block {
   padding: 40px;
-  
+}
+
+
+/* purchaseSuccess */
+
+.purchase-success-main-block {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  font-size: 24pt;
+  text-align: center;
+}
+
+.purchase-success-label {
+  text-align: center;
+}
+
+.purchase-success-info {
+  font-size: 16pt;
+}
+
+.purchase-success-button {
+  margin-top: 20px !important;
+  align-self: center;
 }

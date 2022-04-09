@@ -31,6 +31,7 @@ export const addProductRoute = `${productRoute}/add`;
 export const editProductRoute = `${productRoute}/edit`;
 
 export const purchaseRoute = 'purchase';
+export const purchaseSuccessRoute = `success`;
 export const cartRoute = 'cart';
 
 export const adminRoute = 'admin';

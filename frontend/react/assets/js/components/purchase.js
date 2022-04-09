@@ -5,6 +5,7 @@ import { getTotalPrice, handlePostPurchase, getAvailableAddresses } from "../uti
 import history from "../history";
 import { useTranslation } from "react-i18next";
 import '../../styles/components/purchase.css';
+import { purchaseRoute, purchaseSuccessRoute } from "../routes";
 
 
 export default function Purchase() {
@@ -30,7 +31,12 @@ export default function Purchase() {
       return;
     }
     handlePostPurchase(cart.id, totalPrice, chosenAddress, paymentMethod).then((res) => {
-      history.push('/');
+      history.push({
+        pathname: `/${purchaseRoute}/${purchaseSuccessRoute}`,
+        state: {
+          orderId: res.data.detail.id,
+        },
+      });
     }).catch((err) => {
       console.log(err);
       console.log("Purchase error.");

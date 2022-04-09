@@ -35,6 +35,7 @@ import Purchase from './components/purchase';
 import Cart from './components/cart';
 import '../styles/main/main.css';
 import UserOrders from './components/order/order';
+import PurchaseSuccess from './components/purchaseSuccess';
 import './i18n';
 
 
@@ -85,7 +86,13 @@ const routing = (
               <Route path={`/${routes.editProfileRoute}/${routes.idValues}`} component={() => <LoginRequiredComponent component={EditProfile} />} />
   
               <Route path={`/${routes.cartRoute}`} component={() => <PageComponent component={Cart} />} />
-              <Route path={`/${routes.purchaseRoute}`} component={() => <PageComponent component={Purchase} />} />
+              <Route path={`/${routes.purchaseRoute}`} render={ ({ match: { path } }) => (
+                  <>
+                    <Route exact path={`${path}/`} component={() => <PageComponent component={Purchase} />} />
+                    <Route path={`${path}/${routes.purchaseSuccessRoute}`} component={() => <PageComponent component={PurchaseSuccess} />} />
+                  </>
+                )}
+              />
   
               <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
   

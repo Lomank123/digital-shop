@@ -177,14 +177,17 @@ class CartItemService:
         return Response(data={consts.TOTAL_PRICE_POST_KEY: total_price}, status=status.HTTP_200_OK)
 
     def post_purchase_execute(self):
-        response = Response(data={consts.DETAIL_KEY: consts.POST_PURCHASE_DONE}, status=status.HTTP_200_OK)
+        response = Response(status=status.HTTP_200_OK)
         cart = CartRepository.get_or_create_cart_by_id(self.request.data[consts.CART_ID_POST_KEY])
         CartItemRepository.change_quantity(cart)
         archived_cart = CartRepository.set_cart_archived(cart)
         service = CartService(self.request)
         cookie_name = service._get_either_cookie_name()
         service._delete_cart_id_from_cookie(response, cookie_name)
-        self._create_order(archived_cart)
+        new_order = self._create_order(archived_cart)
+        response.data = {
+            consts.DETAIL_KEY: {"id": new_order.cart.id, }
+        }
         if self.request.user.is_authenticated:
             new_cart = service._create_and_attach_cart()
         else:
@@ -197,7 +200,7 @@ class CartItemService:
         address = AddressRepository.find_address_by_id(address_id)
         payment_method = self.request.data[consts.PAYMENT_POST_KEY]
         total_price = self.request.data[consts.TOTAL_PRICE_POST_KEY]
-        OrderRepository.create_order(cart, total_price, address, payment_method)
+        return OrderRepository.create_order(cart, total_price, address, payment_method)
 
 
 def build_paginated_response(items, viewset_instance):

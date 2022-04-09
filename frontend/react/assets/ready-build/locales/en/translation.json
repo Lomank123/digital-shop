@@ -241,5 +241,12 @@
     "card-date": "Valid thru",
     "card-cvc": "CVC",
     "empty-cart": "Cart is empty. Nothing to purchase."
+  },
+
+  "purchase-success": {
+    "label": "Successful purchase!",
+    "info": "Your order ID is:",
+    "info2": "Show this ID to our workers when your order will be ready. If you want to buy something else visit home page.",
+    "home-button": "Home"
   }
 }

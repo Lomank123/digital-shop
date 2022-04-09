@@ -133,3 +133,8 @@ a.cart-item-info-link {
   flex-direction: column;
   width: 20%;
 }
+
+.order-item-image-block {
+  display: flex;
+  align-items: center;
+}

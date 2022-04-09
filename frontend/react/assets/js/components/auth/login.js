@@ -4,11 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { tokenGetURL, userGetCartURL } from '../../urls';
+import { hostURL, tokenGetURL, userGetCartURL } from '../../urls';
 import history from '../../history';
 import { getCart, getCartProductIds, getUser } from '../../utils';
 import { useLocation } from 'react-router';
-import { forgotRoute, signupRoute } from '../../routes';
+import { callbackRoute, forgotRoute, googleRoute, loginRoute, signupRoute } from '../../routes';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/auth/login.css';
 import '../../../styles/auth/auth.css';
@@ -17,6 +17,10 @@ import '../../../styles/auth/auth.css';
 export default function Login() {
 	const {t, i18n} = useTranslation();
 	const search = useLocation().search;
+
+	const googleCallbackURL = `${hostURL}${loginRoute}/${googleRoute}/${callbackRoute}/`;
+	const googleClientId = `${process.env.GOOGLE_KEY}`;
+	const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${googleCallbackURL}&prompt=consent&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile&access_type=offline`;
 
 	// Handles redirect on click
   const handleClickRedirect = (e, route) => {
@@ -82,6 +86,16 @@ export default function Login() {
 				});
 			});
 	}
+
+	// Unused for now
+	const googleButton = (
+		<Button
+			href={googleAuthURL}
+			className='forgot-link'
+		>
+			{t("login.sign-in-with-google")}
+		</Button>
+	);
 
 	return(
 		<Box className='default-block auth-block'>

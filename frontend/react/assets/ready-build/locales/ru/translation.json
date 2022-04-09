@@ -56,7 +56,8 @@
     "password": "Пароль",
     "login-button": "Войти",
     "signup-button": "Зарегистрироваться",
-    "forgot-link": "Забыли пароль?"
+    "forgot-link": "Забыли пароль?",
+    "sign-in-with-google": "Войти с помощью Google"
   },
 
   "logout": {

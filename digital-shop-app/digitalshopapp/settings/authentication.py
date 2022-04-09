@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 
 
 # Auth settings
@@ -52,3 +53,16 @@ REST_AUTH_SERIALIZERS = {
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'digital-shop-access-token'
 JWT_AUTH_REFRESH_COOKIE = 'digital-shop-refresh-token'
+
+# Config for django-allauth
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.environ.get('GOOGLE_KEY'),
+            "secret": os.environ.get('GOOGLE_SECRET'),
+        },
+        "SCOPE": {
+            "email",
+        },
+    },
+}

@@ -22,6 +22,16 @@ services:
       - db
       - redis
 
+  frontend:
+    build:
+      context: ./frontend
+    command: >
+      sh -c "npm run dev"
+    volumes:
+      - ./frontend/react:/react
+      - react:/react/assets/ready-build
+    env_file: .env
+
   celery-worker:
     build: .
     command: wait-for-it.sh django:8000 -s -t 120 -- celery -A digitalshopapp worker --loglevel=INFO --beat
@@ -54,13 +64,13 @@ services:
     volumes:
       # We can't use volume here because it'll override PORT variable in default.conf
       #- ./nginx/config:/etc/nginx/conf.d
-      #- react:/var/www/react
+      - react:/var/www/react
       - django:/var/www/static
       # This mount an existing folder to nginx (that's why only django volume exists)
-      - ./frontend/react/assets/ready-build:/var/www/react
+      #- ./frontend/react/assets/ready-build:/var/www/react
     depends_on:
       - django
-      #- frontend
+      - frontend
 
   test:
     build:
@@ -114,13 +124,5 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
 
 volumes:
-  #react:
+  react:
   django:
-
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   volumes:
-  #     - ./frontend/react:/react
-  #     #- react:/react/assets/ready-build
-  #   env_file: .env

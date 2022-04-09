@@ -1,10 +1,13 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
+  plugins: [
+    new webpack.EnvironmentPlugin(['GOOGLE_KEY']),
+  ],
   // path to our input files (can be multiple)
   entry: {
     'index-bundle': './assets/js/index.js',
-    //'auth-bundle': './assets/js/auth.js',
   },
   output: {
     filename: '[name].js',  // output bundle file name (name will be the key from entry section)
@@ -35,9 +38,5 @@ module.exports = {
         ],
       },
     ]
-  },
-  devServer: {
-    port: 9000,
-    historyApiFallback: true,
-  },
+  }
 };

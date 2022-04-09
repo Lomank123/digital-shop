@@ -1,7 +1,4 @@
 {
-  "login-text": "Log in",
-  "signup-text": "Sign up",
-
   "already-logged-in": {
     "label": "Already logged in",
     "information": "You have already logged in. Maybe you want to go to home page?",
@@ -56,7 +53,8 @@
     "password": "Password",
     "login-button": "Log In",
     "signup-button": "Sign up",
-    "forgot-link": "Forgot password?"
+    "forgot-link": "Forgot password?",
+    "sign-in-with-google": "Sign in with Google"
   },
 
   "logout": {

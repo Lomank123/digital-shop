@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from mainapp.views import ProductViewSet, CategoryViewSet, UserViewSet, \
-    CartViewSet, CartItemViewSet, EmailAddressViewSet, OrderViewSet, AddressViewSet
+    CartViewSet, CartItemViewSet, EmailAddressViewSet, OrderViewSet, AddressViewSet, GoogleLogin
 
 
 router = DefaultRouter()
@@ -23,6 +23,7 @@ urlpatterns = [
     # REST Auth
     path('api/dj-rest-auth/', include('dj_rest_auth.urls')),
     path('api/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('api/dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
     # JWT Token
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

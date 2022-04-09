@@ -1,5 +1,5 @@
 // main urls
-const hostURL = 'http://127.0.0.1' + '/';
+export const hostURL = 'http://127.0.0.1' + '/';
 
 // media urls
 export const reactURL = hostURL + 'react/';
@@ -55,6 +55,9 @@ export const signupEmailResendURL = signupURL + 'resend-email/';
 export const tokenGetURL = apiRestAuthURL + 'login/';
 export const logoutURL = apiRestAuthURL + 'logout/';
 export const tokenRefreshURL = apiRestAuthURL + 'token/' + 'refresh/';
+
+// Social auth
+export const googleLoginURL = apiRestAuthURL + 'google/';
 
 // Password reset
 export const passwordURL = apiRestAuthURL + 'password/';

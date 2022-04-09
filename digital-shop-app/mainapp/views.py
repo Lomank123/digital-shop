@@ -1,6 +1,8 @@
 from allauth.account.models import EmailAddress
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 from django_filters.rest_framework import DjangoFilterBackend
-
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -8,7 +10,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import filters
-
 from mainapp.models import Product, Category, CustomUser, Cart, CartItem, Order, Address
 from mainapp.serializers import ProductSerializer, UserSerializer, CategorySerializer, CartSerializer, \
     CartItemSerializer, EmailAddressSerializer, OrderSerializer, AddressSerializer
@@ -348,6 +349,13 @@ class AddressViewSet(ModelViewSet):
         if self.action in unsafe_actions:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+
+
+# if you want to use Authorization Code Grant, use this
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = 'http://127.0.0.1/login/google/callback/'
+    client_class = OAuth2Client
 
 
 # TODO: Remove if unused

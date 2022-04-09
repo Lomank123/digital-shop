@@ -11,6 +11,9 @@
 }
 
 .login-forgot-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   text-align: end;
   width: 100%;
 
@@ -18,5 +21,8 @@
 }
 
 .forgot-link {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
   width: fit-content;
 }

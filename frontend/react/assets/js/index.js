@@ -37,6 +37,7 @@ import '../styles/main/main.css';
 import UserOrders from './components/order/order';
 import PurchaseSuccess from './components/purchaseSuccess';
 import './i18n';
+import SocialLoginCallback from './components/auth/social';
 
 
 export const defaultState = {
@@ -95,8 +96,14 @@ const routing = (
               />
   
               <Route path={`/${routes.testRoute}`} component={() => <PageComponent component={TestPage} />} />
-  
-              <Route path={`/${routes.loginRoute}`} component={() => <AuthComponent component={Login} />} />
+              <Route path={`/${routes.loginRoute}`} render={ ({ match: { path } }) => (
+                  <>
+                    <Route exact path={`${path}/`} component={() => <AuthComponent component={Login} />} />
+                    <Route path={`${path}/${routes.googleRoute}/${routes.callbackRoute}`} component={() => <AuthComponent component={SocialLoginCallback} />} />
+                  </>
+                )}
+              />
+
               <Route path={`/${routes.logoutRoute}`} component={() => <LoginRequiredComponent component={Logout} />} />
               <Route path={`/${routes.loggedInRoute}`} component={() => <LoginRequiredComponent component={AlreadyLoggedIn} />} />
               <Route path={`/${routes.signupRoute}`} render={ ({ match: { path } }) => (
